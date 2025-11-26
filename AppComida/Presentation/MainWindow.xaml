@@ -1,0 +1,243 @@
+﻿<Window x:Class="AppComida.Presentation.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        mc:Ignorable="d"
+        Title="TPV Comida Casera" Height="720" Width="1100"
+        WindowStyle="None"
+        ResizeMode="NoResize"
+        WindowStartupLocation="CenterScreen"
+        AllowsTransparency="True"
+        Background="Transparent"
+        FontFamily="Segoe UI">
+
+    <Window.Resources>
+        <!-- COLORES DE LA APP -->
+        <SolidColorBrush x:Key="SidebarBg" Color="#37474F"/>
+        <SolidColorBrush x:Key="BrandColor" Color="#FF6F00"/>
+        <SolidColorBrush x:Key="TextPrimary" Color="#263238"/>
+        <SolidColorBrush x:Key="TextSecondary" Color="#90A4AE"/>
+
+        <!-- ICONOS (Geometrías) -->
+        <Geometry x:Key="IconUtensils">M11,9H9V2H7V9H5V2H3V9C3,11.12 4.66,12.84 6.75,12.97V22H9.25V12.97C11.34,12.84 13,11.12 13,9V2H11V9M16,6V14H18.5V22H21V2C18.24,2 16,4.24 16,6Z</Geometry>
+        <Geometry x:Key="IconBurger">M16.5,11L13,12.75L9.5,11L6,12.75L2.5,11V8.5C2.5,5.5 5.3,3.3 9.5,3.3C13.7,3.3 16.5,5.5 16.5,8.5V11M2.5,13.75V19.25C2.5,20.8 5.3,22.1 9.5,22.1C13.7,22.1 16.5,20.8 16.5,19.25V13.75L13,15.5L9.5,13.75L6,15.5L2.5,13.75Z</Geometry>
+        <Geometry x:Key="IconUsers">M12,4A4,4 0 0,1 16,8A4,4 0 0,1 12,12A4,4 0 0,1 8,8A4,4 0 0,1 12,4M12,14C16.42,14 20,15.79 20,18V20H4V18C4,15.79 7.58,14 12,14Z</Geometry>
+        <Geometry x:Key="IconHelp">M11,18H13V16H11V18M12,2A10,10 0 0,0 2,12A10,10 0 0,0 12,22A10,10 0 0,0 22,12A10,10 0 0,0 12,2M12,20C7.59,20 4,16.41 4,12C4,7.59 7.59,4 12,4C16.41,4 20,7.59 20,12C20,16.41 16.41,20 12,20M12,6A4,4 0 0,0 8,10H10A2,2 0 0,1 12,8A2,2 0 0,1 14,10C14,12 11,11.75 11,15H13C13,12.75 16,12.5 16,10A4,4 0 0,0 12,6Z</Geometry>
+        <Geometry x:Key="IconPower">M16.56,5.44L15.11,6.89C16.84,7.94 18,9.83 18,12A6,6 0 0,1 12,18A6,6 0 0,1 6,12C6,9.83 7.16,7.94 8.88,6.88L7.44,5.44C5.36,6.88 4,9.28 4,12A8,8 0 0,0 12,20A8,8 0 0,0 20,12C20,9.28 18.64,6.88 16.56,5.44M13,3H11V13H13</Geometry>
+
+        <!-- ESTILO NAVEGACIÓN (Base) -->
+        <Style x:Key="NavButton" TargetType="RadioButton">
+            <Setter Property="Background" Value="Transparent"/>
+            <Setter Property="Foreground" Value="{StaticResource TextSecondary}"/>
+            <Setter Property="FontSize" Value="14"/>
+            <Setter Property="Height" Value="55"/>
+            <Setter Property="Cursor" Value="Hand"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="RadioButton">
+                        <Border x:Name="border" Background="{TemplateBinding Background}" BorderThickness="4,0,0,0" BorderBrush="Transparent">
+                            <Grid Margin="25,0,0,0">
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="30"/>
+                                    <ColumnDefinition Width="*"/>
+                                </Grid.ColumnDefinitions>
+                                <Path x:Name="icon" Data="{Binding Tag, RelativeSource={RelativeSource TemplatedParent}}" 
+                                      Fill="{TemplateBinding Foreground}" Stretch="Uniform" Height="18" Width="18" HorizontalAlignment="Center"/>
+                                <ContentPresenter Grid.Column="1" VerticalAlignment="Center" HorizontalAlignment="Left" Margin="15,0,0,0"/>
+                            </Grid>
+                        </Border>
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsMouseOver" Value="True">
+                                <Setter TargetName="border" Property="Background" Value="#0DFFFFFF"/>
+                                <Setter Property="Foreground" Value="White"/>
+                            </Trigger>
+                            <Trigger Property="IsChecked" Value="True">
+                                <Setter TargetName="border" Property="BorderBrush" Value="{StaticResource BrandColor}"/>
+                                <!-- DEGRADADO SUTIL SOLO EN EL ACTIVO -->
+                                <Setter TargetName="border" Property="Background">
+                                    <Setter.Value>
+                                        <LinearGradientBrush StartPoint="0,0" EndPoint="1,0">
+                                            <GradientStop Color="#33FF6F00" Offset="0"/>
+                                            <GradientStop Color="Transparent" Offset="1"/>
+                                        </LinearGradientBrush>
+                                    </Setter.Value>
+                                </Setter>
+                                <Setter Property="Foreground" Value="White"/>
+                                <Setter Property="FontWeight" Value="SemiBold"/>
+                                <Setter TargetName="icon" Property="Fill" Value="{StaticResource BrandColor}"/>
+                                <Setter TargetName="icon" Property="Effect">
+                                    <Setter.Value>
+                                        <DropShadowEffect Color="#FF6F00" BlurRadius="8" ShadowDepth="0" Opacity="0.6"/>
+                                    </Setter.Value>
+                                </Setter>
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+
+        <!-- ESTILO BOTONES FOOTER (Ayuda/Salir) -->
+        <Style x:Key="FooterButton" TargetType="Button">
+            <Setter Property="Background" Value="Transparent"/>
+            <Setter Property="Foreground" Value="{StaticResource TextSecondary}"/>
+            <Setter Property="FontSize" Value="10"/>
+            <Setter Property="FontWeight" Value="Bold"/>
+            <Setter Property="Cursor" Value="Hand"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="Button">
+                        <StackPanel Orientation="Vertical" Background="Transparent">
+                            <Path x:Name="icon" Data="{Binding Tag, RelativeSource={RelativeSource TemplatedParent}}" 
+                                  Fill="{TemplateBinding Foreground}" Stretch="Uniform" Height="16" Width="16" Margin="0,0,0,4"/>
+                            <ContentPresenter HorizontalAlignment="Center"/>
+                        </StackPanel>
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsMouseOver" Value="True">
+                                <Setter Property="Foreground" Value="White"/>
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+
+    </Window.Resources>
+
+    <!-- ESTRUCTURA PRINCIPAL -->
+    <Border Background="#F5F5F5" CornerRadius="20">
+        <Border.Effect>
+            <DropShadowEffect BlurRadius="30" ShadowDepth="10" Opacity="0.3" Color="Black"/>
+        </Border.Effect>
+
+        <Grid>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="260"/>
+                <!-- Sidebar -->
+                <ColumnDefinition Width="*"/>
+                <!-- Contenido -->
+            </Grid.ColumnDefinitions>
+
+            <!-- ================= SIDEBAR ================= -->
+            <Border Grid.Column="0" Background="{StaticResource SidebarBg}" CornerRadius="20,0,0,20">
+                <Grid>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto"/>
+                        <!-- Perfil -->
+                        <RowDefinition Height="*"/>
+                        <!-- Nav -->
+                        <RowDefinition Height="Auto"/>
+                        <!-- Footer -->
+                    </Grid.RowDefinitions>
+
+                    <!-- 1. PERFIL DE USUARIO (Efecto Cristal) -->
+                    <Border Grid.Row="0" Margin="20,25,20,20" CornerRadius="12" BorderThickness="1" BorderBrush="#33FFFFFF">
+                        <Border.Background>
+                            <SolidColorBrush Color="White" Opacity="0.08"/>
+                        </Border.Background>
+                        <Grid Margin="12">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="Auto"/>
+                                <ColumnDefinition Width="*"/>
+                            </Grid.ColumnDefinitions>
+
+                            <!-- Avatar simulado -->
+                            <Grid Grid.Column="0">
+                                <Ellipse Width="40" Height="40" Fill="Gray">
+                                    <Ellipse.Effect>
+                                        <DropShadowEffect ShadowDepth="2" BlurRadius="4" Opacity="0.3"/>
+                                    </Ellipse.Effect>
+                                </Ellipse>
+                                <!-- Indicador Online -->
+                                <Ellipse Width="10" Height="10" Fill="#4CAF50" Stroke="#37474F" StrokeThickness="1.5"
+                                         HorizontalAlignment="Right" VerticalAlignment="Bottom" Margin="0,0,-2,0"/>
+                            </Grid>
+
+                            <StackPanel Grid.Column="1" VerticalAlignment="Center" Margin="12,0,0,0">
+                                <TextBlock Text="Gonzalo López" Foreground="White" FontWeight="Bold" FontSize="14"/>
+                                <TextBlock Text="Administrador" Foreground="#B0BEC5" FontSize="11" Margin="0,2,0,0"/>
+                            </StackPanel>
+                        </Grid>
+                    </Border>
+
+                    <!-- 2. NAVEGACIÓN -->
+                    <StackPanel Grid.Row="1" Margin="0,10,0,0">
+                        <RadioButton Style="{StaticResource NavButton}" Content="Pedidos" Tag="{StaticResource IconUtensils}" IsChecked="True" GroupName="Nav"/>
+                        <RadioButton Style="{StaticResource NavButton}" Content="Productos" Tag="{StaticResource IconBurger}" GroupName="Nav"/>
+                        <RadioButton Style="{StaticResource NavButton}" Content="Clientes" Tag="{StaticResource IconUsers}" GroupName="Nav"/>
+                    </StackPanel>
+
+                    <!-- 3. FOOTER (Ayuda / Salir) -->
+                    <StackPanel Grid.Row="2" Margin="0,0,0,25">
+                        <Grid Margin="30,0">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="*"/>
+                                <ColumnDefinition Width="Auto"/>
+                                <ColumnDefinition Width="*"/>
+                            </Grid.ColumnDefinitions>
+
+                            <Button Grid.Column="0" Content="AYUDA" Tag="{StaticResource IconHelp}" Style="{StaticResource FooterButton}"/>
+
+                            <!-- Separador -->
+                            <Rectangle Grid.Column="1" Width="1" Height="25" Fill="#4DFFFFFF" Margin="15,0"/>
+
+                            <Button Grid.Column="2" Content="SALIR" Tag="{StaticResource IconPower}" Style="{StaticResource FooterButton}"/>
+                        </Grid>
+
+                        <!-- Logo pequeño u opaco abajo -->
+                        <TextBlock Text="TPV v1.0" Foreground="#4DFFFFFF" FontSize="10" HorizontalAlignment="Center" Margin="0,15,0,0"/>
+                    </StackPanel>
+                </Grid>
+            </Border>
+
+            <!-- ================= MAIN CONTENT ================= -->
+            <Grid Grid.Column="1">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="80"/>
+                    <!-- Header -->
+                    <RowDefinition Height="*"/>
+                    <!-- Content (Corregido: Height en lugar de Width) -->
+                </Grid.RowDefinitions>
+
+                <!-- HEADER -->
+                <Border Grid.Row="0" Background="White" BorderBrush="#E0E0E0" BorderThickness="0,0,0,1" CornerRadius="0,20,0,0">
+                    <Grid Margin="30,0">
+                        <StackPanel VerticalAlignment="Center">
+                            <TextBlock Text="Pedidos" FontSize="24" FontWeight="Bold" Foreground="{StaticResource TextPrimary}"/>
+                            <TextBlock Text="Gestión de comandas y estado de mesas" FontSize="12" Foreground="#9E9E9E" Margin="0,2,0,0"/>
+                        </StackPanel>
+
+                        <!-- WIDGET FECHA -->
+                        <StackPanel HorizontalAlignment="Right" VerticalAlignment="Center">
+                            <TextBlock Text="MIÉRCOLES" FontSize="11" FontWeight="Bold" Foreground="#90A4AE" 
+                                       HorizontalAlignment="Right"/>
+                            <StackPanel Orientation="Horizontal" HorizontalAlignment="Right" Margin="0,-4,0,0">
+                                <TextBlock Text="26" FontSize="28" FontWeight="Light" Foreground="{StaticResource TextPrimary}"/>
+                                <TextBlock Text="NOV" FontSize="16" FontWeight="Normal" Foreground="{StaticResource TextPrimary}" 
+                                           VerticalAlignment="Bottom" Margin="4,0,0,4"/>
+                            </StackPanel>
+                        </StackPanel>
+                    </Grid>
+                </Border>
+
+                <!-- CONTENT PLACEHOLDER -->
+                <Grid Grid.Row="1" Margin="30">
+                    <Border BorderThickness="2" BorderBrush="#E0E0E0" CornerRadius="12" Background="White">
+                        <Border.Effect>
+                            <DropShadowEffect BlurRadius="10" ShadowDepth="2" Opacity="0.05"/>
+                        </Border.Effect>
+
+                        <!-- Aquí iría el UserControl dinámico (Views) -->
+                        <StackPanel VerticalAlignment="Center" HorizontalAlignment="Center">
+                            <Path Data="{StaticResource IconUtensils}" Fill="#E0E0E0" Height="60" Width="60" Stretch="Uniform"/>
+                            <TextBlock Text="Área de Contenido" Foreground="#BDBDBD" FontSize="18" 
+                                       HorizontalAlignment="Center" Margin="0,10,0,0"/>
+                        </StackPanel>
+                    </Border>
+                </Grid>
+            </Grid>
+
+        </Grid>
+    </Border>
+</Window>

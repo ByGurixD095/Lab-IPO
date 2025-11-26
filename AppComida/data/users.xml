@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ArrayOfUserData xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+  <UserData>
+    <username>admin</username>
+    <firstname>Gonzalo</firstname>
+    <lastname>López Rodríguez</lastname>
+    <email>gonzalo.lopez@tpvcomida.com</email>
+    <last_access>2025-11-26T10:00:00</last_access>
+    <image>/Assets/Images/Profiles/user_gonzalo.png</image>
+    <!-- Solo por simplicidad guardado en comentario Contraseña: admin -->
+    <salt>a1b2c3d4e5f67890</salt>
+    <digest>ada08a38ca9fc98bc9a6686b574aaf57</digest>
+  </UserData>
+  <UserData>
+    <username>mgalan</username>
+    <firstname>Marcos</firstname>
+    <lastname>Galán Rodríguez</lastname>
+    <email>marcos.galan@tpvcomida.com</email>
+    <last_access>2025-11-25T14:30:00</last_access>
+    <image>/Assets/Images/Profiles/user_marcos.png</image>
+   <!-- Solo por simplicidad guardado en comentario Contraseña: marcos -->
+    <salt>a1b2c3d4e5f67890</salt>
+    <digest>27b2d85939d3747f7ff3a2f13b66141c</digest>
+  </UserData>
+  <UserData>
+    <username>clacave</username>
+    <firstname>Carmen</firstname>
+    <lastname>Lacave Rodero</lastname>
+    <email>carmen.lacave@uclm.es</email>
+    <last_access>2025-11-20T09:15:00</last_access>
+    <image>/Assets/Images/Profiles/user_carmen.png</image>
+    <!-- Solo por simplicidad guardado en comentario Contraseña: carmen -->
+    <salt>a1b2c3d4e5f67890</salt>
+    <digest>ad6c6a9fd327d9c9961ac9f42c8bcad2</digest>
+  </UserData>
+</ArrayOfUserData>
