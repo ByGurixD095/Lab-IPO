@@ -1,3 +1,4 @@
+.gitignore
 # Visual Studio - Archivos de usuario y temporales
 .vs/
 *.user
@@ -22,6 +23,7 @@ obj/
 # Logs
 Log/
 Logs/
+*.log
 
 # NuGet Packages (Se restauran automáticamente, no se suben)
 *.nupkg
@@ -36,3 +38,29 @@ Desktop.ini
 
 # Archivos temporales de pruebas
 [Tt]est[Rr]esult*/
+TestResults/
+
+# --- REGLAS AÑADIDAS ---
+
+# Salida de publicación (Publish) - CRÍTICO si usas "Publicar" en VS
+[Pp]ublish/
+
+# ReSharper / JetBrains (Muy común en entornos .NET)
+_ReSharper*/
+*.[Rr]e[Ss]harper
+*.DotSettings.user
+
+# Visual Studio Code (Por si algún desarrollador usa VS Code)
+.vscode/
+
+# Archivos de bloqueo de proyecto (project.json antiguo o lockfiles)
+project.lock.json
+project.fragment.lock.json
+artifacts/
+
+# Crash Dumps (Volcados de memoria)
+*.dmp
+*.mdmp
+
+# EditorConfig (Solo ignorar configuraciones locales/usuario)
+.editorconfig.inferred
