@@ -1,41 +1,38 @@
-# Prerequisites
-*.d
+# Visual Studio - Archivos de usuario y temporales
+.vs/
+*.user
+*.suo
+*.userosscache
+*.sln.docstates
 
-# Compiled Object files
-*.slo
-*.lo
-*.o
-*.obj
+# Salida de compilación (Build results)
+[Dd]ebug/
+[Dd]ebugPublic/
+[Rr]elease/
+[Rr]eleasePublic/
+x64/
+x86/
+[Ww]in32/
+[Aa][Rr][Mm]/
+[Aa][Rr][Mm]64/
+bld/
+bin/
+obj/
 
-# Precompiled Headers
-*.gch
-*.pch
+# Logs
+Log/
+Logs/
 
-# Linker files
-*.ilk
+# NuGet Packages (Se restauran automáticamente, no se suben)
+*.nupkg
+**/packages/*
+!**/packages/build/
+!**/packages/buildCrossTargeting/
 
-# Debugger Files
-*.pdb
+# Archivos de sistema de Windows
+Thumbs.db
+ehthumbs.db
+Desktop.ini
 
-# Compiled Dynamic libraries
-*.so
-*.dylib
-*.dll
-
-# Fortran module files
-*.mod
-*.smod
-
-# Compiled Static libraries
-*.lai
-*.la
-*.a
-*.lib
-
-# Executables
-*.exe
-*.out
-*.app
-
-# debug information files
-*.dwo
+# Archivos temporales de pruebas
+[Tt]est[Rr]esult*/
