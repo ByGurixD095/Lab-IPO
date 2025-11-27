@@ -1,8 +1,7 @@
-using AppComida.Domain; // Referencia al Dominio
+using AppComida.Domain;
 using System;
 using System.Collections.Generic;
 using System.IO;
-using System.Windows;
 using System.Xml.Serialization;
 
 namespace AppComida.Persistence

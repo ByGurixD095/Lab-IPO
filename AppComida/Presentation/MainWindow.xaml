@@ -10,7 +10,9 @@
         WindowStartupLocation="CenterScreen"
         AllowsTransparency="True"
         Background="Transparent"
-        FontFamily="Segoe UI">
+        FontFamily="Segoe UI"
+        Loaded="Window_Loaded"
+        MouseDown="Window_MouseDown">
 
     <Window.Resources>
         <!-- COLORES DE LA APP -->
@@ -19,7 +21,7 @@
         <SolidColorBrush x:Key="TextPrimary" Color="#263238"/>
         <SolidColorBrush x:Key="TextSecondary" Color="#90A4AE"/>
 
-        <!-- ICONOS (Geometrías) -->
+        <!-- ICONOS (Geometrías - Mantener) -->
         <Geometry x:Key="IconUtensils">M11,9H9V2H7V9H5V2H3V9C3,11.12 4.66,12.84 6.75,12.97V22H9.25V12.97C11.34,12.84 13,11.12 13,9V2H11V9M16,6V14H18.5V22H21V2C18.24,2 16,4.24 16,6Z</Geometry>
         <Geometry x:Key="IconBurger">M16.5,11L13,12.75L9.5,11L6,12.75L2.5,11V8.5C2.5,5.5 5.3,3.3 9.5,3.3C13.7,3.3 16.5,5.5 16.5,8.5V11M2.5,13.75V19.25C2.5,20.8 5.3,22.1 9.5,22.1C13.7,22.1 16.5,20.8 16.5,19.25V13.75L13,15.5L9.5,13.75L6,15.5L2.5,13.75Z</Geometry>
         <Geometry x:Key="IconUsers">M12,4A4,4 0 0,1 16,8A4,4 0 0,1 12,12A4,4 0 0,1 8,8A4,4 0 0,1 12,4M12,14C16.42,14 20,15.79 20,18V20H4V18C4,15.79 7.58,14 12,14Z</Geometry>
@@ -144,7 +146,8 @@
 
                             <!-- Avatar simulado -->
                             <Grid Grid.Column="0">
-                                <Ellipse Width="40" Height="40" Fill="Gray">
+                                <!-- Asignamos x:Name para cargar la imagen en C# -->
+                                <Ellipse x:Name="AvatarEllipse" Width="40" Height="40" Fill="Gray">
                                     <Ellipse.Effect>
                                         <DropShadowEffect ShadowDepth="2" BlurRadius="4" Opacity="0.3"/>
                                     </Ellipse.Effect>
@@ -160,16 +163,22 @@
                                     Foreground="White" 
                                     FontWeight="Bold" 
                                     FontSize="14"/>
-                                <TextBlock Text="Administrador" Foreground="#B0BEC5" FontSize="11" Margin="0,2,0,0"/>
+                                <!-- Añadido x:Name para el rol -->
+                                <TextBlock x:Name="LblRolUsuario" 
+                                    Text="Administrador" 
+                                    Foreground="#B0BEC5" 
+                                    FontSize="11" 
+                                    Margin="0,2,0,0"/>
                             </StackPanel>
                         </Grid>
                     </Border>
 
                     <!-- 2. NAVEGACIÓN -->
                     <StackPanel Grid.Row="1" Margin="0,10,0,0">
-                        <RadioButton Style="{StaticResource NavButton}" Content="Pedidos" Tag="{StaticResource IconUtensils}" IsChecked="True" GroupName="Nav"/>
-                        <RadioButton Style="{StaticResource NavButton}" Content="Productos" Tag="{StaticResource IconBurger}" GroupName="Nav"/>
-                        <RadioButton Style="{StaticResource NavButton}" Content="Clientes" Tag="{StaticResource IconUsers}" GroupName="Nav"/>
+                        <!-- Añadida propiedad Tag para identificar la vista, y Checked handler -->
+                        <RadioButton Style="{StaticResource NavButton}" Content="Pedidos" Tag="PedidosView" IsChecked="True" GroupName="Nav" Checked="NavButton_Checked"/>
+                        <RadioButton Style="{StaticResource NavButton}" Content="Productos" Tag="ProductosView" GroupName="Nav" Checked="NavButton_Checked"/>
+                        <RadioButton Style="{StaticResource NavButton}" Content="Clientes" Tag="ClientesView" GroupName="Nav" Checked="NavButton_Checked"/>
                     </StackPanel>
 
                     <!-- 3. FOOTER (Ayuda / Salir) -->
@@ -186,11 +195,12 @@
                             <!-- Separador -->
                             <Rectangle Grid.Column="1" Width="1" Height="25" Fill="#4DFFFFFF" Margin="15,0"/>
 
-                            <Button Grid.Column="2" Content="SALIR" Tag="{StaticResource IconPower}" Style="{StaticResource FooterButton}"/>
+                            <!-- Corrección del Click handler -->
+                            <Button Grid.Column="2" Content="SALIR" Tag="{StaticResource IconPower}" Style="{StaticResource FooterButton}" Click="BtnSalir_Click"/>
                         </Grid>
 
                         <!-- Logo pequeño u opaco abajo -->
-                        <TextBlock Text="TPV v1.0" Foreground="#4DFFFFFF" FontSize="10" HorizontalAlignment="Center" Margin="0,15,0,0"/>
+                        <TextBlock Text="TPV v1.1" Foreground="#4DFFFFFF" FontSize="10" HorizontalAlignment="Center" Margin="0,15,0,0"/>
                     </StackPanel>
                 </Grid>
             </Border>
@@ -201,25 +211,44 @@
                     <RowDefinition Height="80"/>
                     <!-- Header -->
                     <RowDefinition Height="*"/>
-                    <!-- Content (Corregido: Height en lugar de Width) -->
+                    <!-- Contenido -->
                 </Grid.RowDefinitions>
 
                 <!-- HEADER -->
                 <Border Grid.Row="0" Background="White" BorderBrush="#E0E0E0" BorderThickness="0,0,0,1" CornerRadius="0,20,0,0">
                     <Grid Margin="30,0">
                         <StackPanel VerticalAlignment="Center">
-                            <TextBlock Text="Pedidos" FontSize="24" FontWeight="Bold" Foreground="{StaticResource TextPrimary}"/>
-                            <TextBlock Text="Gestión de comandas y estado de mesas" FontSize="12" Foreground="#9E9E9E" Margin="0,2,0,0"/>
+                            <!-- Contenido del Header se actualiza desde C# -->
+                            <TextBlock x:Name="LblHeaderTitle" Text="Pedidos" FontSize="24" FontWeight="Bold" Foreground="{StaticResource TextPrimary}"/>
+                            <TextBlock x:Name="LblHeaderSubtitle" Text="Gestión de comandas y estado de mesas" FontSize="12" Foreground="#9E9E9E" Margin="0,2,0,0"/>
                         </StackPanel>
 
-                        <!-- WIDGET FECHA -->
+                        <!-- WIDGET FECHA (Estructura Original sin hora, con nombres) -->
                         <StackPanel HorizontalAlignment="Right" VerticalAlignment="Center">
-                            <TextBlock Text="MIÉRCOLES" FontSize="11" FontWeight="Bold" Foreground="#90A4AE" 
+                            <!-- Día de la semana -->
+                            <TextBlock x:Name="LblDayOfWeek" 
+                                       Text="MIÉRCOLES" 
+                                       FontSize="11" 
+                                       FontWeight="Bold" 
+                                       Foreground="#90A4AE" 
                                        HorizontalAlignment="Right"/>
+
                             <StackPanel Orientation="Horizontal" HorizontalAlignment="Right" Margin="0,-4,0,0">
-                                <TextBlock Text="26" FontSize="28" FontWeight="Light" Foreground="{StaticResource TextPrimary}"/>
-                                <TextBlock Text="NOV" FontSize="16" FontWeight="Normal" Foreground="{StaticResource TextPrimary}" 
-                                           VerticalAlignment="Bottom" Margin="4,0,0,4"/>
+                                <!-- Día del mes (Grande) -->
+                                <TextBlock x:Name="LblDayOfMonth" 
+                                           Text="26" 
+                                           FontSize="28" 
+                                           FontWeight="Light" 
+                                           Foreground="{StaticResource TextPrimary}"/>
+
+                                <!-- Abreviatura del mes (Pequeña, alineada abajo) -->
+                                <TextBlock x:Name="LblMonth" 
+                                           Text="NOV" 
+                                           FontSize="16" 
+                                           FontWeight="Normal" 
+                                           Foreground="{StaticResource TextPrimary}" 
+                                           VerticalAlignment="Bottom" 
+                                           Margin="4,0,0,4"/>
                             </StackPanel>
                         </StackPanel>
                     </Grid>
@@ -232,12 +261,19 @@
                             <DropShadowEffect BlurRadius="10" ShadowDepth="2" Opacity="0.05"/>
                         </Border.Effect>
 
-                        <!-- Aquí iría el UserControl dinámico (Views) -->
-                        <StackPanel VerticalAlignment="Center" HorizontalAlignment="Center">
-                            <Path Data="{StaticResource IconUtensils}" Fill="#E0E0E0" Height="60" Width="60" Stretch="Uniform"/>
-                            <TextBlock Text="Área de Contenido" Foreground="#BDBDBD" FontSize="18" 
-                                       HorizontalAlignment="Center" Margin="0,10,0,0"/>
-                        </StackPanel>
+                        <!-- Contenedor para la vista dinámica -->
+                        <ContentControl x:Name="MainContentHost" Content="{Binding}" Focusable="False">
+                            <!-- Muestra el placeholder inicial -->
+                            <ContentControl.ContentTemplate>
+                                <DataTemplate>
+                                    <StackPanel VerticalAlignment="Center" HorizontalAlignment="Center">
+                                        <Path Data="{StaticResource IconUtensils}" Fill="#E0E0E0" Height="60" Width="60" Stretch="Uniform"/>
+                                        <TextBlock Text="Selecciona una opción de la barra lateral" Foreground="#BDBDBD" FontSize="18" 
+                                                   HorizontalAlignment="Center" Margin="0,10,0,0"/>
+                                    </StackPanel>
+                                </DataTemplate>
+                            </ContentControl.ContentTemplate>
+                        </ContentControl>
                     </Border>
                 </Grid>
             </Grid>
