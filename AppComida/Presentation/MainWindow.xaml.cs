@@ -109,7 +109,8 @@ namespace AppComida.Presentation
                 {
                     BitmapImage bitmap = new BitmapImage();
                     bitmap.BeginInit();
-                    bitmap.UriSource = new Uri(usuarioLogeado.image, UriKind.RelativeOrAbsolute);
+
+                    bitmap.UriSource = new Uri(usuarioLogeado.image, UriKind.Absolute);
 
                     // CRÍTICO: Esto fuerza la carga inmediata y lanza la excepción aquí
                     bitmap.CacheOption = BitmapCacheOption.OnLoad;
@@ -126,7 +127,7 @@ namespace AppComida.Presentation
                 catch (Exception ex)
                 {
                     // Ahora SÍ captura DirectoryNotFoundException y otros errores
-                    System.Diagnostics.Debug.WriteLine($"Error al cargar la imagen: {ex.Message}");
+                    MessageBox.Show($"Error al cargar la imagen: {ex.Message}");
                 }
             }
 

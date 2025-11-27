@@ -181,6 +181,8 @@ namespace AppComida.Presentation
 
             if (userLogged != null)
             {
+                string imagePath = _logController.getUserImagePath(userLogged);
+                userLogged.image = imagePath;
                 MainWindow main = new MainWindow(userLogged);
                 main.Show();
                 this.Close();
