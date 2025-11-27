@@ -155,7 +155,11 @@
                             </Grid>
 
                             <StackPanel Grid.Column="1" VerticalAlignment="Center" Margin="12,0,0,0">
-                                <TextBlock Text="Gonzalo López" Foreground="White" FontWeight="Bold" FontSize="14"/>
+                                <TextBlock x:Name="LblNombreUsuario" 
+                                    Text="Admin" 
+                                    Foreground="White" 
+                                    FontWeight="Bold" 
+                                    FontSize="14"/>
                                 <TextBlock Text="Administrador" Foreground="#B0BEC5" FontSize="11" Margin="0,2,0,0"/>
                             </StackPanel>
                         </Grid>

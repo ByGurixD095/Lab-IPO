@@ -1,4 +1,5 @@
 ﻿using System;
+using AppComida.Domain;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -14,14 +15,17 @@ using System.Windows.Shapes;
 
 namespace AppComida.Presentation
 {
-    /// <summary>
-    /// Interaction logic for MainWindow.xaml
-    /// </summary>
     public partial class MainWindow : Window
     {
-        public MainWindow()
+        public MainWindow(User _user)
         {
             InitializeComponent();
+            CargarDatosUsuario(_user);
+        }
+
+        public void CargarDatosUsuario(User usuarioLogeado)
+        {
+            LblNombreUsuario.Text = $"{usuarioLogeado.firstname} {usuarioLogeado.lastname.Split()[0]}";
         }
     }
 }

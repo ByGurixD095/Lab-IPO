@@ -1,8 +1,9 @@
+using AppComida.Domain; // Referencia al Dominio
 using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Windows;
 using System.Xml.Serialization;
-using AppComida.Domain; // Referencia al Dominio
 
 namespace AppComida.Persistence
 {
@@ -25,7 +26,7 @@ namespace AppComida.Persistence
                     return (List<User>)serializer.Deserialize(reader);
                 }
             }
-            catch
+            catch (Exception ex)
             {
                 return new List<User>();
             }

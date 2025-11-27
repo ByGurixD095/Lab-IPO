@@ -1,99 +1,27 @@
-﻿using AppComida;
-using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Runtime.Remoting.Contexts;
-using System.Security.Cryptography;
-using System.Text;
+﻿using AppComida.Domain;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
 using System.Windows.Media;
-using System.Xml.Serialization;
+
 
 namespace AppComida.Presentation
 {
-    public class UserData
-    {
-        public string username { get; set; }
-        public string firstname { get; set; }
-        public string lastname { get; set; }
-        public string email { get; set; }
-        public DateTime last_access { get; set; }
-        public string image { get; set; }
-        public string salt { get; set; }
-        public string digest { get; set; }
-    }
-
     public partial class LoginView : Window
     {
         // Colores
         private readonly Brush _defaultBorder = Brushes.Transparent;
         private readonly Brush _errorBorder = (Brush)new BrushConverter().ConvertFrom("#D32F2F");
-
-        // Diccionario de usuarios
-        private Dictionary<string, UserData> _usersDb;
+        private LoginController _logController;
 
         public LoginView()
         {
             InitializeComponent();
-            LoadUsers();
-        }
-
-        // --- CARGA DE DATOS XML ---
-        private void LoadUsers()
-        {
-            _usersDb = new Dictionary<string, UserData>();
-            string finalPath = null;
-            string currentDir = AppDomain.CurrentDomain.BaseDirectory;
-
-            for (int i = 0; i < 6; i++)
-            {
-                string potentialPath = Path.Combine(currentDir, "data", "users.xml");
-                if (File.Exists(potentialPath))
-                {
-                    finalPath = potentialPath;
-                    break;
-                }
-                DirectoryInfo parentDir = Directory.GetParent(currentDir);
-                if (parentDir == null) break;
-                currentDir = parentDir.FullName;
-            }
-
-            try
-            {
-                if (finalPath != null && File.Exists(finalPath))
-                {
-                    XmlSerializer serializer = new XmlSerializer(typeof(List<UserData>));
-                    using (StreamReader reader = new StreamReader(finalPath))
-                    {
-                        List<UserData> usersList = (List<UserData>)serializer.Deserialize(reader);
-                        if (usersList != null)
-                        {
-                            foreach (var u in usersList)
-                            {
-                                if (!string.IsNullOrEmpty(u.username) && !_usersDb.ContainsKey(u.username))
-                                {
-                                    _usersDb.Add(u.username, u);
-                                }
-                            }
-                        }
-                    }
-                }
-                else
-                {
-                    MessageBox.Show("No se ha podido localizar el archivo 'data/users.xml'", "Error de Datos", MessageBoxButton.OK, MessageBoxImage.Warning);
-                }
-            }
-            catch (Exception ex)
-            {
-                MessageBox.Show($"Error leyendo XML: {ex.Message}", "Error Crítico", MessageBoxButton.OK, MessageBoxImage.Error);
-            }
+            _logController = new LoginController();
         }
 
         // --- GESTIÓN DE VENTANA ---
-
         private void Border_MouseDown(object sender, MouseButtonEventArgs e)
         {
             if (e.ChangedButton == MouseButton.Left) this.DragMove();
@@ -217,41 +145,6 @@ namespace AppComida.Presentation
             }
         }
 
-        // --- VALIDACIÓN CRIPTO ---
-
-        private bool ValidateCredentials(string username, string password, out UserData userFound)
-        {
-            userFound = null;
-            if (_usersDb == null || !_usersDb.ContainsKey(username)) return false;
-
-            UserData storedUser = _usersDb[username];
-            string salt = storedUser.salt;
-            string storedDigest = storedUser.digest;
-            string calculatedDigest = CalculateMD5(password + salt);
-
-            if (calculatedDigest.Trim().Equals(storedDigest.Trim(), StringComparison.OrdinalIgnoreCase))
-            {
-                userFound = storedUser;
-                return true;
-            }
-            return false;
-        }
-
-        private string CalculateMD5(string input)
-        {
-            using (MD5 md5 = MD5.Create())
-            {
-                byte[] inputBytes = Encoding.UTF8.GetBytes(input);
-                byte[] hashBytes = md5.ComputeHash(inputBytes);
-                StringBuilder sb = new StringBuilder();
-                for (int i = 0; i < hashBytes.Length; i++)
-                {
-                    sb.Append(hashBytes[i].ToString("x2"));
-                }
-                return sb.ToString();
-            }
-        }
-
         // --- LOGIN CLICK ---
 
         private async void BtnLogin_Click(object sender, RoutedEventArgs e)
@@ -282,14 +175,13 @@ namespace AppComida.Presentation
             await Task.Delay(500);
 
             // 3. Validación Real
-            UserData userLogged;
-            bool isAuthenticated = ValidateCredentials(username, finalPass, out userLogged);
+            User userLogged = _logController.ValidateLogin(username, finalPass);
 
             SetLoadingState(false);
 
-            if (isAuthenticated)
+            if (userLogged != null)
             {
-                MainWindow main = new MainWindow();
+                MainWindow main = new MainWindow(userLogged);
                 main.Show();
                 this.Close();
             }
