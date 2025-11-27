@@ -3,11 +3,10 @@ using System;
 using System.Globalization;
 using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Controls.Primitives;
 using System.Windows.Input;
-using System.Windows.Media;           // Necesario para ImageBrush
-using System.Windows.Media.Effects;
-using System.Windows.Media.Imaging;   // Necesario para BitmapImage
-using System.Windows.Shapes;          // Necesario para la clase base Shape
+using System.Windows.Media;
+using System.Windows.Media.Imaging;
 using System.Windows.Threading;
 
 namespace AppComida.Presentation
@@ -17,104 +16,220 @@ namespace AppComida.Presentation
         private readonly User _userLogged;
         private DispatcherTimer _clockTimer;
 
-        // La lógica P/Invoke ha sido eliminada.
-
+        public MainWindow() : this(new User
+        {
+            firstname = "Admin",
+            lastname = "Prueba",
+            image = "" 
+        })
+        {
+        }
         public MainWindow(User user)
         {
             InitializeComponent();
             _userLogged = user;
             CargarDatosUsuario(user);
-            InicializarReloj();
+            setDate(null, null);
+        
+            // --- GESTIÓN DE ESTADOS DE TOGGLE BUTTONS ---
+
+            // Toggle Salir (Gestión de apertura/cierre)
+            if (MenuSalir != null)
+            {
+                MenuSalir.Opened += (s, e) => ToggleSalir.IsChecked = true;
+                MenuSalir.Closed += (s, e) => ToggleSalir.IsChecked = false;
+            }
+
+            // Toggle Ayuda (Gestión de apertura/cierre)
+            if (MenuAyuda != null)
+            {
+                MenuAyuda.Opened += (s, e) => ToggleAyuda.IsChecked = true;
+                MenuAyuda.Closed += (s, e) => ToggleAyuda.IsChecked = false;
+            }
+
+            // NAVEGACIÓN INICIAL
+            if (MainFrame != null)
+            {
+                MainFrame.Navigate(new UserProfilePage(_userLogged));
+            }
         }
 
-        // --- GESTIÓN DE LA VENTANA ---
-
-        // Método de arrastre de la ventana
+        // --- GESTIÓN DE VENTANA ---
         private void Window_MouseDown(object sender, MouseButtonEventArgs e)
         {
-            // Solo arrastrar si es el botón izquierdo del ratón
             if (e.ChangedButton == MouseButton.Left) this.DragMove();
         }
 
-        private void BtnSalir_Click(object sender, RoutedEventArgs e)
+        // ==========================================
+        //        SECCIÓN MENÚ AYUDA / AJUSTES
+        // ==========================================
+
+        // ESTE ES EL MÉTODO QUE FALTABA O NO SE ENCONTRABA
+        private void ToggleAyuda_Click(object sender, RoutedEventArgs e)
         {
-            Application.Current.Shutdown();
-        }
-
-        private void Window_Loaded(object sender, RoutedEventArgs e)
-        {
-            // La inicialización del reloj ya ocurre en el constructor
-        }
-
-        // --- LÓGICA DE USUARIO Y PERFIL ---
-
-        /// <summary>
-        /// Método auxiliar para asignar la imagen de avatar por defecto.
-        /// </summary>
-        private void SetDefaultAvatar()
-        {
-            // Creamos un Grid contenedor con gradiente sutil
-            Grid container = new Grid();
-
-            // Fondo con gradiente radial que simula profundidad
-            RadialGradientBrush backgroundBrush = new RadialGradientBrush();
-            backgroundBrush.GradientStops.Add(new GradientStop((Color)ColorConverter.ConvertFromString("#546E7A"), 0.0));
-            backgroundBrush.GradientStops.Add(new GradientStop((Color)ColorConverter.ConvertFromString("#37474F"), 1.0));
-            container.Background = backgroundBrush;
-
-            // Creamos el Path con el icono de usuario (mismo del XAML)
-            Path userIcon = new Path
+            if (ToggleAyuda.ContextMenu != null)
             {
-                Data = Geometry.Parse("M12,4A4,4 0 0,1 16,8A4,4 0 0,1 12,12A4,4 0 0,1 8,8A4,4 0 0,1 12,4M12,14C16.42,14 20,15.79 20,18V20H4V18C4,15.79 7.58,14 12,14Z"),
-                // Volvemos al gris claro del código original para evitar el 'brillo blanco'.
-                Fill = new SolidColorBrush((Color)ColorConverter.ConvertFromString("#B0BEC5")),
-                Stretch = Stretch.Uniform,
-                Width = 20, // Mantenemos el tamaño
-                Height = 20, // Mantenemos el tamaño
-                HorizontalAlignment = HorizontalAlignment.Center,
-                VerticalAlignment = VerticalAlignment.Center,
-                Opacity = 0.9
-            };
-
-            // **IMPORTANTE: ELIMINAMOS EL DropShadowEffect** para quitar el difuminado (el halo naranja)
-            userIcon.Effect = null; // Se elimina la sombra
-
-            container.Children.Add(userIcon);
-
-            // Creamos un VisualBrush a partir del Grid
-            VisualBrush defaultBrush = new VisualBrush(container)
-            {
-                Stretch = Stretch.Fill
-            };
-
-            // Asignamos el pincel a la Elipse
-            AvatarEllipse.Fill = defaultBrush;
+                ToggleAyuda.IsChecked = true;
+                ToggleAyuda.ContextMenu.PlacementTarget = ToggleAyuda;
+                ToggleAyuda.ContextMenu.Placement = PlacementMode.Top;
+                ToggleAyuda.ContextMenu.HorizontalOffset = 5;
+                ToggleAyuda.ContextMenu.IsOpen = true;
+            }
         }
+
+        private void MenuTemaClaro_Click(object sender, RoutedEventArgs e)
+        {
+            CambiarTema("/Themes/TemaClaro.xaml");
+        }
+
+        private void MenuTemaOscuro_Click(object sender, RoutedEventArgs e)
+        {
+            CambiarTema("/Themes/TemaOscuro.xaml");
+        }
+
+        private void CambiarTema(string rutaTema)
+        {
+            try
+            {
+                var uri = new Uri(rutaTema, UriKind.Relative);
+
+                ResourceDictionary nuevoTema = Application.LoadComponent(uri) as ResourceDictionary;
+
+                if (nuevoTema != null)
+                {
+                    Application.Current.Resources.MergedDictionaries.Clear();
+                    Application.Current.Resources.MergedDictionaries.Add(nuevoTema);
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show($"Error cargando tema: {ex.Message}\n\nRuta intentada: {rutaTema}");
+            }
+        }
+
+        private void MenuEsp_Click(object sender, RoutedEventArgs e)
+        {
+            ConfirmWindow confirm = new ConfirmWindow(
+               "Tampoco me pagan tanto como para implementar el idioma",
+               "Casi crack",
+               ConfirmType.Info);
+            confirm.Owner = this;
+        }
+
+        private void MenuEng_Click(object sender, RoutedEventArgs e)
+        {
+            ConfirmWindow confirm = new ConfirmWindow(
+              "Tampoco me pagan tanto como para implementar el idioma",
+              "Casi crack",
+              ConfirmType.Info);
+            confirm.Owner = this;
+        }
+
+        private void MenuItemPerfil_Click(object sender, RoutedEventArgs e)
+        {
+            // Navegar a la página de perfil
+            DesmarcarNavegacion();
+
+            UpdateHeader("Mi Perfil", "Datos del usuario y estadísticas");
+
+            if (MainFrame != null)
+            {
+                MainFrame.Navigate(new UserProfilePage(_userLogged));
+            }
+        }
+
+        // ESTE TAMBIÉN DABA ERROR
+        private void MenuItemAcercaDe_Click(object sender, RoutedEventArgs e)
+        {
+            ConfirmWindow info = new ConfirmWindow(
+                "Trabajo IPO 2025-2026.",
+                "Acerca de",
+                ConfirmType.Info);
+
+            info.Owner = this;
+            info.ShowDialog();
+        }
+
+        private void DesmarcarNavegacion()
+        {
+            // Lógica opcional para desmarcar visualmente los botones laterales si fuera necesario
+        }
+
+
+        // ==========================================
+        //           SECCIÓN MENÚ SALIR
+        // ==========================================
+
+        private void ToggleSalir_Click(object sender, RoutedEventArgs e)
+        {
+            if (ToggleSalir.ContextMenu != null)
+            {
+                ToggleSalir.IsChecked = true;
+                ToggleSalir.ContextMenu.PlacementTarget = ToggleSalir;
+                ToggleSalir.ContextMenu.Placement = PlacementMode.Top;
+                ToggleSalir.ContextMenu.HorizontalOffset = 5;
+                ToggleSalir.ContextMenu.IsOpen = true;
+            }
+        }
+
+        private void MenuItemCerrarSesion_Click(object sender, RoutedEventArgs e)
+        {
+            ConfirmWindow confirm = new ConfirmWindow(
+                "¿Estás seguro de que deseas cerrar la sesión?\nSe perderán los datos no guardados.",
+                "Cerrar Sesión",
+                ConfirmType.Question);
+            confirm.Owner = this;
+
+            if (confirm.ShowDialog() == true)
+            {
+                LoginWindow loginWindow = new LoginWindow();
+                loginWindow.Show();
+                this.Close();
+            }
+        }
+
+        private void MenuItemSalirApp_Click(object sender, RoutedEventArgs e)
+        {
+            ConfirmWindow confirm = new ConfirmWindow(
+                "La aplicación se cerrará por completo.\n¿Deseas apagar el sistema?",
+                "Salir de la App",
+                ConfirmType.Danger);
+            confirm.Owner = this;
+
+            if (confirm.ShowDialog() == true)
+            {
+                Application.Current.Shutdown();
+            }
+        }
+
+        // ==========================================
+        //           LÓGICA GENERAL
+        // ==========================================
 
         public void CargarDatosUsuario(User usuarioLogeado)
         {
-            // 1. Apellido seguro (Evita NRE)
+            if (usuarioLogeado == null) return;
+
             string primerApellido = string.IsNullOrEmpty(usuarioLogeado.lastname)
                 ? ""
                 : usuarioLogeado.lastname.Split(null as char[], StringSplitOptions.RemoveEmptyEntries)[0];
 
-            // 2. Carga de datos de texto
-            LblNombreUsuario.Text = $"{usuarioLogeado.firstname} {primerApellido}";
-            LblRolUsuario.Text = "Administrador";
+            if (LblNombreUsuario != null)
+                LblNombreUsuario.Text = $"{usuarioLogeado.firstname} {primerApellido}";
 
-            // 3. Carga de la imagen de usuario
-            if (!string.IsNullOrEmpty(usuarioLogeado.image))
+            if (LblRolUsuario != null)
+                LblRolUsuario.Text = "Administrador";
+
+            if (!string.IsNullOrEmpty(usuarioLogeado.image) && AvatarEllipse != null)
             {
                 try
                 {
                     BitmapImage bitmap = new BitmapImage();
                     bitmap.BeginInit();
-
-                    bitmap.UriSource = new Uri(usuarioLogeado.image, UriKind.Absolute);
-
-                    // CRÍTICO: Esto fuerza la carga inmediata y lanza la excepción aquí
+                    string imagePath = usuarioLogeado.image.Replace('\\', '/');
+                    Uri imageUri = new Uri($"pack://application:,,/{imagePath}", UriKind.Absolute);
+                    bitmap.UriSource = imageUri;
                     bitmap.CacheOption = BitmapCacheOption.OnLoad;
-
                     bitmap.EndInit();
 
                     ImageBrush imageBrush = new ImageBrush(bitmap)
@@ -122,92 +237,83 @@ namespace AppComida.Presentation
                         Stretch = Stretch.UniformToFill
                     };
                     AvatarEllipse.Fill = imageBrush;
-                    return;
                 }
-                catch (Exception ex)
-                {
-                    // Ahora SÍ captura DirectoryNotFoundException y otros errores
-                    MessageBox.Show($"Error al cargar la imagen: {ex.Message}");
-                }
+                catch { }
             }
-
-            // Si la ruta es nula/vacía O la carga falló:
-            SetDefaultAvatar();
         }
 
-        // --- LÓGICA DE FECHA ---
-
-        private void InicializarReloj()
-        {
-            _clockTimer = new DispatcherTimer(DispatcherPriority.Normal);
-            _clockTimer.Interval = TimeSpan.FromMinutes(1);
-            _clockTimer.Tick += UpdateClock;
-            _clockTimer.Start();
-            UpdateClock(null, null); // Llamada inicial para cargar la fecha inmediatamente
-        }
-
-        private void UpdateClock(object sender, EventArgs e)
+        private void setDate(object sender, EventArgs e)
         {
             DateTime now = DateTime.Now;
             CultureInfo culture = CultureInfo.GetCultureInfo("es-ES");
 
-            // 1. Día de la semana (MIÉRCOLES)
-            LblDayOfWeek.Text = now.ToString("dddd", culture).ToUpper();
-
-            // 2. Día del mes (27) - Corresponde al texto grande
-            LblDayOfMonth.Text = now.ToString("dd");
-
-            // 3. Mes (NOV) - Corresponde al texto pequeño
-            LblMonth.Text = now.ToString("MMM", culture).ToUpper();
+            if (LblDayOfWeek != null) LblDayOfWeek.Text = now.ToString("dddd", culture).ToUpper();
+            if (LblDayOfMonth != null) LblDayOfMonth.Text = now.ToString("dd");
+            if (LblMonth != null) LblMonth.Text = now.ToString("MMM", culture).ToUpper();
         }
-
-        // --- LÓGICA DE NAVEGACIÓN ---
 
         private void NavButton_Checked(object sender, RoutedEventArgs e)
         {
             if (sender is RadioButton radio && radio.IsChecked == true)
             {
                 string targetViewTag = radio.Tag?.ToString();
-
-                // 1. Lógica de Contenido
-                // [Inferencia] Aquí iría la lógica para cargar el UserControl (Vista) correspondiente.
-
-                // 2. Lógica de Header
+                NavigateToView(targetViewTag);
                 UpdateHeader(radio.Content.ToString(), targetViewTag);
+            }
+        }
+
+        private void NavigateToView(string viewTag)
+        {
+            if (MainFrame == null) return;
+
+            switch (viewTag)
+            {
+                case "PedidosView":
+                    MainFrame.Navigate(new PedidosPage());
+                    break;
+                case "ProductosView":
+                    MainFrame.Navigate(new ProductosPage());
+                    break;
+                case "ClientesView":
+                    MainFrame.Navigate(new ClientesPage());
+                    break;
+                default:
+                    MainFrame.Navigate(new UserProfilePage(_userLogged));
+                    break;
             }
         }
 
         private void UpdateHeader(string title, string tag)
         {
-            // Comprobación de nulidad para evitar excepciones si el evento se dispara antes de tiempo
-            // Esto también soluciona el error de ejecución si los nombres XAML son incorrectos.
-            if (LblHeaderTitle == null || LblHeaderSubtitle == null)
-            {
-                return;
-            }
+            if (LblHeaderTitle == null || LblHeaderSubtitle == null) return;
 
             string subtitle;
 
-            // Determinar subtítulos basados en el Tag (Switch statement compatible con versiones antiguas)
-            switch (tag)
+            if (tag.Contains(" "))
             {
-                case "PedidosView":
-                    subtitle = "Gestión de comandas y estado de mesas";
-                    break;
-                case "ProductosView":
-                    subtitle = "Catálogo, precios e inventario";
-                    break;
-                case "ClientesView":
-                    subtitle = "Base de datos y gestión de clientes";
-                    break;
-                default:
-                    subtitle = "Área de gestión del TPV";
-                    break;
+                subtitle = tag;
+            }
+            else
+            {
+                switch (tag)
+                {
+                    case "PedidosView":
+                        subtitle = "Gestión de comandas y estado de mesas";
+                        break;
+                    case "ProductosView":
+                        subtitle = "Catálogo, precios e inventario";
+                        break;
+                    case "ClientesView":
+                        subtitle = "Base de datos y gestión de clientes";
+                        break;
+                    default:
+                        subtitle = "Área de gestión del TPV";
+                        break;
+                }
             }
 
             LblHeaderTitle.Text = title;
             LblHeaderSubtitle.Text = subtitle;
         }
-
     }
 }

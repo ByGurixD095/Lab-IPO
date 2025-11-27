@@ -52,10 +52,5 @@ namespace AppComida.Domain
                 return sb.ToString();
             }
         }
-
-        public string getUserImagePath(User u)
-        {
-            return _agent.ImagePath(u.firstname);
-        }
     }
 }

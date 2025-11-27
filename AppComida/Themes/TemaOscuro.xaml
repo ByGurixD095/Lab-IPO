@@ -1,0 +1,29 @@
+<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+
+    <LinearGradientBrush x:Key="BrandGradient" StartPoint="0,0" EndPoint="1,1">
+        <GradientStop Color="#FFB74D" Offset="0.0"/>
+        <GradientStop Color="#FF9800" Offset="1.0"/>
+    </LinearGradientBrush>
+
+    <SolidColorBrush x:Key="LeftPanelBackground" Color="#1E1E1E"/>
+    
+    <SolidColorBrush x:Key="CardBackground" Color="#263238"/>
+    
+    <SolidColorBrush x:Key="TextPrimary" Color="#ECEFF1"/>
+    <SolidColorBrush x:Key="TextSecondary" Color="#B0BEC5"/>
+    
+    <SolidColorBrush x:Key="InputBackground" Color="#2C3E50"/>
+    
+    <SolidColorBrush x:Key="FocusColor" Color="#FF9800"/>
+    
+    <SolidColorBrush x:Key="ErrorColor" Color="#EF5350"/>
+    <SolidColorBrush x:Key="PlaceholderColor" Color="#78909C"/>
+
+    <SolidColorBrush x:Key="SidebarBg" Color="#1E1E1E"/>
+    
+    <SolidColorBrush x:Key="BrandColor" Color="#FF9800"/>
+    
+    <SolidColorBrush x:Key="MainBg" Color="#121212"/>
+
+</ResourceDictionary>

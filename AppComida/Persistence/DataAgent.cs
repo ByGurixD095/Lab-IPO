@@ -2,6 +2,7 @@ using AppComida.Domain;
 using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Windows;
 using System.Xml.Serialization;
 
 namespace AppComida.Persistence
@@ -29,20 +30,6 @@ namespace AppComida.Persistence
             {
                 return new List<User>();
             }
-        }
-
-        public String ImagePath(string user)
-        {
-            string[] imageExtensions = { ".jpg", ".jpeg", ".png", ".gif", ".bmp" };
-
-            foreach (string extension in imageExtensions)
-            {
-                string path = GetPath($"userPic_{user}.{extension}");
-                if (path != null)
-                    return path;
-            }
-
-            return null;
         }
 
         private string GetPath(string fileName)

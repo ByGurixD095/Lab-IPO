@@ -8,14 +8,14 @@ using System.Windows.Media;
 
 namespace AppComida.Presentation
 {
-    public partial class LoginView : Window
+    public partial class LoginWindow : Window
     {
         // Colores
         private readonly Brush _defaultBorder = Brushes.Transparent;
         private readonly Brush _errorBorder = (Brush)new BrushConverter().ConvertFrom("#D32F2F");
         private LoginController _logController;
 
-        public LoginView()
+        public LoginWindow()
         {
             InitializeComponent();
             _logController = new LoginController();
@@ -181,8 +181,6 @@ namespace AppComida.Presentation
 
             if (userLogged != null)
             {
-                string imagePath = _logController.getUserImagePath(userLogged);
-                userLogged.image = imagePath;
                 MainWindow main = new MainWindow(userLogged);
                 main.Show();
                 this.Close();
