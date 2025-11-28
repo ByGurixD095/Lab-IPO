@@ -3,7 +3,6 @@ using System;
 using System.Collections.Generic;
 using System.Security.Cryptography;
 using System.Text;
-using System.Windows;
 
 namespace AppComida.Domain
 {
@@ -51,6 +50,11 @@ namespace AppComida.Domain
                     sb.Append(hashBytes[i].ToString("x2"));
                 return sb.ToString();
             }
+        }
+
+        public void RegisterExit(string username)
+        {
+            _agent.UpdateLastAccess(username, DateTime.Now);
         }
     }
 }

@@ -13,14 +13,12 @@
         MouseDown="Window_MouseDown">
 
     <Window.Resources>
-        <!-- Geometrías de Iconos (Sin cambios) -->
         <Geometry x:Key="IconUtensils">M11,9H9V2H7V9H5V2H3V9C3,11.12 4.66,12.84 6.75,12.97V22H9.25V12.97C11.34,12.84 13,11.12 13,9V2H11V9M16,6V14H18.5V22H21V2C18.24,2 16,4.24 16,6Z</Geometry>
         <Geometry x:Key="IconBurger">M16.5,11L13,12.75L9.5,11L6,12.75L2.5,11V8.5C2.5,5.5 5.3,3.3 9.5,3.3C13.7,3.3 16.5,5.5 16.5,8.5V11M2.5,13.75V19.25C2.5,20.8 5.3,22.1 9.5,22.1C13.7,22.1 16.5,20.8 16.5,19.25V13.75L13,15.5L9.5,13.75L6,15.5L2.5,13.75Z</Geometry>
         <Geometry x:Key="IconUsers">M12,4A4,4 0 0,1 16,8A4,4 0 0,1 12,12A4,4 0 0,1 8,8A4,4 0 0,1 12,4M12,14C16.42,14 20,15.79 20,18V20H4V18C4,15.79 7.58,14 12,14Z</Geometry>
         <Geometry x:Key="IconHelp">M11,18H13V16H11V18M12,2A10,10 0 0,0 2,12A10,10 0 0,0 12,22A10,10 0 0,0 22,12A10,10 0 0,0 12,2M12,20C7.59,20 4,16.41 4,12C4,7.59 7.59,4 12,4C16.41,4 20,7.59 20,12C20,16.41 16.41,20 12,20M12,6A4,4 0 0,0 8,10H10A2,2 0 0,1 12,8A2,2 0 0,1 14,10C14,12 11,11.75 11,15H13C13,12.75 16,12.5 16,10A4,4 0 0,0 12,6Z</Geometry>
         <Geometry x:Key="IconPower">M16.56,5.44L15.11,6.89C16.84,7.94 18,9.83 18,12A6,6 0 0,1 12,18A6,6 0 0,1 6,12C6,9.83 7.16,7.94 8.88,6.88L7.44,5.44C5.36,6.88 4,9.28 4,12A8,8 0 0,0 12,20A8,8 0 0,0 20,12C20,9.28 18.64,6.88 16.56,5.44M13,3H11V13H13</Geometry>
         <Geometry x:Key="IconLogout">M17,17.25V14H10V10H17V6.75L22.25,12L17,17.25M13,2A2,2 0 0,1 15,4V8H13V4H4V20H13V16H15V20A2,2 0 0,1 13,22H4A2,2 0 0,1 2,20V4A2,2 0 0,1 4,2Z</Geometry>
-
         <Geometry x:Key="IconProfile">M12,4A4,4 0 0,1 16,8A4,4 0 0,1 12,12A4,4 0 0,1 8,8A4,4 0 0,1 12,4M12,14C16.42,14 20,15.79 20,18V20H4V18C4,15.79 7.58,14 12,14Z</Geometry>
         <Geometry x:Key="IconSettings">M19.14,12.94C19.14,12.78 19.14,12.61 19.14,12.45C19.14,12.29 19.14,12.12 19.14,11.96L21.46,10.13C21.67,9.97 21.73,9.67 21.59,9.44L19.41,5.65C19.27,5.42 19,5.33 18.73,5.43L16,6.54C15.44,6.1 14.83,5.75 14.18,5.47L13.76,2.56C13.72,2.3 13.5,2.11 13.23,2.11H8.86C8.59,2.11 8.37,2.3 8.33,2.56L7.91,5.47C7.26,5.75 6.65,6.1 6.09,6.54L3.36,5.43C3.09,5.33 2.82,5.42 2.68,5.65L0.5,9.44C0.36,9.67 0.42,9.97 0.63,10.13L2.95,11.96C2.95,12.12 2.95,12.29 2.95,12.45C2.95,12.61 2.95,12.78 2.95,12.94L0.63,14.77C0.42,14.93 0.36,15.23 0.5,15.46L2.68,19.25C2.82,19.48 3.09,19.57 3.36,19.47L6.09,18.36C6.65,18.8 7.26,19.15 7.91,19.43L8.33,22.34C8.37,22.6 8.59,22.79 8.86,22.79H13.23C13.5,22.79 13.72,22.6 13.76,22.34L14.18,19.43C14.83,19.15 15.44,18.8 16,18.36L18.73,19.47C19,19.57 19.27,19.48 19.41,19.25L21.59,15.46C21.73,15.23 21.67,14.93 21.46,14.77L19.14,12.94M12,15.5A3.5,3.5 0 0,1 8.5,12A3.5,3.5 0 0,1 12,8.5A3.5,3.5 0 0,1 15.5,12A3.5,3.5 0 0,1 12,15.5Z</Geometry>
         <Geometry x:Key="IconAbout">M11,9H13V7H11M12,20C7.59,20 4,16.41 4,12C4,7.59 7.59,4 12,4C16.41,4 20,7.59 20,12C20,16.41 16.41,20 12,20M12,2A10,10 0 0,0 2,12A10,10 0 0,0 12,22A10,10 0 0,0 22,12A10,10 0 0,0 12,2M11,17H13V11H11V17Z</Geometry>
@@ -36,7 +34,7 @@
             <Setter Property="Template">
                 <Setter.Value>
                     <ControlTemplate TargetType="RadioButton">
-                        <Border x:Name="border" Background="{TemplateBinding Background}" BorderThickness="4,0,0,0" BorderBrush="Transparent">
+                        <Border x:Name="border" Background="{TemplateBinding Background}" BorderThickness="4,0,0,0" BorderBrush="Transparent" CornerRadius="4">
                             <Grid Margin="25,0,0,0">
                                 <Grid.ColumnDefinitions>
                                     <ColumnDefinition Width="30"/>
@@ -49,7 +47,7 @@
                         </Border>
                         <ControlTemplate.Triggers>
                             <Trigger Property="IsMouseOver" Value="True">
-                                <Setter TargetName="border" Property="Background" Value="#0DFFFFFF"/>
+                                <Setter TargetName="border" Property="Background" Value="#1AFFFFFF"/>
                                 <Setter Property="Foreground" Value="White"/>
                             </Trigger>
                             <Trigger Property="IsChecked" Value="True">
@@ -57,7 +55,7 @@
                                 <Setter TargetName="border" Property="Background">
                                     <Setter.Value>
                                         <LinearGradientBrush StartPoint="0,0" EndPoint="1,0">
-                                            <GradientStop Color="#33FF6F00" Offset="0"/>
+                                            <GradientStop Color="#26FF6F00" Offset="0"/>
                                             <GradientStop Color="Transparent" Offset="1"/>
                                         </LinearGradientBrush>
                                     </Setter.Value>
@@ -106,8 +104,6 @@
 
         <Style x:Key="HelpToggleButton" TargetType="ToggleButton" BasedOn="{StaticResource FooterButton}"/>
 
-        <!-- Estilos de ContextMenu actualizados para usar colores dinámicos si fuera necesario, 
-             pero los dejaremos con colores claros fijos por ahora para asegurar visibilidad en los popups -->
         <Style x:Key="MobileContextMenuStyle" TargetType="{x:Type ContextMenu}">
             <Setter Property="Background" Value="#F7F9FC"/>
             <Setter Property="BorderBrush" Value="#E0E0E0"/>
@@ -151,12 +147,9 @@
                                     <ColumnDefinition Width="*"/>
                                     <ColumnDefinition Width="Auto"/>
                                 </Grid.ColumnDefinitions>
-
                                 <ContentPresenter Grid.Column="0" ContentSource="Icon" HorizontalAlignment="Center" VerticalAlignment="Center"/>
                                 <ContentPresenter Grid.Column="1" ContentSource="Header" HorizontalAlignment="Left" VerticalAlignment="Center" Margin="5,0,15,0"/>
-
                                 <Path Grid.Column="2" x:Name="Arrow" Data="M0,0 L4,4 L0,8" Stroke="{TemplateBinding Foreground}" StrokeThickness="2" Margin="0,0,15,0" Visibility="Collapsed" VerticalAlignment="Center"/>
-
                                 <Popup x:Name="Popup" Placement="Right" HorizontalOffset="5" IsOpen="{TemplateBinding IsSubmenuOpen}" AllowsTransparency="True" Focusable="False" PopupAnimation="Fade">
                                     <Border Background="#F7F9FC" BorderBrush="#E0E0E0" BorderThickness="1" CornerRadius="12" Padding="5" Margin="5,0,0,0">
                                         <Border.Effect>
@@ -186,10 +179,9 @@
 
     </Window.Resources>
 
-    <!-- 1. CAMBIO: Background dinámico (MainBg) en lugar de #F5F5F5 -->
-    <Border Background="{DynamicResource MainBg}" CornerRadius="20">
+    <Border Background="{DynamicResource SidebarBg}" CornerRadius="20" Padding="0">
         <Border.Effect>
-            <DropShadowEffect BlurRadius="30" ShadowDepth="10" Opacity="0.3" Color="Black"/>
+            <DropShadowEffect BlurRadius="20" ShadowDepth="5" Opacity="0.4" Color="Black"/>
         </Border.Effect>
 
         <Grid>
@@ -198,197 +190,193 @@
                 <ColumnDefinition Width="*"/>
             </Grid.ColumnDefinitions>
 
-            <!-- BARRA LATERAL (Izquierda) -->
-            <Border Grid.Column="0" Background="{DynamicResource SidebarBg}" CornerRadius="20,0,0,20">
-                <Grid>
-                    <Grid.RowDefinitions>
-                        <RowDefinition Height="Auto"/>
-                        <RowDefinition Height="*"/>
-                        <RowDefinition Height="Auto"/>
-                    </Grid.RowDefinitions>
-
-                    <!-- Perfil Usuario -->
-                    <Border Grid.Row="0" Margin="20,25,20,20" CornerRadius="12" BorderThickness="1" BorderBrush="#33FFFFFF">
-                        <Border.Background>
-                            <SolidColorBrush Color="White" Opacity="0.08"/>
-                        </Border.Background>
-                        <Grid Margin="12">
-                            <Grid.ColumnDefinitions>
-                                <ColumnDefinition Width="Auto"/>
-                                <ColumnDefinition Width="*"/>
-                            </Grid.ColumnDefinitions>
-
-                            <Grid Grid.Column="0">
-                                <Ellipse x:Name="AvatarEllipse" Width="40" Height="40">
-                                    <Ellipse.Fill>
-                                        <ImageBrush ImageSource="/Assets/Images/Profiles/placeholder.png" Stretch="UniformToFill"/>
-                                    </Ellipse.Fill>
-                                    <Ellipse.Effect>
-                                        <DropShadowEffect ShadowDepth="2" BlurRadius="4" Opacity="0.3"/>
-                                    </Ellipse.Effect>
-                                </Ellipse>
-                                <Ellipse Width="10" Height="10" Fill="#4CAF50" Stroke="#37474F" StrokeThickness="1.5"
-                                         HorizontalAlignment="Right" VerticalAlignment="Bottom" Margin="0,0,-2,0"/>
-                            </Grid>
-
-                            <StackPanel Grid.Column="1" VerticalAlignment="Center" Margin="12,0,0,0">
-                                <TextBlock x:Name="LblNombreUsuario" Text="Admin" Foreground="White" FontWeight="Bold" FontSize="14"/>
-                                <TextBlock x:Name="LblRolUsuario" Text="Administrador" Foreground="#B0BEC5" FontSize="11" Margin="0,2,0,0"/>
-                            </StackPanel>
-                        </Grid>
-                    </Border>
-
-                    <!-- Menú Navegación -->
-                    <StackPanel Grid.Row="1" Margin="0,10,0,0">
-                        <RadioButton Style="{StaticResource NavButton}" Content="Pedidos" Tag="PedidosView" GroupName="Nav" Checked="NavButton_Checked"/>
-                        <RadioButton Style="{StaticResource NavButton}" Content="Productos" Tag="ProductosView" GroupName="Nav" Checked="NavButton_Checked"/>
-                        <RadioButton Style="{StaticResource NavButton}" Content="Clientes" Tag="ClientesView" GroupName="Nav" Checked="NavButton_Checked"/>
-                    </StackPanel>
-
-                    <!-- Footer (Ayuda/Salir) -->
-                    <StackPanel Grid.Row="2" Margin="0,0,0,25">
-                        <Grid Margin="30,0">
-                            <Grid.ColumnDefinitions>
-                                <ColumnDefinition Width="*"/>
-                                <ColumnDefinition Width="Auto"/>
-                                <ColumnDefinition Width="*"/>
-                            </Grid.ColumnDefinitions>
-
-                            <ToggleButton Grid.Column="0" Content="AYUDA" Tag="{StaticResource IconHelp}" Style="{StaticResource HelpToggleButton}" x:Name="ToggleAyuda" Click="ToggleAyuda_Click">
-                                <ToggleButton.ContextMenu>
-                                    <ContextMenu x:Name="MenuAyuda" Style="{StaticResource MobileContextMenuStyle}">
-
-                                        <MenuItem Header="Mi Perfil" Click="MenuItemPerfil_Click" Style="{StaticResource MobileMenuItemStyle}">
-                                            <MenuItem.Icon>
-                                                <Path Data="{StaticResource IconProfile}" Fill="#546E7A" Width="16" Height="16" Stretch="Uniform"/>
-                                            </MenuItem.Icon>
-                                        </MenuItem>
-
-                                        <MenuItem Header="Preferencias" Style="{StaticResource MobileMenuItemStyle}">
-                                            <MenuItem.Icon>
-                                                <Path Data="{StaticResource IconSettings}" Fill="#546E7A" Width="16" Height="16" Stretch="Uniform"/>
-                                            </MenuItem.Icon>
-
-                                            <MenuItem Header="Tema" Style="{StaticResource MobileMenuItemStyle}">
-                                                <MenuItem.Icon>
-                                                    <Path Data="{StaticResource IconTheme}" Fill="#546E7A" Width="16" Height="16" Stretch="Uniform"/>
-                                                </MenuItem.Icon>
-                                                <MenuItem Header="Claro" Click="MenuTemaClaro_Click" Style="{StaticResource MobileMenuItemStyle}">
-                                                    <MenuItem.Icon>
-                                                        <Ellipse Width="14" Height="14" Fill="#FAFAFA" Stroke="#B0BEC5" StrokeThickness="1.5"/>
-                                                    </MenuItem.Icon>
-                                                </MenuItem>
-                                                <MenuItem Header="Oscuro" Click="MenuTemaOscuro_Click" Style="{StaticResource MobileMenuItemStyle}">
-                                                    <MenuItem.Icon>
-                                                        <Ellipse Width="14" Height="14" Fill="#37474F"/>
-                                                    </MenuItem.Icon>
-                                                </MenuItem>
-                                            </MenuItem>
-
-                                            <MenuItem Header="Idioma" Style="{StaticResource MobileMenuItemStyle}">
-                                                <MenuItem.Icon>
-                                                    <Path Data="{StaticResource IconLanguage}" Fill="#546E7A" Width="16" Height="16" Stretch="Uniform"/>
-                                                </MenuItem.Icon>
-                                                <MenuItem Header="Español" Click="MenuEsp_Click" Style="{StaticResource MobileMenuItemStyle}">
-                                                    <MenuItem.Icon>
-                                                        <Ellipse Width="16" Height="16">
-                                                            <Ellipse.Fill>
-                                                                <ImageBrush ImageSource="/Assets/Images/Languages/spain.png" Stretch="UniformToFill"/>
-                                                            </Ellipse.Fill>
-                                                            <Ellipse.Effect>
-                                                                <DropShadowEffect ShadowDepth="0" BlurRadius="2" Opacity="0.3"/>
-                                                            </Ellipse.Effect>
-                                                        </Ellipse>
-                                                    </MenuItem.Icon>
-                                                </MenuItem>
-                                                <MenuItem Header="English" Click="MenuEng_Click" Style="{StaticResource MobileMenuItemStyle}">
-                                                    <MenuItem.Icon>
-                                                        <Ellipse Width="16" Height="16">
-                                                            <Ellipse.Fill>
-                                                                <ImageBrush ImageSource="/Assets/Images/Languages/uk.png" Stretch="UniformToFill"/>
-                                                            </Ellipse.Fill>
-                                                            <Ellipse.Effect>
-                                                                <DropShadowEffect ShadowDepth="0" BlurRadius="2" Opacity="0.3"/>
-                                                            </Ellipse.Effect>
-                                                        </Ellipse>
-                                                    </MenuItem.Icon>
-                                                </MenuItem>
-                                            </MenuItem>
-                                        </MenuItem>
-
-                                        <MenuItem Header="Acerca de..." Click="MenuItemAcercaDe_Click" Style="{StaticResource MobileMenuItemStyle}">
-                                            <MenuItem.Icon>
-                                                <Path Data="{StaticResource IconAbout}" Fill="#546E7A" Width="16" Height="16" Stretch="Uniform"/>
-                                            </MenuItem.Icon>
-                                        </MenuItem>
-                                    </ContextMenu>
-                                </ToggleButton.ContextMenu>
-                            </ToggleButton>
-
-                            <Rectangle Grid.Column="1" Width="1" Height="25" Fill="#4DFFFFFF" Margin="15,0"/>
-
-                            <ToggleButton Grid.Column="2" Content="SALIR" Tag="{StaticResource IconPower}" Style="{StaticResource FooterButton}" x:Name="ToggleSalir" Click="ToggleSalir_Click">
-                                <ToggleButton.ContextMenu>
-                                    <ContextMenu x:Name="MenuSalir" Style="{StaticResource MobileContextMenuStyle}">
-                                        <MenuItem Header="Cerrar Sesión" Click="MenuItemCerrarSesion_Click" Style="{StaticResource MobileMenuItemStyle}">
-                                            <MenuItem.Icon>
-                                                <Path Data="{StaticResource IconLogout}" Fill="#78909C" Width="16" Height="16" Stretch="Uniform"/>
-                                            </MenuItem.Icon>
-                                        </MenuItem>
-                                        <MenuItem Header="Salir de la App" Click="MenuItemSalirApp_Click" Style="{StaticResource MobileMenuItemStyle}">
-                                            <MenuItem.Icon>
-                                                <Path Data="{StaticResource IconPower}" Fill="#FF7043" Width="16" Height="16" Stretch="Uniform"/>
-                                            </MenuItem.Icon>
-                                        </MenuItem>
-                                    </ContextMenu>
-                                </ToggleButton.ContextMenu>
-                            </ToggleButton>
-                        </Grid>
-                        <TextBlock Text="TPV v1.1" Foreground="#4DFFFFFF" FontSize="10" HorizontalAlignment="Center" Margin="0,15,0,0"/>
-                    </StackPanel>
-                </Grid>
-            </Border>
-
-            <!-- ZONA PRINCIPAL (Derecha) -->
-            <Grid Grid.Column="1">
+            <Grid Grid.Column="0" Margin="0,0,0,0">
                 <Grid.RowDefinitions>
-                    <RowDefinition Height="80"/>
+                    <RowDefinition Height="Auto"/>
                     <RowDefinition Height="*"/>
+                    <RowDefinition Height="Auto"/>
                 </Grid.RowDefinitions>
 
-                <!-- HEADER SUPERIOR -->
-                <!-- 2. CAMBIO: Background dinámico (CardBackground) en lugar de White -->
-                <!-- 3. CAMBIO: BorderBrush dinámico (InputBackground) o transparente, para evitar borde gris feo en oscuro -->
-                <Border Grid.Row="0" Background="{DynamicResource CardBackground}" 
-                        BorderBrush="{DynamicResource InputBackground}" BorderThickness="0,0,0,1" CornerRadius="0,20,0,0">
-                    <Grid Margin="30,0">
-                        <StackPanel VerticalAlignment="Center">
-                            <TextBlock x:Name="LblHeaderTitle" Text="Inicio" FontSize="24" FontWeight="Bold" Foreground="{DynamicResource TextPrimary}"/>
-                            <!-- 4. CAMBIO: Foreground dinámico (TextSecondary) en lugar de #9E9E9E -->
-                            <TextBlock x:Name="LblHeaderSubtitle" Text="Bienvenido al sistema" FontSize="12" Foreground="{DynamicResource TextSecondary}" Margin="0,2,0,0"/>
-                        </StackPanel>
-                        <StackPanel HorizontalAlignment="Right" VerticalAlignment="Center">
-                            <TextBlock x:Name="LblDayOfWeek" Text="MIÉRCOLES" FontSize="11" FontWeight="Bold" Foreground="{DynamicResource TextSecondary}" HorizontalAlignment="Right"/>
-                            <StackPanel Orientation="Horizontal" HorizontalAlignment="Right" Margin="0,-4,0,0">
-                                <TextBlock x:Name="LblDayOfMonth" Text="26" FontSize="28" FontWeight="Light" Foreground="{DynamicResource TextPrimary}"/>
-                                <TextBlock x:Name="LblMonth" Text="NOV" FontSize="16" FontWeight="Normal" Foreground="{DynamicResource TextPrimary}" VerticalAlignment="Bottom" Margin="4,0,0,4"/>
-                            </StackPanel>
+                <Border Grid.Row="0" Margin="20,20,20,30" CornerRadius="12" BorderThickness="1" BorderBrush="#1AFFFFFF">
+                    <Border.Background>
+                        <SolidColorBrush Color="White" Opacity="0.05"/>
+                    </Border.Background>
+                    <Grid Margin="15">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="Auto"/>
+                            <ColumnDefinition Width="*"/>
+                        </Grid.ColumnDefinitions>
+
+                        <Grid Grid.Column="0">
+                            <Ellipse x:Name="AvatarEllipse" Width="42" Height="42">
+                                <Ellipse.Fill>
+                                    <ImageBrush ImageSource="/Assets/Images/Profiles/placeholder.png" Stretch="UniformToFill"/>
+                                </Ellipse.Fill>
+                            </Ellipse>
+                            <Ellipse Width="10" Height="10" Fill="#4CAF50" Stroke="{DynamicResource SidebarBg}" StrokeThickness="2"
+                                     HorizontalAlignment="Right" VerticalAlignment="Bottom" Margin="0,0,-2,0"/>
+                        </Grid>
+
+                        <StackPanel Grid.Column="1" VerticalAlignment="Center" Margin="12,0,0,0">
+                            <TextBlock x:Name="LblNombreUsuario" Text="Admin" Foreground="White" FontWeight="SemiBold" FontSize="14"/>
+                            <TextBlock x:Name="LblRolUsuario" Text="Administrador" Foreground="#B0BEC5" FontSize="11" Margin="0,2,0,0"/>
                         </StackPanel>
                     </Grid>
                 </Border>
 
-                <!-- CONTENEDOR DEL FRAME PRINCIPAL -->
-                <Grid Grid.Row="1" Margin="30">
-                    <!-- 5. CAMBIO: Background dinámico (CardBackground) en lugar de White -->
-                    <!-- 6. CAMBIO: BorderBrush dinámico (InputBackground) en lugar de #E0E0E0 -->
-                    <Border BorderThickness="2" BorderBrush="{DynamicResource InputBackground}" CornerRadius="12" Background="{DynamicResource CardBackground}" ClipToBounds="True">
-                        <Border.Effect>
-                            <DropShadowEffect BlurRadius="10" ShadowDepth="2" Opacity="0.05"/>
-                        </Border.Effect>
-                        <Frame x:Name="MainFrame" NavigationUIVisibility="Hidden" Background="Transparent"/>
-                    </Border>
-                </Grid>
+                <StackPanel Grid.Row="1" Margin="10,0">
+                    <RadioButton x:Name="BtnPedidos" Style="{StaticResource NavButton}" Content="Pedidos" 
+                                 Tag="{StaticResource IconUtensils}" 
+                                 CommandParameter="PedidosView"
+                                 GroupName="Nav" Checked="NavButton_Checked"/>
+
+                    <RadioButton x:Name="BtnProductos" Style="{StaticResource NavButton}" Content="Productos" 
+                                 Tag="{StaticResource IconBurger}" 
+                                 CommandParameter="ProductosView"
+                                 GroupName="Nav" Checked="NavButton_Checked"/>
+
+                    <RadioButton x:Name="BtnClientes" Style="{StaticResource NavButton}" Content="Clientes" 
+                                 Tag="{StaticResource IconUsers}" 
+                                 CommandParameter="ClientesView"
+                                 GroupName="Nav" Checked="NavButton_Checked"/>
+                </StackPanel>
+
+                <StackPanel Grid.Row="2" Margin="0,0,0,25">
+                    <Grid Margin="30,0">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="*"/>
+                            <ColumnDefinition Width="Auto"/>
+                            <ColumnDefinition Width="*"/>
+                        </Grid.ColumnDefinitions>
+
+                        <ToggleButton Grid.Column="0" Content="AYUDA" Tag="{StaticResource IconHelp}" Style="{StaticResource HelpToggleButton}" x:Name="ToggleAyuda" Click="ToggleAyuda_Click">
+                            <ToggleButton.ContextMenu>
+                                <ContextMenu x:Name="MenuAyuda" Style="{StaticResource MobileContextMenuStyle}">
+                                    <MenuItem Header="Mi Perfil" Click="MenuItemPerfil_Click" Style="{StaticResource MobileMenuItemStyle}">
+                                        <MenuItem.Icon>
+                                            <Path Data="{StaticResource IconProfile}" Fill="#546E7A" Width="16" Height="16" Stretch="Uniform"/>
+                                        </MenuItem.Icon>
+                                    </MenuItem>
+                                    <MenuItem Header="Preferencias" Style="{StaticResource MobileMenuItemStyle}">
+                                        <MenuItem.Icon>
+                                            <Path Data="{StaticResource IconSettings}" Fill="#546E7A" Width="16" Height="16" Stretch="Uniform"/>
+                                        </MenuItem.Icon>
+                                        <MenuItem Header="Tema" Style="{StaticResource MobileMenuItemStyle}">
+                                            <MenuItem.Icon>
+                                                <Path Data="{StaticResource IconTheme}" Fill="#546E7A" Width="16" Height="16" Stretch="Uniform"/>
+                                            </MenuItem.Icon>
+                                            <MenuItem Header="Claro" Click="MenuTemaClaro_Click" Style="{StaticResource MobileMenuItemStyle}">
+                                                <MenuItem.Icon>
+                                                    <Ellipse Width="14" Height="14" Fill="#FAFAFA" Stroke="#B0BEC5" StrokeThickness="1.5"/>
+                                                </MenuItem.Icon>
+                                            </MenuItem>
+                                            <MenuItem Header="Oscuro" Click="MenuTemaOscuro_Click" Style="{StaticResource MobileMenuItemStyle}">
+                                                <MenuItem.Icon>
+                                                    <Ellipse Width="14" Height="14" Fill="#37474F"/>
+                                                </MenuItem.Icon>
+                                            </MenuItem>
+                                        </MenuItem>
+                                        <MenuItem Header="Idioma" Style="{StaticResource MobileMenuItemStyle}">
+                                            <MenuItem.Icon>
+                                                <Path Data="{StaticResource IconLanguage}" Fill="#546E7A" Width="16" Height="16" Stretch="Uniform"/>
+                                            </MenuItem.Icon>
+                                            <MenuItem Header="Español" Click="MenuEsp_Click" Style="{StaticResource MobileMenuItemStyle}">
+                                                <MenuItem.Icon>
+                                                    <Ellipse Width="16" Height="16">
+                                                        <Ellipse.Fill>
+                                                            <ImageBrush ImageSource="/Assets/Images/Languages/spain.png" Stretch="UniformToFill"/>
+                                                        </Ellipse.Fill>
+                                                        <Ellipse.Effect>
+                                                            <DropShadowEffect ShadowDepth="0" BlurRadius="2" Opacity="0.3"/>
+                                                        </Ellipse.Effect>
+                                                    </Ellipse>
+                                                </MenuItem.Icon>
+                                            </MenuItem>
+                                            <MenuItem Header="English" Click="MenuEng_Click" Style="{StaticResource MobileMenuItemStyle}">
+                                                <MenuItem.Icon>
+                                                    <Ellipse Width="16" Height="16">
+                                                        <Ellipse.Fill>
+                                                            <ImageBrush ImageSource="/Assets/Images/Languages/uk.png" Stretch="UniformToFill"/>
+                                                        </Ellipse.Fill>
+                                                        <Ellipse.Effect>
+                                                            <DropShadowEffect ShadowDepth="0" BlurRadius="2" Opacity="0.3"/>
+                                                        </Ellipse.Effect>
+                                                    </Ellipse>
+                                                </MenuItem.Icon>
+                                            </MenuItem>
+                                        </MenuItem>
+                                    </MenuItem>
+                                    <MenuItem Header="Acerca de..." Click="MenuItemAcercaDe_Click" Style="{StaticResource MobileMenuItemStyle}">
+                                        <MenuItem.Icon>
+                                            <Path Data="{StaticResource IconAbout}" Fill="#546E7A" Width="16" Height="16" Stretch="Uniform"/>
+                                        </MenuItem.Icon>
+                                    </MenuItem>
+                                </ContextMenu>
+                            </ToggleButton.ContextMenu>
+                        </ToggleButton>
+
+                        <Rectangle Grid.Column="1" Width="1" Height="25" Fill="#4DFFFFFF" Margin="15,0"/>
+
+                        <ToggleButton Grid.Column="2" Content="SALIR" Tag="{StaticResource IconPower}" Style="{StaticResource FooterButton}" x:Name="ToggleSalir" Click="ToggleSalir_Click">
+                            <ToggleButton.ContextMenu>
+                                <ContextMenu x:Name="MenuSalir" Style="{StaticResource MobileContextMenuStyle}">
+                                    <MenuItem Header="Cerrar Sesión" Click="MenuItemCerrarSesion_Click" Style="{StaticResource MobileMenuItemStyle}">
+                                        <MenuItem.Icon>
+                                            <Path Data="{StaticResource IconLogout}" Fill="#78909C" Width="16" Height="16" Stretch="Uniform"/>
+                                        </MenuItem.Icon>
+                                    </MenuItem>
+                                    <MenuItem Header="Salir de la App" Click="MenuItemSalirApp_Click" Style="{StaticResource MobileMenuItemStyle}">
+                                        <MenuItem.Icon>
+                                            <Path Data="{StaticResource IconPower}" Fill="#FF7043" Width="16" Height="16" Stretch="Uniform"/>
+                                        </MenuItem.Icon>
+                                    </MenuItem>
+                                </ContextMenu>
+                            </ToggleButton.ContextMenu>
+                        </ToggleButton>
+                    </Grid>
+                    <TextBlock Text="TPV v2.0" Foreground="#4DFFFFFF" FontSize="10" HorizontalAlignment="Center" Margin="0,15,0,0"/>
+                </StackPanel>
             </Grid>
+
+            <Border Grid.Column="1" Background="{DynamicResource MainBg}" CornerRadius="15" Margin="0,20,20,20">
+                <Border.Effect>
+                    <DropShadowEffect BlurRadius="30" ShadowDepth="0" Opacity="0.15"/>
+                </Border.Effect>
+
+                <Grid>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="90"/>
+                        <RowDefinition Height="*"/>
+                    </Grid.RowDefinitions>
+
+                    <Grid Grid.Row="0" Margin="40,0,40,0">
+                        <StackPanel VerticalAlignment="Center">
+                            <TextBlock x:Name="LblHeaderTitle" Text="Inicio" FontSize="26" FontWeight="Bold" Foreground="{DynamicResource TextPrimary}"/>
+                            <TextBlock x:Name="LblHeaderSubtitle" Text="Bienvenido al sistema" FontSize="13" Foreground="{DynamicResource TextSecondary}" Margin="0,4,0,0"/>
+                        </StackPanel>
+
+                        <StackPanel HorizontalAlignment="Right" VerticalAlignment="Center">
+                            <TextBlock x:Name="LblDayOfWeek" Text="MIÉRCOLES" FontSize="11" FontWeight="Bold" Foreground="{DynamicResource BrandColor}" HorizontalAlignment="Right" Opacity="0.8"/>
+                            <StackPanel Orientation="Horizontal" HorizontalAlignment="Right" Margin="0,-2,0,0">
+                                <TextBlock x:Name="LblDayOfMonth" Text="26" FontSize="32" FontWeight="Light" Foreground="{DynamicResource TextPrimary}"/>
+                                <TextBlock x:Name="LblMonth" Text="NOV" FontSize="16" FontWeight="Normal" Foreground="{DynamicResource TextPrimary}" VerticalAlignment="Bottom" Margin="6,0,0,5"/>
+                            </StackPanel>
+                        </StackPanel>
+
+                        <Rectangle VerticalAlignment="Bottom" Height="1" Fill="{DynamicResource InputBackground}" Opacity="0.5"/>
+                    </Grid>
+
+                    <Grid Grid.Row="1" Margin="40,20,40,40">
+                        <Border Background="{DynamicResource CardBackground}" CornerRadius="12" BorderThickness="0" ClipToBounds="False">
+                            <Border.Effect>
+                                <DropShadowEffect BlurRadius="10" ShadowDepth="4" Opacity="0.03"/>
+                            </Border.Effect>
+                            <Frame x:Name="MainFrame" NavigationUIVisibility="Hidden" Background="Transparent" ClipToBounds="False"/>
+                        </Border>
+                    </Grid>
+                </Grid>
+            </Border>
+
         </Grid>
     </Border>
 </Window>

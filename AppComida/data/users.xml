@@ -5,9 +5,8 @@
     <firstname>Gonzalo</firstname>
     <lastname>López Rodríguez</lastname>
     <email>gonzalo.lopez@tpvcomida.com</email>
-    <last_access>2025-11-26T10:00:00</last_access>
+    <last_access>2025-11-28T18:12:56.1831326+01:00</last_access>
     <image>default</image>
-    <!-- Solo por simplicidad guardado en comentario Contraseña: admin -->
     <salt>a1b2c3d4e5f67890</salt>
     <digest>ada08a38ca9fc98bc9a6686b574aaf57</digest>
   </User>
@@ -18,7 +17,6 @@
     <email>marcos.galan@tpvcomida.com</email>
     <last_access>2025-11-25T14:30:00</last_access>
     <image>Assets/Images/Profiles/userPic_Marcos.png</image>
-   <!-- Solo por simplicidad guardado en comentario Contraseña: marcos -->
     <salt>a1b2c3d4e5f67890</salt>
     <digest>27b2d85939d3747f7ff3a2f13b66141c</digest>
   </User>
@@ -29,7 +27,6 @@
     <email>carmen.lacave@uclm.es</email>
     <last_access>2025-11-20T09:15:00</last_access>
     <image>Assets/Images/Profiles/userPic_Carmen.png</image>
-    <!-- Solo por simplicidad guardado en comentario Contraseña: carmen -->
     <salt>a1b2c3d4e5f67890</salt>
     <digest>ad6c6a9fd327d9c9961ac9f42c8bcad2</digest>
   </User>

@@ -14,33 +14,24 @@ namespace AppComida.Presentation
     public partial class MainWindow : Window
     {
         private readonly User _userLogged;
-        private DispatcherTimer _clockTimer;
-
-        public MainWindow() : this(new User
-        {
-            firstname = "Admin",
-            lastname = "Prueba",
-            image = "" 
-        })
-        {
-        }
+        private readonly LoginController _controller;
         public MainWindow(User user)
         {
             InitializeComponent();
             _userLogged = user;
+            _controller = new LoginController();
+
             CargarDatosUsuario(user);
             setDate(null, null);
-        
+            
             // --- GESTIÓN DE ESTADOS DE TOGGLE BUTTONS ---
 
-            // Toggle Salir (Gestión de apertura/cierre)
             if (MenuSalir != null)
             {
                 MenuSalir.Opened += (s, e) => ToggleSalir.IsChecked = true;
                 MenuSalir.Closed += (s, e) => ToggleSalir.IsChecked = false;
             }
 
-            // Toggle Ayuda (Gestión de apertura/cierre)
             if (MenuAyuda != null)
             {
                 MenuAyuda.Opened += (s, e) => ToggleAyuda.IsChecked = true;
@@ -64,7 +55,6 @@ namespace AppComida.Presentation
         //        SECCIÓN MENÚ AYUDA / AJUSTES
         // ==========================================
 
-        // ESTE ES EL MÉTODO QUE FALTABA O NO SE ENCONTRABA
         private void ToggleAyuda_Click(object sender, RoutedEventArgs e)
         {
             if (ToggleAyuda.ContextMenu != null)
@@ -92,7 +82,6 @@ namespace AppComida.Presentation
             try
             {
                 var uri = new Uri(rutaTema, UriKind.Relative);
-
                 ResourceDictionary nuevoTema = Application.LoadComponent(uri) as ResourceDictionary;
 
                 if (nuevoTema != null)
@@ -114,6 +103,7 @@ namespace AppComida.Presentation
                "Casi crack",
                ConfirmType.Info);
             confirm.Owner = this;
+            confirm.ShowDialog();
         }
 
         private void MenuEng_Click(object sender, RoutedEventArgs e)
@@ -123,11 +113,12 @@ namespace AppComida.Presentation
               "Casi crack",
               ConfirmType.Info);
             confirm.Owner = this;
+            confirm.ShowDialog();
         }
 
         private void MenuItemPerfil_Click(object sender, RoutedEventArgs e)
         {
-            // Navegar a la página de perfil
+            // 1. Desactivar botones laterales
             DesmarcarNavegacion();
 
             UpdateHeader("Mi Perfil", "Datos del usuario y estadísticas");
@@ -138,11 +129,10 @@ namespace AppComida.Presentation
             }
         }
 
-        // ESTE TAMBIÉN DABA ERROR
         private void MenuItemAcercaDe_Click(object sender, RoutedEventArgs e)
         {
             ConfirmWindow info = new ConfirmWindow(
-                "Trabajo IPO 2025-2026.",
+                "Trabajo IPO 2025-2026.\nDiseño 'Floating Modern' corrección v2.",
                 "Acerca de",
                 ConfirmType.Info);
 
@@ -150,9 +140,21 @@ namespace AppComida.Presentation
             info.ShowDialog();
         }
 
+        // MÉTODO ARREGLADO PARA QUITAR LA SELECCIÓN NARANJA
         private void DesmarcarNavegacion()
         {
-            // Lógica opcional para desmarcar visualmente los botones laterales si fuera necesario
+            if (BtnPedidos != null) BtnPedidos.IsChecked = false;
+            if (BtnProductos != null) BtnProductos.IsChecked = false;
+            if (BtnClientes != null) BtnClientes.IsChecked = false;
+        }
+
+
+        private void GuardarHoraSalida()
+        {
+            if (_userLogged != null)
+            {
+                _controller.RegisterExit(_userLogged.username);
+            }
         }
 
 
@@ -182,6 +184,8 @@ namespace AppComida.Presentation
 
             if (confirm.ShowDialog() == true)
             {
+                GuardarHoraSalida();
+
                 LoginWindow loginWindow = new LoginWindow();
                 loginWindow.Show();
                 this.Close();
@@ -198,6 +202,8 @@ namespace AppComida.Presentation
 
             if (confirm.ShowDialog() == true)
             {
+                GuardarHoraSalida();
+
                 Application.Current.Shutdown();
             }
         }
@@ -256,9 +262,14 @@ namespace AppComida.Presentation
         {
             if (sender is RadioButton radio && radio.IsChecked == true)
             {
-                string targetViewTag = radio.Tag?.ToString();
-                NavigateToView(targetViewTag);
-                UpdateHeader(radio.Content.ToString(), targetViewTag);
+
+                string targetViewTag = radio.CommandParameter?.ToString();
+
+                if (!string.IsNullOrEmpty(targetViewTag))
+                {
+                    NavigateToView(targetViewTag);
+                    UpdateHeader(radio.Content.ToString(), targetViewTag);
+                }
             }
         }
 

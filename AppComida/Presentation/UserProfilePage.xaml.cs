@@ -29,7 +29,7 @@ namespace AppComida.Presentation
 
             TxtUsername.Text = "@" + user.username;
             TxtEmail.Text = user.email;
-            TxtLastAccess.Text = DateTime.Now.ToString("dd MMM, HH:mm tt");
+            TxtLastAccess.Text = user.last_access.ToString("dd MMM, HH:mm tt");
             TxtLastName.Text = safeLast;
 
             // --- LÓGICA SEGURA DE IMAGEN ---
