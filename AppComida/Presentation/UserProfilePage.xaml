@@ -10,11 +10,11 @@
     <Grid Background="{DynamicResource MainBg}">
         <Grid HorizontalAlignment="Center" VerticalAlignment="Center" Margin="0,-50,0,0">
 
-            <!-- TARJETA PRINCIPAL -->
+            <!-- TARJETA PRINCIPAL: ANCHO AUMENTADO A 850 -->
             <Border Background="{DynamicResource CardBackground}" 
                     CornerRadius="24" 
-                    Width="500"
-                    Padding="40,80,40,40"
+                    Width="850"
+                    Padding="40,100,40,100"
                     Margin="0,60,0,0">
 
                 <Border.Effect>
@@ -49,21 +49,12 @@
                 </StackPanel>
             </Border>
 
-            <!-- AVATAR (CÍRCULO SUPERIOR) -->
+            <!-- AVATAR -->
             <Grid HorizontalAlignment="Center" VerticalAlignment="Top">
-                <!-- 1. FONDO DE SEGURIDAD (Gris): Se ve si la imagen falla -->
                 <Ellipse Width="120" Height="120" Fill="{DynamicResource InputBackground}"/>
 
-                <!-- Icono por defecto (silueta) -->
-                <Path Data="M12,4A4,4 0 0,1 16,8A4,4 0 0,1 12,12A4,4 0 0,1 8,8A4,4 0 0,1 12,4M12,14C16.42,14 20,15.79 20,18V20H4V18C4,15.79 7.58,14 12,14Z" 
-                      Fill="{DynamicResource TextSecondary}" 
-                      Height="60" Width="60" 
-                      Stretch="Uniform" 
-                      VerticalAlignment="Center" HorizontalAlignment="Center"/>
 
-                <!-- 2. CONTENEDOR DE LA FOTO REAL -->
-                <!-- No tiene ImageSource aquí. Se llena desde C# solo si existe la foto -->
-                <Ellipse Width="120" Height="120" Stroke="{DynamicResource MainBg}" StrokeThickness="6">
+                <Ellipse Width="160" Height="160" Stroke="{DynamicResource MainBg}" StrokeThickness="6">
                     <Ellipse.Effect>
                         <DropShadowEffect BlurRadius="15" ShadowDepth="5" Opacity="0.1" Color="Black"/>
                     </Ellipse.Effect>

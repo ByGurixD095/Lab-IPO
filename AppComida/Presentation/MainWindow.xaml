@@ -4,7 +4,7 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         mc:Ignorable="d"
-        Title="TPV Comida Casera" Height="720" Width="1100"
+        Title="TPV Comida Casera" Height="900" Width="1280"
         WindowStyle="None"
         ResizeMode="NoResize"
         WindowStartupLocation="CenterScreen"
@@ -12,7 +12,10 @@
         Background="Transparent"
         MouseDown="Window_MouseDown">
 
+    <!-- CAMBIO CLAVE: Height="900" (Antes 720) para que quepan 2 filas verticales -->
+
     <Window.Resources>
+        <!-- ICONOS -->
         <Geometry x:Key="IconUtensils">M11,9H9V2H7V9H5V2H3V9C3,11.12 4.66,12.84 6.75,12.97V22H9.25V12.97C11.34,12.84 13,11.12 13,9V2H11V9M16,6V14H18.5V22H21V2C18.24,2 16,4.24 16,6Z</Geometry>
         <Geometry x:Key="IconBurger">M16.5,11L13,12.75L9.5,11L6,12.75L2.5,11V8.5C2.5,5.5 5.3,3.3 9.5,3.3C13.7,3.3 16.5,5.5 16.5,8.5V11M2.5,13.75V19.25C2.5,20.8 5.3,22.1 9.5,22.1C13.7,22.1 16.5,20.8 16.5,19.25V13.75L13,15.5L9.5,13.75L6,15.5L2.5,13.75Z</Geometry>
         <Geometry x:Key="IconUsers">M12,4A4,4 0 0,1 16,8A4,4 0 0,1 12,12A4,4 0 0,1 8,8A4,4 0 0,1 12,4M12,14C16.42,14 20,15.79 20,18V20H4V18C4,15.79 7.58,14 12,14Z</Geometry>
@@ -190,6 +193,7 @@
                 <ColumnDefinition Width="*"/>
             </Grid.ColumnDefinitions>
 
+            <!-- COLUMNA 0: SIDEBAR -->
             <Grid Grid.Column="0" Margin="0,0,0,0">
                 <Grid.RowDefinitions>
                     <RowDefinition Height="Auto"/>
@@ -338,7 +342,8 @@
                 </StackPanel>
             </Grid>
 
-            <Border Grid.Column="1" Background="{DynamicResource MainBg}" CornerRadius="15" Margin="0,20,20,20">
+            <!-- COLUMNA 1: CONTENIDO PRINCIPAL -->
+            <Border Grid.Column="1" Background="{DynamicResource MainBg}" CornerRadius="15" Margin="0,15,15,15">
                 <Border.Effect>
                     <DropShadowEffect BlurRadius="30" ShadowDepth="0" Opacity="0.15"/>
                 </Border.Effect>
@@ -349,7 +354,7 @@
                         <RowDefinition Height="*"/>
                     </Grid.RowDefinitions>
 
-                    <Grid Grid.Row="0" Margin="40,0,40,0">
+                    <Grid Grid.Row="0" Margin="30,0,30,0">
                         <StackPanel VerticalAlignment="Center">
                             <TextBlock x:Name="LblHeaderTitle" Text="Inicio" FontSize="26" FontWeight="Bold" Foreground="{DynamicResource TextPrimary}"/>
                             <TextBlock x:Name="LblHeaderSubtitle" Text="Bienvenido al sistema" FontSize="13" Foreground="{DynamicResource TextSecondary}" Margin="0,4,0,0"/>
@@ -366,7 +371,7 @@
                         <Rectangle VerticalAlignment="Bottom" Height="1" Fill="{DynamicResource InputBackground}" Opacity="0.5"/>
                     </Grid>
 
-                    <Grid Grid.Row="1" Margin="40,20,40,40">
+                    <Grid Grid.Row="1" Margin="20,10,20,20">
                         <Border Background="{DynamicResource CardBackground}" CornerRadius="12" BorderThickness="0" ClipToBounds="False">
                             <Border.Effect>
                                 <DropShadowEffect BlurRadius="10" ShadowDepth="4" Opacity="0.03"/>

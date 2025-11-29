@@ -1,0 +1,236 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<ArrayOfProduct xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+
+	<!-- ========================================== -->
+	<!--               ENTRANTES                    -->
+	<!-- ========================================== -->
+	<Product>
+		<Id>101</Id>
+		<Name>Nachos con Guacamole</Name>
+		<Category>Entrantes</Category>
+		<SubCategory>Para Compartir</SubCategory>
+		<Price>9.50</Price>
+		<Ingredients>Totopos de maíz caseros, guacamole fresco, pico de gallo, jalapeños, crema agria y cilantro.</Ingredients>
+		<Allergens>Lácteos</Allergens>
+		<Image>https://images.unsplash.com/photo-1513456852971-30c0b8199d4d?w=500</Image>
+		<IsAvailable>true</IsAvailable>
+	</Product>
+
+	<Product>
+		<Id>102</Id>
+		<Name>Croquetas de Jamón</Name>
+		<Category>Entrantes</Category>
+		<SubCategory>Para Compartir</SubCategory>
+		<Price>8.00</Price>
+		<Ingredients>Bechamel cremosa, jamón ibérico de bellota, rebozado crujiente panko.</Ingredients>
+		<Allergens>Gluten, Lácteos, Huevo</Allergens>
+		<Image>https://images.unsplash.com/photo-1551024506-0bccd828d307?w=500</Image>
+		<IsAvailable>true</IsAvailable>
+	</Product>
+
+	<Product>
+		<Id>103</Id>
+		<Name>Ensalada César</Name>
+		<Category>Entrantes</Category>
+		<SubCategory>Ensaladas</SubCategory>
+		<Price>10.50</Price>
+		<Ingredients>Lechuga romana, pollo a la parrilla, picatostes, lascas de parmesano, salsa César original.</Ingredients>
+		<Allergens>Gluten, Lácteos, Huevo, Pescado</Allergens>
+		<Image>https://images.unsplash.com/photo-1550304943-4f24f54ddde9?w=500</Image>
+		<IsAvailable>true</IsAvailable>
+	</Product>
+
+	<Product>
+		<Id>104</Id>
+		<Name>Gazpacho Andaluz</Name>
+		<Category>Entrantes</Category>
+		<SubCategory>Sopas y Cremas</SubCategory>
+		<Price>6.50</Price>
+		<Ingredients>Tomate pera, pepino, pimiento verde, ajo, aceite de oliva virgen extra, vinagre de Jerez.</Ingredients>
+		<Allergens>Gluten (si lleva pan)</Allergens>
+		<Image>https://images.unsplash.com/photo-1599974579688-8dbdd335c77f?w=500</Image>
+		<IsAvailable>true</IsAvailable>
+	</Product>
+
+	<!-- ========================================== -->
+	<!--                 PLATOS                     -->
+	<!-- ========================================== -->
+
+	<!-- Carnes -->
+	<Product>
+		<Id>201</Id>
+		<Name>Entrecot a la Pimienta</Name>
+		<Category>Platos</Category>
+		<SubCategory>Carnes</SubCategory>
+		<Price>18.50</Price>
+		<Ingredients>Lomo bajo de ternera gallega (300g), salsa de pimienta verde casera, guarnición de patatas gajo.</Ingredients>
+		<Allergens>Lácteos, Sulfitos</Allergens>
+		<Image>https://images.unsplash.com/photo-1600891964092-4316c288032e?w=500</Image>
+		<IsAvailable>true</IsAvailable>
+	</Product>
+
+	<Product>
+		<Id>202</Id>
+		<Name>Costillar BBQ</Name>
+		<Category>Platos</Category>
+		<SubCategory>Carnes</SubCategory>
+		<Price>15.90</Price>
+		<Ingredients>Costillar de cerdo ibérico cocinado a baja temperatura, glaseado con salsa barbacoa y miel.</Ingredients>
+		<Allergens>Mostaza, Sulfitos</Allergens>
+		<Image>https://images.unsplash.com/photo-1544025162-d76694265947?w=500</Image>
+		<IsAvailable>true</IsAvailable>
+	</Product>
+
+	<Product>
+		<Id>203</Id>
+		<Name>Burger Trufada</Name>
+		<Category>Platos</Category>
+		<SubCategory>Burgers</SubCategory>
+		<Price>12.50</Price>
+		<Ingredients>180g de vaca vieja, mayonesa de trufa negra, rúcula, queso brie fundido, pan brioche.</Ingredients>
+		<Allergens>Gluten, Lácteos, Huevo, Sésamo</Allergens>
+		<Image>https://images.unsplash.com/photo-1568901346375-23c9450c58cd?w=500</Image>
+		<IsAvailable>true</IsAvailable>
+	</Product>
+
+	<!-- Pescados -->
+	<Product>
+		<Id>204</Id>
+		<Name>Salmón Noruego</Name>
+		<Category>Platos</Category>
+		<SubCategory>Pescados</SubCategory>
+		<Price>16.90</Price>
+		<Ingredients>Lomo de salmón fresco a la plancha, salteado de bimi y espárragos, tomates cherry confitados.</Ingredients>
+		<Allergens>Pescado</Allergens>
+		<Image>https://images.unsplash.com/photo-1580959375944-abd7e991f971?w=500</Image>
+		<IsAvailable>true</IsAvailable>
+	</Product>
+
+	<Product>
+		<Id>205</Id>
+		<Name>Sepia a la Plancha</Name>
+		<Category>Platos</Category>
+		<SubCategory>Pescados</SubCategory>
+		<Price>14.00</Price>
+		<Ingredients>Sepia fresca de lonja, salsa verde (ajo y perejil), ensalada mixta lateral.</Ingredients>
+		<Allergens>Moluscos</Allergens>
+		<Image>https://images.unsplash.com/photo-1534939561126-855b8675edd7?w=500</Image>
+		<IsAvailable>true</IsAvailable>
+	</Product>
+
+	<!-- Arroces y Pastas -->
+	<Product>
+		<Id>206</Id>
+		<Name>Arroz Negro</Name>
+		<Category>Platos</Category>
+		<SubCategory>Arroces</SubCategory>
+		<Price>14.50</Price>
+		<Ingredients>Arroz bomba del Delta, tinta de calamar, chipirones, gambas, alioli casero.</Ingredients>
+		<Allergens>Crustáceos, Moluscos, Huevo</Allergens>
+		<Image>https://images.unsplash.com/photo-1534939561126-855b8675edd7?w=500</Image>
+		<IsAvailable>true</IsAvailable>
+	</Product>
+
+	<Product>
+		<Id>207</Id>
+		<Name>Tagliatelle Carbonara</Name>
+		<Category>Platos</Category>
+		<SubCategory>Pastas</SubCategory>
+		<Price>13.50</Price>
+		<Ingredients>Pasta fresca al huevo, guanciale crujiente, yema de huevo, queso Pecorino Romano, pimienta negra.</Ingredients>
+		<Allergens>Gluten, Huevo, Lácteos</Allergens>
+		<Image>https://images.unsplash.com/photo-1563379926898-05f4575a45d8?w=500</Image>
+		<IsAvailable>true</IsAvailable>
+	</Product>
+
+	<!-- ========================================== -->
+	<!--                 POSTRES                    -->
+	<!-- ========================================== -->
+	<Product>
+		<Id>301</Id>
+		<Name>Cheesecake Casera</Name>
+		<Category>Postres</Category>
+		<SubCategory>Tartas</SubCategory>
+		<Price>6.50</Price>
+		<Ingredients>Queso crema suave, base de galleta Lotus, mermelada artesana de frutos del bosque.</Ingredients>
+		<Allergens>Gluten, Lácteos, Huevo</Allergens>
+		<Image>https://images.unsplash.com/photo-1533134242443-d4fd215305ad?w=500</Image>
+		<IsAvailable>true</IsAvailable>
+	</Product>
+
+	<Product>
+		<Id>302</Id>
+		<Name>Brownie con Helado</Name>
+		<Category>Postres</Category>
+		<SubCategory>Chocolate</SubCategory>
+		<Price>5.90</Price>
+		<Ingredients>Bizcocho de chocolate belga 70%, nueces de California, bola de helado de vainilla Bourbon.</Ingredients>
+		<Allergens>Gluten, Lácteos, Huevo, Frutos Secos</Allergens>
+		<Image>https://images.unsplash.com/photo-1564355808539-22fda35bed7e?w=500</Image>
+		<IsAvailable>true</IsAvailable>
+	</Product>
+
+	<Product>
+		<Id>303</Id>
+		<Name>Ensalada de Frutas</Name>
+		<Category>Postres</Category>
+		<SubCategory>Fruta</SubCategory>
+		<Price>4.50</Price>
+		<Ingredients>Selección de frutas de temporada cortadas al momento: melón, piña, fresas, kiwi.</Ingredients>
+		<Allergens>Ninguno</Allergens>
+		<Image>https://images.unsplash.com/photo-1546548970-71785318a17b?w=500</Image>
+		<IsAvailable>true</IsAvailable>
+	</Product>
+
+	<!-- ========================================== -->
+	<!--                 BEBIDAS                    -->
+	<!-- ========================================== -->
+	<Product>
+		<Id>401</Id>
+		<Name>Coca Cola Zero</Name>
+		<Category>Bebidas</Category>
+		<SubCategory>Refrescos</SubCategory>
+		<Price>2.50</Price>
+		<Ingredients>Refresco de cola sin azúcar. Servido con hielo y rodaja de limón.</Ingredients>
+		<Allergens>Ninguno</Allergens>
+		<Image>https://images.unsplash.com/photo-1622483767028-3f66f32aef97?w=500</Image>
+		<IsAvailable>true</IsAvailable>
+	</Product>
+
+	<Product>
+		<Id>402</Id>
+		<Name>Ramón Bilbao Crianza</Name>
+		<Category>Bebidas</Category>
+		<SubCategory>Vinos</SubCategory>
+		<Price>18.00</Price>
+		<Ingredients>D.O. Rioja. Botella 75cl. Uva Tempranillo. Notas frutales y madera.</Ingredients>
+		<Allergens>Sulfitos</Allergens>
+		<Image>https://images.unsplash.com/photo-1559563362-c667ba5f5480?w=500</Image>
+		<IsAvailable>true</IsAvailable>
+	</Product>
+
+	<Product>
+		<Id>403</Id>
+		<Name>Cappuccino</Name>
+		<Category>Bebidas</Category>
+		<SubCategory>Cafés</SubCategory>
+		<Price>2.20</Price>
+		<Ingredients>Café espresso 100% arábica, leche fresca cremada, toque de cacao en polvo.</Ingredients>
+		<Allergens>Lácteos</Allergens>
+		<Image>https://images.unsplash.com/photo-1572442388796-11668a67e53d?w=500</Image>
+		<IsAvailable>true</IsAvailable>
+	</Product>
+
+	<Product>
+		<Id>404</Id>
+		<Name>Agua Mineral 50cl</Name>
+		<Category>Bebidas</Category>
+		<SubCategory>Aguas</SubCategory>
+		<Price>1.80</Price>
+		<Ingredients>Agua mineral natural de manantial.</Ingredients>
+		<Allergens>Ninguno</Allergens>
+		<Image>https://images.unsplash.com/photo-1548839140-29a749e1cf4d?w=500</Image>
+		<IsAvailable>true</IsAvailable>
+	</Product>
+
+</ArrayOfProduct>

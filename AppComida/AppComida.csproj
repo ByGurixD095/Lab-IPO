@@ -75,6 +75,8 @@
       <DependentUpon>App.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="Domain\Product.cs" />
+    <Compile Include="Domain\ProductController.cs" />
     <Compile Include="Presentation\ClientesPage.xaml.cs">
       <DependentUpon>ClientesPage.xaml</DependentUpon>
     </Compile>
@@ -100,6 +102,9 @@
     </Page>
     <Page Include="Presentation\UserProfilePage.xaml">
       <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Themes\ProductStyles.xaml">
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Themes\TemaClaro.xaml">
@@ -170,6 +175,9 @@
     <Resource Include="Assets\Images\Profiles\placeholder_dark.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Resource>
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="data\products.xml" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

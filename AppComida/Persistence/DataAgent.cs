@@ -10,10 +10,26 @@ namespace AppComida.Persistence
 {
     public class DataAgent
     {
+        private string GetPath(string fileName)
+        {
+            string currentDir = AppDomain.CurrentDomain.BaseDirectory;
+            // Busca hasta 6 niveles hacia arriba
+            for (int i = 0; i < 6; i++)
+            {
+                string potentialPath = Path.Combine(currentDir, "data", fileName);
+                if (File.Exists(potentialPath)) return potentialPath;
+
+                DirectoryInfo parent = Directory.GetParent(currentDir);
+                if (parent == null) break;
+                currentDir = parent.FullName;
+            }
+            return null;
+        }
+
         public List<User> LoadUsers()
         {
             string finalPath = GetPath("users.xml");
-             
+
             if (finalPath == null) return new List<User>();
 
             try
@@ -30,21 +46,27 @@ namespace AppComida.Persistence
             }
         }
 
-        private string GetPath(string fileName)
+        public List<Product> LoadProducts()
         {
-            string currentDir = AppDomain.CurrentDomain.BaseDirectory;
-            // Busca hasta 6 niveles hacia arriba
-            for (int i = 0; i < 6; i++)
-            {
-                string potentialPath = Path.Combine(currentDir, "data", fileName);
-                if (File.Exists(potentialPath)) return potentialPath;
+            string finalPath = GetPath("products.xml");
 
-                DirectoryInfo parent = Directory.GetParent(currentDir);
-                if (parent == null) break;
-                currentDir = parent.FullName;
+            if (finalPath == null) return new List<Product>();
+
+            try
+            {
+                XmlSerializer serializer = new XmlSerializer(typeof(List<Product>));
+                using (StreamReader reader = new StreamReader(finalPath))
+                {
+                    return (List<Product>)serializer.Deserialize(reader);
+                }
             }
-            return null;
+            catch (Exception)
+            {
+                // En caso de error (archivo corrupto, etc), devolvemos lista vacía
+                return new List<Product>();
+            }
         }
+
 
         public void UpdateLastAccess(string username, DateTime newTime)
         {
