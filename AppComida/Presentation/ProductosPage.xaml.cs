@@ -2,107 +2,192 @@
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
-using System.IO;
 using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
-using System.Xml.Linq; // Necesario para leer XML directamente
+using System.Windows.Controls.Primitives; // Necesario para ToggleButton y ContextMenu
 
 namespace AppComida.Presentation
 {
     public partial class ProductosPage : Page
     {
-        // Colección observable para la interfaz
+        private ProductController _controller;
+        private List<Product> _todosLosProductos;
         public ObservableCollection<Product> Productos { get; set; }
+
+        private string _filtroCategoria = "Platos";
+        private string _filtroSubCategoria = "Todo";
 
         public ProductosPage()
         {
             InitializeComponent();
-
-            // Inicializamos la colección vacía
+            _controller = new ProductController();
             Productos = new ObservableCollection<Product>();
-
-            // Cargamos los productos directamente desde el XML
-            CargarProductosDesdeXml();
-
-            // Vinculamos la lista a la interfaz
             ProductList.ItemsSource = Productos;
+            CargarDatos();
         }
 
-        private void CargarProductosDesdeXml()
+        private void CargarDatos()
         {
-            try
-            {
-                // 1. Buscamos el archivo products.xml subiendo niveles (igual que hace el DataAgent)
-                string rutaXml = BuscarArchivo("products.xml");
+            _todosLosProductos = _controller.GetAllProducts();
+            if (_todosLosProductos == null) _todosLosProductos = new List<Product>();
+            AplicarFiltros();
+        }
 
-                if (string.IsNullOrEmpty(rutaXml))
+        // --- SECCIÓN 1: LÓGICA DE FILTRADOS ---
+
+        private void Filtro_Checked(object sender, RoutedEventArgs e)
+        {
+            if (sender is RadioButton rb && rb.Tag != null)
+            {
+                string seleccion = rb.Tag.ToString();
+                if (rb.GroupName == "MainCat") _filtroCategoria = seleccion;
+                else if (rb.GroupName == "SubCat") _filtroSubCategoria = seleccion;
+                AplicarFiltros();
+            }
+        }
+
+        private void AplicarFiltros()
+        {
+            if (_todosLosProductos == null) return;
+
+            var consulta = _todosLosProductos.AsEnumerable();
+
+            if (!string.IsNullOrEmpty(_filtroCategoria))
+                consulta = consulta.Where(p => p.Category != null && p.Category.Equals(_filtroCategoria, StringComparison.OrdinalIgnoreCase));
+
+            if (_filtroSubCategoria != "Todo")
+                consulta = consulta.Where(p => p.SubCategory != null && p.SubCategory.Equals(_filtroSubCategoria, StringComparison.OrdinalIgnoreCase));
+
+            Productos.Clear();
+            foreach (var p in consulta) Productos.Add(p);
+        }
+
+        // --- SECCIÓN 2: LÓGICA DEL MENÚ DE OPCIONES ---
+
+        private void BtnOpciones_Click(object sender, RoutedEventArgs e)
+        {
+            if (sender is ToggleButton btn && btn.ContextMenu != null)
+            {
+                btn.ContextMenu.PlacementTarget = btn;
+                btn.ContextMenu.Placement = PlacementMode.Bottom;
+                btn.ContextMenu.IsOpen = true;
+                btn.ContextMenu.Closed += (s, args) => btn.IsChecked = false;
+            }
+        }
+
+        // Opción A: VER DETALLE
+        private void OpVer_Click(object sender, RoutedEventArgs e)
+        {
+            AbrirFichaProducto(sender);
+        }
+
+        // Opción B: EDITAR
+        private void OpEditar_Click(object sender, RoutedEventArgs e)
+        {
+            AbrirFichaProducto(sender);
+        }
+
+        // Lógica común para abrir la ventana
+        private void AbrirFichaProducto(object sender)
+        {
+            int id = ObtenerId(sender);
+            var prod = _todosLosProductos.FirstOrDefault(p => p.Id == id);
+
+            if (prod != null)
+            {
+                ProductDetailWindow detalle = new ProductDetailWindow(prod);
+                detalle.Owner = Window.GetWindow(this);
+
+                detalle.ShowDialog();
+
+                if (detalle.ActionDelete)
                 {
-                    MessageBox.Show("No se encontró el archivo 'products.xml' en la carpeta Data.", "Aviso", MessageBoxButton.OK, MessageBoxImage.Warning);
-                    return;
+                    EliminarProducto(prod);
                 }
-
-                // 2. Leemos el XML usando LINQ to XML (XDocument)
-                XDocument doc = XDocument.Load(rutaXml);
-
-                // 3. Convertimos cada nodo <Product> en un objeto Product
-                var lista = doc.Descendants("Product").Select(p => new Product
+                else if (detalle.ActionEdit)
                 {
-                    Id = int.Parse(p.Element("Id")?.Value ?? "0"),
-                    Name = p.Element("Name")?.Value ?? "Sin nombre",
-                    Category = p.Element("Category")?.Value ?? "",
-                    SubCategory = p.Element("SubCategory")?.Value ?? "",
-                    Price = double.Parse(p.Element("Price")?.Value ?? "0", System.Globalization.CultureInfo.InvariantCulture),
-                    Ingredients = p.Element("Ingredients")?.Value ?? "",
-                    Allergens = p.Element("Allergens")?.Value ?? "",
-                    ImagePath = p.Element("Image")?.Value ?? "", // Mapeamos <Image> del XML a ImagePath
-                    IsAvailable = bool.Parse(p.Element("IsAvailable")?.Value ?? "true")
-                }).ToList();
-
-                // 4. Añadimos a la colección visual
-                foreach (var prod in lista)
-                {
-                    Productos.Add(prod);
+                    AplicarFiltros();
                 }
             }
-            catch (Exception ex)
+        }
+
+        // Opción C: ELIMINAR RÁPIDO
+        private void OpEliminar_Click(object sender, RoutedEventArgs e)
+        {
+            int id = ObtenerId(sender);
+            var prod = _todosLosProductos.FirstOrDefault(p => p.Id == id);
+
+            if (prod != null)
             {
-                MessageBox.Show($"Error al leer productos: {ex.Message}", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+                ConfirmWindow confirm = new ConfirmWindow(
+                   $"¿Seguro que quieres eliminar '{prod.Name}' del catálogo?\nEsta acción no se puede deshacer.",
+                   "Eliminar Producto",
+                   ConfirmType.Danger);
+
+                confirm.Owner = Window.GetWindow(this);
+
+                if (confirm.ShowDialog() == true)
+                {
+                    EliminarProducto(prod);
+                }
             }
         }
 
-        // Método auxiliar para encontrar el archivo (copiado de la lógica del DataAgent para que funcione aquí)
-        private string BuscarArchivo(string nombreArchivo)
+        // --- SECCIÓN 3: BOTÓN AÑADIR PRODUCTO (Nuevo) ---
+
+        private void BtnAnadir_Click(object sender, RoutedEventArgs e)
         {
-            string directorioActual = AppDomain.CurrentDomain.BaseDirectory;
-            for (int i = 0; i < 6; i++)
+            // 1. Crear un producto vacío / placeholder
+            var nuevoProd = new Product
             {
-                string rutaPotencial = System.IO.Path.Combine(directorioActual, "Data", nombreArchivo); // Carpeta 'Data'
-                if (File.Exists(rutaPotencial)) return rutaPotencial;
+                // Calcular ID nuevo (Max actual + 1)
+                Id = _todosLosProductos.Any() ? _todosLosProductos.Max(p => p.Id) + 1 : 1,
+                Name = "NUEVO (Click Editar)",
+                Category = "Platos",
+                SubCategory = "Todo",
+                Price = 0,
+                IsAvailable = true,
+                Ingredients = "",
+                Allergens = "",
+                ImagePath = ""
+            };
 
-                // Intento alternativo minúsculas por si acaso
-                string rutaPotencialMin = System.IO.Path.Combine(directorioActual, "data", nombreArchivo);
-                if (File.Exists(rutaPotencialMin)) return rutaPotencialMin;
+            // 2. Abrir la ventana de detalle reutilizada
+            ProductDetailWindow detalle = new ProductDetailWindow(nuevoProd);
+            detalle.Owner = Window.GetWindow(this);
 
-                var padre = Directory.GetParent(directorioActual);
-                if (padre == null) break;
-                directorioActual = padre.FullName;
+            // 3. Esperar a que el usuario edite y guarde
+            detalle.ShowDialog();
+
+            // 4. Si el usuario pulsó "Guardar Cambios" dentro de la ventana:
+            if (detalle.ActionEdit)
+            {
+                // Añadimos a la lista maestra
+                _todosLosProductos.Add(nuevoProd);
+
+                // Refrescamos la vista
+                AplicarFiltros();
+
+                // Opcional: Scrollear al nuevo elemento (requiere buscarlo en la UI, se puede omitir por simplicidad)
             }
-            return null;
         }
 
-        private void BtnGestionar_Click(object sender, RoutedEventArgs e)
+        private void EliminarProducto(Product prod)
         {
-            if (sender is Button btn && btn.Tag != null)
-            {
-                string productId = btn.Tag.ToString();
+            // _controller.DeleteProduct(prod.Id);
+            _todosLosProductos.Remove(prod);
+            Productos.Remove(prod);
+            AplicarFiltros();
+        }
 
-                MessageBox.Show(
-                    $"Gestión del producto ID: {productId}\n\nAquí iría la lógica para Editar o Borrar.",
-                    "Administración",
-                    MessageBoxButton.OK,
-                    MessageBoxImage.Information);
-            }
+        private int ObtenerId(object sender)
+        {
+            if (sender is MenuItem item && item.Tag != null && int.TryParse(item.Tag.ToString(), out int id))
+                return id;
+            if (sender is FrameworkElement fe && fe.Tag != null && int.TryParse(fe.Tag.ToString(), out int id2))
+                return id2;
+            return 0;
         }
     }
 }

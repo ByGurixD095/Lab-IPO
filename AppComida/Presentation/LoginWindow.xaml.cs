@@ -1,10 +1,11 @@
 ﻿using AppComida.Domain;
-using System.Threading.Tasks;
+using AppComida.Presentation;
+using System;
+using System.Threading.Tasks; // Necesario para Task.Delay
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
 using System.Windows.Media;
-
 
 namespace AppComida.Presentation
 {
@@ -86,7 +87,7 @@ namespace AppComida.Presentation
         private void txtPass_PasswordChanged(object sender, RoutedEventArgs e)
         {
             lblPassPlaceholder.Visibility = (txtPass.Password.Length == 0) ? Visibility.Visible : Visibility.Collapsed;
-            ClearErrors(); // Importante: Aquí se resetea el placeholder rojo si el usuario escribe
+            ClearErrors();
         }
 
         private void txtPassVisible_TextChanged(object sender, TextChangedEventArgs e)
@@ -97,14 +98,12 @@ namespace AppComida.Presentation
 
         private void ClearErrors()
         {
-            // 1. Limpiar bordes rojos de Usuario
             if (lblUserError.Visibility == Visibility.Visible || txtUser.BorderBrush == _errorBorder)
             {
                 lblUserError.Visibility = Visibility.Collapsed;
                 txtUser.BorderBrush = _defaultBorder;
             }
 
-            // 2. Limpiar bordes rojos de Contraseña
             if (lblPassError.Visibility == Visibility.Visible || txtPass.BorderBrush == _errorBorder)
             {
                 lblPassError.Visibility = Visibility.Collapsed;
@@ -112,8 +111,6 @@ namespace AppComida.Presentation
                 txtPassVisible.BorderBrush = _defaultBorder;
             }
 
-            // 3. RESETEAR EL PLACEHOLDER DE ERROR A NORMAL
-            // Si el texto del placeholder ha cambiado, lo devolvemos al original y gris
             if (lblPassPlaceholder.Text != "Introduce tu clave")
             {
                 lblPassPlaceholder.Text = "Introduce tu clave";
@@ -145,49 +142,62 @@ namespace AppComida.Presentation
             }
         }
 
-        // --- LOGIN CLICK ---
+        // --- LOGIN CLICK (LÓGICA NUEVA DE PRE-CARGA) ---
 
         private async void BtnLogin_Click(object sender, RoutedEventArgs e)
         {
             string finalPass = (txtPass.Visibility == Visibility.Visible) ? txtPass.Password : txtPassVisible.Text;
             string username = txtUser.Text.Trim();
 
-            // Reseteamos cualquier error visual previo
             ClearErrors();
 
-            // 1. Validación UI (Campos vacíos)
+            // 1. Validación de campos vacíos (Rápida)
             bool userValid = !string.IsNullOrWhiteSpace(username);
             bool passValid = finalPass.Length >= 1;
 
-            if (!userValid)
-            {
-                ShowInputError(true);
-                return;
-            }
-            if (!passValid)
-            {
-                ShowInputError(false);
-                return;
-            }
+            if (!userValid) { ShowInputError(true); return; }
+            if (!passValid) { ShowInputError(false); return; }
 
-            // 2. Loading
+            // 2. Activar Estado de "Verificando..."
             SetLoadingState(true);
-            await Task.Delay(500);
 
-            // 3. Validación Real
-            User userLogged = _logController.ValidateLogin(username, finalPass);
+            // Pequeña pausa (50ms) para asegurar que la UI se renderiza antes de seguir
+            await Task.Delay(50);
 
-            SetLoadingState(false);
+            // 3. Validación de Credenciales
+            // Usamos Task.Run para no bloquear la UI durante la verificación
+            User userLogged = null;
+            await Task.Run(() => {
+                userLogged = _logController.ValidateLogin(username, finalPass);
+            });
 
             if (userLogged != null)
             {
+                // --- ÉXITO: INICIAMOS LA FALSA ILUSIÓN ---
+
+                // A. Cambiamos el texto para dar feedback de progreso
+                if (btnLoader.Children.Count > 1 && btnLoader.Children[1] is TextBlock txtLoader)
+                {
+                    txtLoader.Text = "Cargando sistema...";
+                }
+
+                // Permitimos que la UI se actualice con el nuevo texto
+                await Task.Delay(50);
+
+                // B. Instanciamos MainWindow (CARGA PESADA REAL)
+                // Al hacer el 'new', se ejecuta 'InicializarVistas' en MainWindow, 
+                // lo que carga Productos, Clientes y Pedidos desde los XMLs.
+                // El spinner seguirá girando mientras el procesador trabaja aquí.
                 MainWindow main = new MainWindow(userLogged);
+
+                // C. Cuando el constructor termina, todo está listo. Mostramos.
                 main.Show();
                 this.Close();
             }
             else
             {
                 // ERROR DE CREDENCIALES
+                SetLoadingState(false);
                 ShowGenericLoginError();
             }
         }
@@ -209,24 +219,19 @@ namespace AppComida.Presentation
             }
         }
 
-        // AQUÍ ESTÁ EL CAMBIO CLAVE: Error en el Placeholder
         private void ShowGenericLoginError()
         {
-            // 1. Limpiar campos de contraseña (esto hace visible el placeholder)
             txtPass.Password = "";
             txtPassVisible.Text = "";
 
-            // 2. CAMBIAR el texto del Placeholder a Error y ponerlo ROJO
             lblPassPlaceholder.Text = "Usuario o contraseña incorrectos";
-            lblPassPlaceholder.Foreground = (Brush)FindResource("ErrorColor"); // Rojo definido en XAML
+            lblPassPlaceholder.Foreground = (Brush)FindResource("ErrorColor");
             lblPassPlaceholder.Visibility = Visibility.Visible;
 
-            // 3. Poner bordes rojos en ambos inputs (seguridad)
             txtUser.BorderBrush = _errorBorder;
             txtPass.BorderBrush = _errorBorder;
             txtPassVisible.BorderBrush = _errorBorder;
 
-            // 4. Dar foco a la contraseña
             if (txtPass.Visibility == Visibility.Visible) txtPass.Focus();
             else txtPassVisible.Focus();
         }
@@ -245,6 +250,13 @@ namespace AppComida.Presentation
                 btnLogin.IsEnabled = true;
                 btnText.Visibility = Visibility.Visible;
                 btnLoader.Visibility = Visibility.Collapsed;
+
+                // Restaurar texto original por si hubo error tras "Cargando sistema..."
+                if (btnLoader.Children.Count > 1 && btnLoader.Children[1] is TextBlock txtLoader)
+                {
+                    txtLoader.Text = "Verificando...";
+                }
+
                 Cursor = Cursors.Arrow;
             }
         }

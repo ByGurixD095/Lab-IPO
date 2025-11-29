@@ -376,7 +376,23 @@
                             <Border.Effect>
                                 <DropShadowEffect BlurRadius="10" ShadowDepth="4" Opacity="0.03"/>
                             </Border.Effect>
-                            <Frame x:Name="MainFrame" NavigationUIVisibility="Hidden" Background="Transparent" ClipToBounds="False"/>
+
+                            <!-- AQUI ESTÁ EL CAMBIO IMPORTANTE: MÚLTIPLES FRAMES EN VEZ DE UNO SOLO -->
+                            <!-- Todos apilados, y jugaremos con la Visibilidad -->
+                            <Grid>
+                                <!-- 1. PERFIL (Inicio) -->
+                                <Frame x:Name="FrameProfile" NavigationUIVisibility="Hidden" Background="Transparent" ClipToBounds="False"/>
+
+                                <!-- 2. PEDIDOS -->
+                                <Frame x:Name="FramePedidos" NavigationUIVisibility="Hidden" Background="Transparent" ClipToBounds="False" Visibility="Collapsed"/>
+
+                                <!-- 3. PRODUCTOS -->
+                                <Frame x:Name="FrameProductos" NavigationUIVisibility="Hidden" Background="Transparent" ClipToBounds="False" Visibility="Collapsed"/>
+
+                                <!-- 4. CLIENTES -->
+                                <Frame x:Name="FrameClientes" NavigationUIVisibility="Hidden" Background="Transparent" ClipToBounds="False" Visibility="Collapsed"/>
+                            </Grid>
+
                         </Border>
                     </Grid>
                 </Grid>

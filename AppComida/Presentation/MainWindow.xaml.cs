@@ -15,6 +15,7 @@ namespace AppComida.Presentation
     {
         private readonly User _userLogged;
         private readonly LoginController _controller;
+
         public MainWindow(User user)
         {
             InitializeComponent();
@@ -23,9 +24,8 @@ namespace AppComida.Presentation
 
             CargarDatosUsuario(user);
             setDate(null, null);
-            
-            // --- GESTIÓN DE ESTADOS DE TOGGLE BUTTONS ---
 
+            // --- GESTIÓN DE ESTADOS DE TOGGLE BUTTONS ---
             if (MenuSalir != null)
             {
                 MenuSalir.Opened += (s, e) => ToggleSalir.IsChecked = true;
@@ -38,11 +38,24 @@ namespace AppComida.Presentation
                 MenuAyuda.Closed += (s, e) => ToggleAyuda.IsChecked = false;
             }
 
-            // NAVEGACIÓN INICIAL
-            if (MainFrame != null)
-            {
-                MainFrame.Navigate(new UserProfilePage(_userLogged));
-            }
+            // --- CARGA INICIAL DE TODAS LAS VISTAS ---
+            // Cargamos las 4 páginas en memoria una sola vez
+            InicializarVistas();
+        }
+
+        private void InicializarVistas()
+        {
+            // 1. Perfil (Visible por defecto)
+            if (FrameProfile != null) FrameProfile.Navigate(new UserProfilePage(_userLogged));
+
+            // 2. Pedidos (Oculto)
+            if (FramePedidos != null) FramePedidos.Navigate(new PedidosPage());
+
+            // 3. Productos (Oculto)
+            if (FrameProductos != null) FrameProductos.Navigate(new ProductosPage());
+
+            // 4. Clientes (Oculto)
+            if (FrameClientes != null) FrameClientes.Navigate(new ClientesPage());
         }
 
         // --- GESTIÓN DE VENTANA ---
@@ -118,15 +131,9 @@ namespace AppComida.Presentation
 
         private void MenuItemPerfil_Click(object sender, RoutedEventArgs e)
         {
-            // 1. Desactivar botones laterales
             DesmarcarNavegacion();
-
             UpdateHeader("Mi Perfil", "Datos del usuario y estadísticas");
-
-            if (MainFrame != null)
-            {
-                MainFrame.Navigate(new UserProfilePage(_userLogged));
-            }
+            NavigateToView("UserProfile");
         }
 
         private void MenuItemAcercaDe_Click(object sender, RoutedEventArgs e)
@@ -140,14 +147,12 @@ namespace AppComida.Presentation
             info.ShowDialog();
         }
 
-        // MÉTODO ARREGLADO PARA QUITAR LA SELECCIÓN NARANJA
         private void DesmarcarNavegacion()
         {
             if (BtnPedidos != null) BtnPedidos.IsChecked = false;
             if (BtnProductos != null) BtnProductos.IsChecked = false;
             if (BtnClientes != null) BtnClientes.IsChecked = false;
         }
-
 
         private void GuardarHoraSalida()
         {
@@ -156,7 +161,6 @@ namespace AppComida.Presentation
                 _controller.RegisterExit(_userLogged.username);
             }
         }
-
 
         // ==========================================
         //           SECCIÓN MENÚ SALIR
@@ -185,7 +189,6 @@ namespace AppComida.Presentation
             if (confirm.ShowDialog() == true)
             {
                 GuardarHoraSalida();
-
                 LoginWindow loginWindow = new LoginWindow();
                 loginWindow.Show();
                 this.Close();
@@ -203,7 +206,6 @@ namespace AppComida.Presentation
             if (confirm.ShowDialog() == true)
             {
                 GuardarHoraSalida();
-
                 Application.Current.Shutdown();
             }
         }
@@ -262,7 +264,6 @@ namespace AppComida.Presentation
         {
             if (sender is RadioButton radio && radio.IsChecked == true)
             {
-
                 string targetViewTag = radio.CommandParameter?.ToString();
 
                 if (!string.IsNullOrEmpty(targetViewTag))
@@ -273,23 +274,29 @@ namespace AppComida.Presentation
             }
         }
 
+        // NUEVA LÓGICA: ALTERNAR VISIBILIDAD
         private void NavigateToView(string viewTag)
         {
-            if (MainFrame == null) return;
+            // 1. Ocultar todos
+            if (FrameProfile != null) FrameProfile.Visibility = Visibility.Collapsed;
+            if (FramePedidos != null) FramePedidos.Visibility = Visibility.Collapsed;
+            if (FrameProductos != null) FrameProductos.Visibility = Visibility.Collapsed;
+            if (FrameClientes != null) FrameClientes.Visibility = Visibility.Collapsed;
 
+            // 2. Mostrar el seleccionado
             switch (viewTag)
             {
                 case "PedidosView":
-                    MainFrame.Navigate(new PedidosPage());
+                    if (FramePedidos != null) FramePedidos.Visibility = Visibility.Visible;
                     break;
                 case "ProductosView":
-                    MainFrame.Navigate(new ProductosPage());
+                    if (FrameProductos != null) FrameProductos.Visibility = Visibility.Visible;
                     break;
                 case "ClientesView":
-                    MainFrame.Navigate(new ClientesPage());
+                    if (FrameClientes != null) FrameClientes.Visibility = Visibility.Visible;
                     break;
                 default:
-                    MainFrame.Navigate(new UserProfilePage(_userLogged));
+                    if (FrameProfile != null) FrameProfile.Visibility = Visibility.Visible;
                     break;
             }
         }

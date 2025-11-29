@@ -96,6 +96,10 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
+    <Page Include="Presentation\ProductDetailWindow.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="Presentation\ProductosPage.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -117,6 +121,9 @@
   <ItemGroup>
     <Compile Include="Presentation\PedidosPage.xaml.cs">
       <DependentUpon>PedidosPage.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Presentation\ProductDetailWindow.xaml.cs">
+      <DependentUpon>ProductDetailWindow.xaml</DependentUpon>
     </Compile>
     <Compile Include="Presentation\ProductosPage.xaml.cs">
       <DependentUpon>ProductosPage.xaml</DependentUpon>
