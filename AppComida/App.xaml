@@ -5,7 +5,18 @@
     <Application.Resources>
         <ResourceDictionary>
             <ResourceDictionary.MergedDictionaries>
-                <ResourceDictionary Source="/Themes/TemaClaro.xaml"/>
+                <!-- 1. ACTIVOS BÁSICOS -->
+                <ResourceDictionary Source="Themes/Icons.xaml"/>
+
+                <!-- 2. ESTILOS DE CONTROLES GENERALES -->
+                <ResourceDictionary Source="Themes/ControlStyles.xaml"/>
+
+                <!-- 3. ESTILOS DE DOMINIO -->
+                <ResourceDictionary Source="Themes/ProductStyles.xaml"/>
+                <ResourceDictionary Source="Themes/ClientStyles.xaml"/>
+
+                <!-- 4. TEMA POR DEFECTO -->
+                <ResourceDictionary Source="Themes/TemaClaro.xaml"/>
             </ResourceDictionary.MergedDictionaries>
         </ResourceDictionary>
     </Application.Resources>

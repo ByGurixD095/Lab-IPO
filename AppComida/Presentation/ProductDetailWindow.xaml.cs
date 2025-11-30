@@ -1,151 +1,232 @@
 ﻿using AppComida.Domain;
 using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
 using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Shapes;
+using System.Windows.Media.Imaging; // Necesario para BitmapImage
 
 namespace AppComida.Presentation
 {
     public partial class ProductDetailWindow : Window
     {
-        private Product _producto;
         private bool _isEditMode = false;
+        private bool _isCreationMode = false;
+        private Product _productCurrent;
 
-        // Flags para que la ventana padre sepa si se ha tocado algo
-        public bool ActionDelete { get; private set; } = false;
         public bool ActionEdit { get; private set; } = false;
+        public bool ActionDelete { get; private set; } = false;
+        public Product ProductResult { get; private set; }
 
-        public ProductDetailWindow(Product producto)
+        // CONSTRUCTOR 1: Ver/Editar
+        public ProductDetailWindow(Product product)
         {
             InitializeComponent();
-            _producto = producto;
-            CargarDatos();
+            _productCurrent = product;
+            _isCreationMode = false;
+            LoadData();
         }
 
-        private void CargarDatos()
+        // CONSTRUCTOR 2: Crear
+        public ProductDetailWindow(bool isNewProduct)
         {
-            if (_producto == null) return;
-
-            // Pongo los datos en los TextBlocks
-            TxtNombre.Text = _producto.Name;
-            TxtPrecio.Text = $"{_producto.Price:0.00} €";
-            TxtIngredientes.Text = string.IsNullOrEmpty(_producto.Ingredients) ? "Sin información de ingredientes." : _producto.Ingredients;
-            TxtCategoria.Text = string.IsNullOrEmpty(_producto.SubCategory) ? _producto.Category : _producto.SubCategory;
-
-            // Intento cargar la imagen si tiene ruta
-            if (!string.IsNullOrEmpty(_producto.ImagePath))
-            {
-                CargarImagenSegura(_producto.ImagePath);
-            }
-            else
-            {
-                ImgProducto.Source = null;
-            }
-
-            // Muestro la lista de alérgenos bonita
-            RefreshAllergensList();
+            InitializeComponent();
+            _isCreationMode = isNewProduct;
+            if (_isCreationMode) SetupCreationMode();
         }
 
-        private void RefreshAllergensList()
+        private void SetupCreationMode()
         {
-            if (!string.IsNullOrEmpty(_producto.Allergens))
+            this.Title = "Nuevo Producto";
+
+            if (txtMain != null) txtMain.Text = "Crear Producto";
+
+            if (iconMain != null && Application.Current.Resources.Contains("IconSave"))
             {
-                // Separo por comas o punto y coma por si acaso
-                var listaAlergenos = _producto.Allergens
-                    .Split(new[] { ',', ';' }, StringSplitOptions.RemoveEmptyEntries)
-                    .Select(a => a.Trim())
-                    .ToList();
-                ListAlergenos.ItemsSource = listaAlergenos;
+                iconMain.Data = (Geometry)Application.Current.Resources["IconSave"];
             }
-            else
-            {
-                ListAlergenos.ItemsSource = new List<string> { "Sin alérgenos registrados" };
-            }
+
+            ToggleEditMode(true);
+
+            // Limpiar campos
+            InputName.Text = "";
+            InputPrice.Text = "";
+            InputIngredientes.Text = "";
+            ComboCategory.SelectedIndex = 0;
+
+            // [CORRECCIÓN] Cargar imagen por defecto en modo creación
+            InputImage.Text = "/Assets/Images/default_food.png"; // Ruta placeholder
+            CargarImagen(InputImage.Text);
         }
 
-        // Método tocho para cargar imágenes evitando bloqueos y errores de rutas
-        private void CargarImagenSegura(string ruta)
+        private void LoadData()
         {
+            if (_productCurrent == null) return;
+
+            // Datos Lectura
+            TxtNombre.Text = _productCurrent.Name;
+            TxtPrecio.Text = _productCurrent.Price.ToString("F2");
+            TxtIngredientes.Text = _productCurrent.Ingredients;
+            if (TxtCategoria != null) TxtCategoria.Text = _productCurrent.Category;
+
+            // Datos Edición
+            InputName.Text = _productCurrent.Name;
+            InputPrice.Text = _productCurrent.Price.ToString();
+            InputIngredientes.Text = _productCurrent.Ingredients;
+            InputImage.Text = _productCurrent.ImagePath; // Rellenar input URL oculto
+
+            // [CORRECCIÓN] CARGAR LA IMAGEN VISUALMENTE
+            CargarImagen(_productCurrent.ImagePath);
+
+            string[] alergenosMock = { "Gluten", "Lácteos" };
+            ListAlergenos.ItemsSource = alergenosMock;
+        }
+
+        // [NUEVO MÉTODO] Lógica segura para cargar imágenes
+        private void CargarImagen(string path)
+        {
+            if (string.IsNullOrEmpty(path)) return;
+
             try
             {
-                if (string.IsNullOrWhiteSpace(ruta)) return;
-                var bitmap = new BitmapImage();
-                bitmap.BeginInit();
-                bitmap.CacheOption = BitmapCacheOption.OnLoad; // Para que no bloquee el fichero
-
-                if (ruta.StartsWith("http", StringComparison.OrdinalIgnoreCase))
+                // Detectar si es web (http) o local
+                Uri imageUri;
+                if (path.StartsWith("http"))
                 {
-                    bitmap.UriSource = new Uri(ruta, UriKind.Absolute);
+                    imageUri = new Uri(path, UriKind.Absolute);
                 }
                 else
                 {
-                    // Apaño para las barras de directorios
-                    string cleanPath = ruta.Replace('\\', '/');
-                    if (System.IO.Path.IsPathRooted(cleanPath) && File.Exists(cleanPath))
-                    {
-                        bitmap.UriSource = new Uri(cleanPath, UriKind.Absolute);
-                    }
-                    else
-                    {
-                        // Si es ruta relativa dentro del proyecto
-                        if (!cleanPath.StartsWith("/")) cleanPath = "/" + cleanPath;
-                        bitmap.UriSource = new Uri($"pack://application:,,,{cleanPath}", UriKind.Absolute);
-                    }
+                    // Asumimos ruta relativa local
+                    imageUri = new Uri(path, UriKind.Relative);
                 }
+
+                BitmapImage bitmap = new BitmapImage();
+                bitmap.BeginInit();
+                bitmap.UriSource = imageUri;
+                bitmap.CacheOption = BitmapCacheOption.OnLoad; // Importante para liberar fichero
                 bitmap.EndInit();
+
                 ImgProducto.Source = bitmap;
             }
-            catch
+            catch (Exception)
             {
-                // Si falla lo de arriba, intento buscarlo en local a lo bruto
-                // Aqui no pongo ventana de error porque si falla al cargar la ventana queda feo que salten popups
-                try
-                {
-                    if (!ruta.StartsWith("http", StringComparison.OrdinalIgnoreCase))
-                    {
-                        string rutaFisica = System.IO.Path.Combine(AppDomain.CurrentDomain.BaseDirectory, ruta.Replace('/', '\\').TrimStart('\\'));
-                        if (File.Exists(rutaFisica))
-                        {
-                            var bmp = new BitmapImage();
-                            bmp.BeginInit();
-                            bmp.CacheOption = BitmapCacheOption.OnLoad;
-                            bmp.UriSource = new Uri(rutaFisica, UriKind.Absolute);
-                            bmp.EndInit();
-                            ImgProducto.Source = bmp;
-                        }
-                    }
-                }
-                catch { } // Si falla aquí ya me rindo
+                // Si falla (ej: ruta no existe), no hacemos nada o ponemos una por defecto
+                // ImgProducto.Source = null; 
             }
         }
 
-
-        // Botón principal
         private void BtnMainAction_Click(object sender, RoutedEventArgs e)
         {
-            if (!_isEditMode)
+            if (_isCreationMode)
             {
-                EnterEditMode();
+                ProductResult = new Product
+                {
+                    Name = InputName.Text,
+                    Price = double.TryParse(InputPrice.Text, out double p) ? p : 0,
+                    Ingredients = InputIngredientes.Text,
+                    Category = (ComboCategory.SelectedItem as ComboBoxItem)?.Content.ToString() ?? "Platos",
+                    SubCategory = "Todo",
+                    IsAvailable = true,
+                    // Usamos lo que haya escrito en el input oculto de imagen
+                    ImagePath = string.IsNullOrEmpty(InputImage.Text) ? "/Assets/Images/default_food.png" : InputImage.Text
+                };
+
+                var confirm = new ConfirmWindow(
+                    "El producto se ha creado correctamente y añadido al catálogo.",
+                    "Producto Creado",
+                    ConfirmType.Success);
+                confirm.Owner = this;
+                confirm.ShowDialog();
+
+                ActionEdit = true;
+                this.DialogResult = true;
+                this.Close();
             }
             else
             {
-                SaveChanges();
+                if (!_isEditMode)
+                {
+                    ToggleEditMode(true);
+                }
+                else
+                {
+                    var confirm = new ConfirmWindow(
+                        "¿Deseas guardar los cambios realizados?",
+                        "Guardar Cambios",
+                        ConfirmType.Question);
+                    confirm.Owner = this;
+
+                    if (confirm.ShowDialog() == true)
+                    {
+                        _productCurrent.Name = InputName.Text;
+                        _productCurrent.Price = double.TryParse(InputPrice.Text, out double p) ? p : 0;
+                        _productCurrent.Ingredients = InputIngredientes.Text;
+                        _productCurrent.ImagePath = InputImage.Text; // Guardar nueva imagen si cambió
+
+                        // [CORRECCIÓN] Actualizar la imagen visualmente al guardar
+                        CargarImagen(_productCurrent.ImagePath);
+
+                        ActionEdit = true;
+                        ToggleEditMode(false);
+                        LoadData();
+                    }
+                }
             }
         }
 
-        // Botón secundario: borrar o cancelar edición
+        private void ToggleEditMode(bool enableEdit)
+        {
+            _isEditMode = enableEdit;
+
+            Visibility viewVis = enableEdit ? Visibility.Collapsed : Visibility.Visible;
+            Visibility editVis = enableEdit ? Visibility.Visible : Visibility.Collapsed;
+
+            TxtNombre.Visibility = viewVis;
+            TxtPrecio.Visibility = viewVis;
+            PillCategoria.Visibility = viewVis;
+            TxtIngredientes.Visibility = viewVis;
+            ListAlergenos.Visibility = viewVis;
+
+            InputName.Visibility = editVis;
+            PanelEditPrice.Visibility = editVis;
+            PanelEditCategoria.Visibility = editVis;
+            InputIngredientes.Visibility = editVis;
+            InputAlergenos.Visibility = editVis;
+            PanelEditImage.Visibility = editVis; // El input de URL de imagen se muestra al editar
+
+            if (!_isCreationMode)
+            {
+                if (txtMain != null)
+                {
+                    txtMain.Text = enableEdit ? "Guardar Cambios" : "Editar Producto";
+                }
+
+                if (iconMain != null)
+                {
+                    string key = enableEdit ? "IconSave" : "IconPencil";
+                    if (Application.Current.Resources.Contains(key))
+                        iconMain.Data = (Geometry)Application.Current.Resources[key];
+                }
+            }
+        }
+
         private void BtnSecondaryAction_Click(object sender, RoutedEventArgs e)
         {
-            if (!_isEditMode)
+            if (_isCreationMode)
             {
-                ConfirmWindow confirm = new ConfirmWindow(
-                    "¿Estás seguro de que deseas eliminar este producto?\nNo podrás deshacer esta acción.",
+                this.Close();
+            }
+            else if (_isEditMode)
+            {
+                // Al cancelar edición, recargamos la imagen original por si la cambiaron en el input
+                LoadData();
+                ToggleEditMode(false);
+            }
+            else
+            {
+                var confirm = new ConfirmWindow(
+                    $"¿Seguro que quieres eliminar '{_productCurrent?.Name}'?\nEsta acción no se puede deshacer.",
                     "Eliminar Producto",
                     ConfirmType.Danger);
                 confirm.Owner = this;
@@ -153,159 +234,16 @@ namespace AppComida.Presentation
                 if (confirm.ShowDialog() == true)
                 {
                     ActionDelete = true;
-                    this.DialogResult = true;
                     this.Close();
                 }
             }
-            else
-            {
-                ExitEditMode();
-            }
         }
 
-        private void EnterEditMode()
-        {
-            _isEditMode = true;
-
-            //inputs con lo que ya tiene el producto
-            InputName.Text = _producto.Name;
-            InputPrice.Text = _producto.Price.ToString();
-            InputIngredientes.Text = _producto.Ingredients;
-            InputAlergenos.Text = _producto.Allergens;
-            InputSubCategory.Text = _producto.SubCategory;
-            InputImage.Text = _producto.ImagePath;
-
-            // categoría correcta en el combo
-            foreach (ComboBoxItem item in ComboCategory.Items)
-            {
-                if (item.Content.ToString() == _producto.Category)
-                {
-                    ComboCategory.SelectedItem = item;
-                    break;
-                }
-            }
-
-            //visibilidad de paneles
-            ToggleVisibility(Visibility.Collapsed, Visibility.Visible);
-            UpdateButtonsState(true);
-        }
-
-        private void SaveChanges()
-        {
-            // Validaciones básicas con la ventana de Aviso (Warning)
-            if (string.IsNullOrWhiteSpace(InputName.Text))
-            {
-                var alert = new ConfirmWindow("El nombre no puede estar vacío.", "Faltan datos", ConfirmType.Warning);
-                alert.Owner = this;
-                alert.ShowDialog();
-                return;
-            }
-
-            // Si el precio no es numero, otro aviso
-            if (!double.TryParse(InputPrice.Text, out double newPrice))
-            {
-                var alert = new ConfirmWindow("El precio tiene que ser un número válido.", "Error de formato", ConfirmType.Warning);
-                alert.Owner = this;
-                alert.ShowDialog();
-                return;
-            }
-
-            try
-            {
-                // Actualizar producto
-                _producto.Name = InputName.Text;
-                _producto.Price = newPrice;
-                _producto.Ingredients = InputIngredientes.Text;
-                _producto.Allergens = InputAlergenos.Text;
-                _producto.SubCategory = InputSubCategory.Text;
-                _producto.Category = (ComboCategory.SelectedItem as ComboBoxItem)?.Content.ToString() ?? "Platos";
-                _producto.ImagePath = InputImage.Text;
-
-                // Marco que hemos editado para que el padre actualice la lista
-                ActionEdit = true;
-                CargarDatos();
-                ExitEditMode();
-
-                // Ventana de éxito.
-                var success = new ConfirmWindow("El producto se ha guardado correctamente.", "Operación Exitosa", ConfirmType.Success);
-                success.Owner = this; // Esto hace que salga centrada sobre esta ventana
-                success.ShowDialog();
-
-                // Ahora sí, cerramos el chiringuito devolviendo true
-                this.DialogResult = true;
-                this.Close();
-            }
-            catch (Exception ex)
-            {
-                // Si explota algo raro, saco la ventana roja
-                var error = new ConfirmWindow("Ha ocurrido un error al guardar: " + ex.Message, "Error Crítico", ConfirmType.Danger);
-                error.Owner = this;
-                error.ShowDialog();
-            }
-        }
-
-        private void ExitEditMode()
-        {
-            _isEditMode = false;
-            ToggleVisibility(Visibility.Visible, Visibility.Collapsed);
-            UpdateButtonsState(false);
-        }
-
-        // Helper para mostrar/ocultar cosas rápido
-        private void ToggleVisibility(Visibility readMode, Visibility editMode)
-        {
-            TxtNombre.Visibility = readMode;
-            TxtPrecio.Visibility = readMode;
-            TxtIngredientes.Visibility = readMode;
-            ListAlergenos.Visibility = readMode;
-            PillCategoria.Visibility = readMode;
-
-            InputName.Visibility = editMode;
-            PanelEditPrice.Visibility = editMode;
-            InputIngredientes.Visibility = editMode;
-            InputAlergenos.Visibility = editMode;
-            PanelEditCategoria.Visibility = editMode;
-            PanelEditImage.Visibility = editMode;
-        }
-
-        // Cambio colores e iconos de los botones dinámicamente
-        private void UpdateButtonsState(bool isEditing)
-        {
-            if (isEditing)
-            {
-                SetButtonContent(BtnMainAction, "Guardar Cambios", "IconSave", "#4CAF50");
-                SetButtonContent(BtnSecondaryAction, "", "IconCancel", "#9E9E9E");
-                BtnSecondaryAction.ToolTip = "Cancelar edición";
-            }
-            else
-            {
-                SetButtonContent(BtnMainAction, "Editar Producto", "IconPencil", "#FF6F00");
-                SetButtonContent(BtnSecondaryAction, "", "IconTrash", "#D32F2F");
-                BtnSecondaryAction.ToolTip = "Eliminar permanentemente";
-            }
-        }
-
-        // Método auxiliar para no repetir código cambiando estilos de botón
-        private void SetButtonContent(Button btn, string text, string iconResourceKey, string colorHex)
-        {
-            var border = btn.Template.FindName("bdr", btn) as Border;
-            if (border != null) border.Background = (Brush)new BrushConverter().ConvertFrom(colorHex);
-
-            var txtBlock = btn.Template.FindName("txt", btn) as TextBlock;
-            if (txtBlock != null) txtBlock.Text = text;
-
-            var path = btn.Template.FindName("icon", btn) as System.Windows.Shapes.Path;
-            if (path != null) path.Data = (Geometry)FindResource(iconResourceKey);
-        }
-
-        private void BtnCerrar_Click(object sender, RoutedEventArgs e)
-        {
-            this.Close();
-        }
+        private void BtnCerrar_Click(object sender, RoutedEventArgs e) => this.Close();
 
         private void Window_MouseDown(object sender, MouseButtonEventArgs e)
         {
             if (e.ChangedButton == MouseButton.Left) this.DragMove();
         }
     }
-}  
+}

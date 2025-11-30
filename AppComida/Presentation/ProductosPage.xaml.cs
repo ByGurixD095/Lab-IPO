@@ -15,7 +15,6 @@ namespace AppComida.Presentation
         private List<Product> _productsDb;
         public ObservableCollection<Product> Productos { get; set; }
 
-        // Filtros por defecto
         private string _filtroCategoria = "Platos";
         private string _filtroSubCategoria = "Todo";
 
@@ -35,7 +34,6 @@ namespace AppComida.Presentation
             AplicarFiltros();
         }
 
-        // Detecta cuando cambia un radio button de los filtros
         private void Filtro_Checked(object sender, RoutedEventArgs e)
         {
             if (sender is RadioButton rb && rb.Tag != null)
@@ -47,7 +45,6 @@ namespace AppComida.Presentation
             }
         }
 
-        // Lógica de filtrado con LINQ
         private void AplicarFiltros()
         {
             if (_productsDb == null) return;
@@ -60,12 +57,10 @@ namespace AppComida.Presentation
             if (_filtroSubCategoria != "Todo")
                 consulta = consulta.Where(p => p.SubCategory != null && p.SubCategory.Equals(_filtroSubCategoria, StringComparison.OrdinalIgnoreCase));
 
-            // Limpio la lista visible y añado los filtrados
             Productos.Clear();
             foreach (var p in consulta) Productos.Add(p);
         }
 
-        // Truco para abrir el menú contextual con click izquierdo en el botón
         private void BtnOpciones_Click(object sender, RoutedEventArgs e)
         {
             if (sender is ToggleButton btn && btn.ContextMenu != null)
@@ -77,17 +72,9 @@ namespace AppComida.Presentation
             }
         }
 
-        private void OpVer_Click(object sender, RoutedEventArgs e)
-        {
-            AbrirFichaProducto(sender);
-        }
+        private void OpVer_Click(object sender, RoutedEventArgs e) => AbrirFichaProducto(sender);
+        private void OpEditar_Click(object sender, RoutedEventArgs e) => AbrirFichaProducto(sender);
 
-        private void OpEditar_Click(object sender, RoutedEventArgs e)
-        {
-            AbrirFichaProducto(sender);
-        }
-
-        // Abro la ventana de detalle, busco el ID por el tag
         private void AbrirFichaProducto(object sender)
         {
             int id = ObtenerId(sender);
@@ -95,18 +82,18 @@ namespace AppComida.Presentation
 
             if (prod != null)
             {
+                // Constructor para VER/EDITAR
                 ProductDetailWindow detalle = new ProductDetailWindow(prod);
                 detalle.Owner = Window.GetWindow(this);
-
                 detalle.ShowDialog();
 
-                // Compruebo qué ha pasado al cerrar la ventana
                 if (detalle.ActionDelete)
                 {
                     EliminarProducto(prod);
                 }
                 else if (detalle.ActionEdit)
                 {
+                    // Si se editó, refrescamos la lista
                     AplicarFiltros();
                 }
             }
@@ -133,33 +120,21 @@ namespace AppComida.Presentation
             }
         }
 
-        // Botón grande de añadir
+        // --- BOTÓN AÑADIR (MODIFICADO) ---
         private void BtnAnadir_Click(object sender, RoutedEventArgs e)
         {
-            // Creo un producto dummy para poder abrir la ventana
-            var nuevoProd = new Product
-            {
-                // Calculo el ID sumando 1 al máximo (un poco chapuza pero funciona)
-                Id = _productsDb.Any() ? _productsDb.Max(p => p.Id) + 1 : 1,
-                Name = "NUEVO (Click Editar)",
-                Category = "Platos",
-                SubCategory = "Todo",
-                Price = 0,
-                IsAvailable = true,
-                Ingredients = "",
-                Allergens = "",
-                ImagePath = ""
-            };
-
-            // Reutilizo la ventana de detalle
-            ProductDetailWindow detalle = new ProductDetailWindow(nuevoProd);
+            // Constructor para CREAR (pasamos true)
+            ProductDetailWindow detalle = new ProductDetailWindow(true);
             detalle.Owner = Window.GetWindow(this);
-
             detalle.ShowDialog();
 
-            // Si le dio a guardar, lo añado a la lista de verdad
-            if (detalle.ActionEdit)
+            // Verificamos si se guardó correctamente
+            if (detalle.ActionEdit && detalle.ProductResult != null)
             {
+                // Asignamos un ID temporal si es necesario
+                var nuevoProd = detalle.ProductResult;
+                nuevoProd.Id = _productsDb.Any() ? _productsDb.Max(p => p.Id) + 1 : 1;
+
                 _productsDb.Add(nuevoProd);
                 AplicarFiltros();
             }
@@ -167,13 +142,11 @@ namespace AppComida.Presentation
 
         private void EliminarProducto(Product prod)
         {
-            // Borro de la lista total y de la observable
             _productsDb.Remove(prod);
             Productos.Remove(prod);
             AplicarFiltros();
         }
 
-        // Helper para sacar el ID del Tag del elemento que lanza el evento
         private int ObtenerId(object sender)
         {
             if (sender is MenuItem item && item.Tag != null && int.TryParse(item.Tag.ToString(), out int id))
@@ -183,4 +156,4 @@ namespace AppComida.Presentation
             return 0;
         }
     }
-} 
+}

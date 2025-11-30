@@ -14,83 +14,10 @@
         Loaded="Window_Loaded"
         KeyDown="Window_KeyDown">
 
-    <Window.Resources>
-        <LinearGradientBrush x:Key="BrandGradient" StartPoint="0,0" EndPoint="1,1">
-            <GradientStop Color="#FF8F00" Offset="0.0"/>
-            <GradientStop Color="#FF6F00" Offset="1.0"/>
-        </LinearGradientBrush>
-        <SolidColorBrush x:Key="LeftPanelBackground" Color="#37474F"/>
-        <SolidColorBrush x:Key="CardBackground" Color="#FFFFFF"/>
-        <SolidColorBrush x:Key="TextPrimary" Color="#263238"/>
-        <SolidColorBrush x:Key="TextSecondary" Color="#78909C"/>
-        <SolidColorBrush x:Key="InputBackground" Color="#F5F5F5"/>
-        <SolidColorBrush x:Key="FocusColor" Color="#FF6F00"/>
-        <SolidColorBrush x:Key="ErrorColor" Color="#D32F2F"/>
-        <SolidColorBrush x:Key="PlaceholderColor" Color="#9E9E9E"/>
-
-        <Style x:Key="BtnPrimary" TargetType="Button">
-            <Setter Property="Background" Value="{StaticResource BrandGradient}"/>
-            <Setter Property="Foreground" Value="White"/>
-            <Setter Property="FontSize" Value="16"/>
-            <Setter Property="FontWeight" Value="Bold"/>
-            <Setter Property="Cursor" Value="Hand"/>
-            <Setter Property="Template">
-                <Setter.Value>
-                    <ControlTemplate TargetType="Button">
-                        <Border x:Name="border" Background="{TemplateBinding Background}" CornerRadius="8">
-                            <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"/>
-                        </Border>
-                        <ControlTemplate.Triggers>
-                            <Trigger Property="IsMouseOver" Value="True">
-                                <Setter TargetName="border" Property="Opacity" Value="0.9"/>
-                            </Trigger>
-                            <Trigger Property="IsPressed" Value="True">
-                                <Setter TargetName="border" Property="Background" Value="#E65100"/>
-                            </Trigger>
-                            <Trigger Property="IsEnabled" Value="False">
-                                <Setter TargetName="border" Property="Background" Value="#BDBDBD"/>
-                            </Trigger>
-                        </ControlTemplate.Triggers>
-                    </ControlTemplate>
-                </Setter.Value>
-            </Setter>
-        </Style>
-
-        <Style x:Key="BtnIconSystem" TargetType="Button">
-            <Setter Property="Background" Value="Transparent"/>
-            <Setter Property="Foreground" Value="#B0BEC5"/>
-            <Setter Property="FontSize" Value="16"/>
-            <Setter Property="Cursor" Value="Hand"/>
-            <Setter Property="Template">
-                <Setter.Value>
-                    <ControlTemplate TargetType="Button">
-                        <Border x:Name="border" Background="{TemplateBinding Background}" CornerRadius="20" Width="40" Height="40">
-                            <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"/>
-                        </Border>
-                        <ControlTemplate.Triggers>
-                            <Trigger Property="IsMouseOver" Value="True">
-                                <Setter TargetName="border" Property="Background" Value="#ECEFF1"/>
-                                <Setter Property="Foreground" Value="{StaticResource FocusColor}"/>
-                            </Trigger>
-                        </ControlTemplate.Triggers>
-                    </ControlTemplate>
-                </Setter.Value>
-            </Setter>
-        </Style>
-
-        <Style x:Key="ModernInputBase" TargetType="Control">
-            <Setter Property="Height" Value="55"/>
-            <Setter Property="FontSize" Value="16"/>
-            <Setter Property="Background" Value="Transparent"/>
-            <Setter Property="Foreground" Value="{StaticResource TextPrimary}"/>
-            <Setter Property="BorderThickness" Value="0,0,0,1"/>
-            <Setter Property="BorderBrush" Value="#E0E0E0"/>
-        </Style>
-    </Window.Resources>
-
     <Border Background="Transparent" MouseDown="Border_MouseDown">
         <Grid>
-            <Border Background="{StaticResource CardBackground}" CornerRadius="16" Margin="40">
+            <!-- TARJETA PRINCIPAL -->
+            <Border Background="{DynamicResource CardBackground}" CornerRadius="16" Margin="40">
                 <Border.Effect>
                     <DropShadowEffect BlurRadius="40" ShadowDepth="15" Opacity="0.25" Color="#263238"/>
                 </Border.Effect>
@@ -102,14 +29,14 @@
                     </Grid.ColumnDefinitions>
 
                     <!-- PARTE IZQUIERDA, INFO: APP NAME, MIEMBROS ...-->
-                    <Border Grid.Column="0" Background="{StaticResource LeftPanelBackground}" CornerRadius="16,0,0,16" ClipToBounds="True">
+                    <Border Grid.Column="0" Background="{DynamicResource LeftPanelBackground}" CornerRadius="16,0,0,16" ClipToBounds="True">
                         <Grid>
                             <StackPanel VerticalAlignment="Center" HorizontalAlignment="Center" Margin="30">
                                 <Border Width="110" Height="110" Background="White" CornerRadius="55" Margin="0,0,0,30">
                                     <TextBlock Text="🍽️" FontSize="55" HorizontalAlignment="Center" VerticalAlignment="Center"/>
                                 </Border>
                                 <TextBlock Text="MY TPV" Foreground="White" FontSize="36" FontWeight="Bold" HorizontalAlignment="Center"/>
-                                <TextBlock Text="Gestión Gastronómica" Foreground="{StaticResource FocusColor}" FontSize="16" FontWeight="SemiBold" Margin="0,5,0,0"/>
+                                <TextBlock Text="Gestión Gastronómica" Foreground="{DynamicResource FocusColor}" FontSize="16" FontWeight="SemiBold" Margin="0,5,0,0"/>
                             </StackPanel>
 
                             <StackPanel VerticalAlignment="Bottom" HorizontalAlignment="Center" Margin="25" Opacity="0.5">
@@ -124,6 +51,7 @@
                         </Grid>
                     </Border>
 
+                    <!-- PARTE DERECHA: FORMULARIO -->
                     <Grid Grid.Column="1" Margin="40,30,40,40">
                         <Grid.RowDefinitions>
                             <RowDefinition Height="Auto"/>
@@ -140,33 +68,33 @@
 
                             <!-- LETRERO BIENVENIDA -->
                             <StackPanel Grid.Column="0" VerticalAlignment="Top">
-                                <TextBlock Text="Bienvenido" FontSize="32" FontWeight="Bold" Foreground="{StaticResource TextPrimary}"/>
-                                <TextBlock Text="Inicia sesión para comenzar." FontSize="15" Foreground="{StaticResource TextSecondary}" Margin="0,5,0,0"/>
+                                <TextBlock Text="Bienvenido" FontSize="32" FontWeight="Bold" Foreground="{DynamicResource TextPrimary}"/>
+                                <TextBlock Text="Inicia sesión para comenzar." FontSize="15" Foreground="{DynamicResource TextSecondary}" Margin="0,5,0,0"/>
                             </StackPanel>
 
                             <!-- BOTONES DE AYUDA Y SALIDA -->
                             <StackPanel Grid.Column="1" Orientation="Horizontal" VerticalAlignment="Top" HorizontalAlignment="Right">
-                                <Button Style="{StaticResource BtnIconSystem}" Content="?" ToolTipService.InitialShowDelay="0" ToolTipService.BetweenShowDelay="0">
+                                <Button Style="{StaticResource BtnCircleIconStyle}" Content="?" ToolTipService.InitialShowDelay="0" ToolTipService.BetweenShowDelay="0">
                                     <Button.ToolTip>
                                         <ToolTip Background="Transparent" BorderThickness="0" HasDropShadow="True" Placement="Bottom">
-                                            <Border Background="{StaticResource CardBackground}" CornerRadius="8" Padding="15" BorderBrush="#E0E0E0" BorderThickness="1">
+                                            <Border Background="{DynamicResource CardBackground}" CornerRadius="8" Padding="15" BorderBrush="#E0E0E0" BorderThickness="1">
                                                 <Border.Effect>
                                                     <DropShadowEffect BlurRadius="20" ShadowDepth="5" Opacity="0.2" Color="#263238"/>
                                                 </Border.Effect>
                                                 <StackPanel MaxWidth="280">
-                                                    <TextBlock Text="Ayuda del Sistema TPV" FontWeight="Bold" FontSize="14" Foreground="{StaticResource FocusColor}" Margin="0,0,0,10"/>
-                                                    <TextBlock Foreground="{StaticResource TextPrimary}" FontSize="13" LineHeight="20" TextWrapping="Wrap">
+                                                    <TextBlock Text="Ayuda del Sistema TPV" FontWeight="Bold" FontSize="14" Foreground="{DynamicResource FocusColor}" Margin="0,0,0,10"/>
+                                                    <TextBlock Foreground="{DynamicResource TextPrimary}" FontSize="13" LineHeight="20" TextWrapping="Wrap">
                                                         1. Introduzca su nombre de usuario.<LineBreak/>
                                                         2. Introduzca su PIN asociado al usuario.<LineBreak/>
                                                         3. Pulse 'Acceder' para iniciar su sesión.
                                                     </TextBlock>
-                                                    <TextBlock Text="Si ha olvidado su clave, contacte con el gerente." Foreground="{StaticResource TextSecondary}" FontSize="11" FontStyle="Italic" Margin="0,12,0,0" TextWrapping="Wrap"/>
+                                                    <TextBlock Text="Si ha olvidado su clave, contacte con el gerente." Foreground="{DynamicResource TextSecondary}" FontSize="11" FontStyle="Italic" Margin="0,12,0,0" TextWrapping="Wrap"/>
                                                 </StackPanel>
                                             </Border>
                                         </ToolTip>
                                     </Button.ToolTip>
                                 </Button>
-                                <Button Style="{StaticResource BtnIconSystem}" Content="✕" ToolTip="Cerrar" Click="BtnCerrar_Click" Margin="5,0,0,0" Foreground="#D32F2F"/>
+                                <Button Style="{StaticResource BtnCircleIconStyle}" Content="✕" ToolTip="Cerrar" Click="BtnCerrar_Click" Margin="5,0,0,0" Foreground="{DynamicResource ErrorColor}"/>
                             </StackPanel>
                         </Grid>
 
@@ -174,49 +102,28 @@
 
                             <!-- ERROR DE USUARIO VACIO -->
                             <Grid Margin="0,0,0,5">
-                                <TextBlock Text="USUARIO" FontSize="12" FontWeight="Bold" Foreground="{StaticResource TextSecondary}" VerticalAlignment="Center"/>
+                                <TextBlock Text="USUARIO" FontSize="12" FontWeight="Bold" Foreground="{DynamicResource TextSecondary}" VerticalAlignment="Center"/>
                                 <StackPanel Orientation="Horizontal" HorizontalAlignment="Right">
-                                    <TextBlock x:Name="lblUserError" Text="⚠ Campo obligatorio" Foreground="{StaticResource ErrorColor}" FontSize="12" Visibility="Collapsed"/>
+                                    <TextBlock x:Name="lblUserError" Text="⚠ Campo obligatorio" Foreground="{DynamicResource ErrorColor}" FontSize="12" Visibility="Collapsed"/>
                                 </StackPanel>
                             </Grid>
 
                             <Grid Margin="0,0,0,25">
                                 <!-- ENTRADA USUARIO -->
                                 <TextBox x:Name="txtUser" 
-                                         Style="{StaticResource ModernInputBase}"
-                                         Padding="45,0,40,0"
-                                         VerticalContentAlignment="Center"
+                                         Style="{StaticResource InputUnderlineStyle}"
                                          TextChanged="txtUser_TextChanged"
                                          GotFocus="Input_StateChanged"
                                          LostFocus="Input_StateChanged"
-                                         KeyDown="Input_KeyDown">
-                                    <TextBox.Template>
-                                        <ControlTemplate TargetType="TextBox">
-                                            <Border x:Name="border" 
-                                                    Background="{TemplateBinding Background}" 
-                                                    CornerRadius="0" 
-                                                    BorderThickness="{TemplateBinding BorderThickness}" 
-                                                    BorderBrush="{TemplateBinding BorderBrush}">
-                                                <ScrollViewer x:Name="PART_ContentHost"/>
-                                            </Border>
-                                            <!-- FOCUS USARIOLBL -->
-                                            <ControlTemplate.Triggers>
-                                                <Trigger Property="IsKeyboardFocused" Value="True">
-                                                    <Setter TargetName="border" Property="BorderBrush" Value="{StaticResource FocusColor}"/>
-                                                    <Setter TargetName="border" Property="BorderThickness" Value="0,0,0,2"/>
-                                                </Trigger>
-                                            </ControlTemplate.Triggers>
-                                        </ControlTemplate>
-                                    </TextBox.Template>
-                                </TextBox>
+                                         KeyDown="Input_KeyDown"/>
 
-                                <!-- PLACEHOLDER DE TEXTO USERNAME -->
+                                <!-- PLACEHOLDER USERNAME -->
                                 <TextBlock x:Name="lblUserPlaceholder" Text="Introduce tu usuario" 
-                                           Foreground="{StaticResource PlaceholderColor}" FontSize="16" VerticalAlignment="Center" Margin="45,0,0,0" IsHitTestVisible="False"/>
+                                           Foreground="{DynamicResource PlaceholderColor}" FontSize="16" VerticalAlignment="Center" Margin="45,0,0,0" IsHitTestVisible="False"/>
 
-                                <TextBlock Text="👤" FontSize="18" Foreground="{StaticResource TextSecondary}" VerticalAlignment="Center" HorizontalAlignment="Left" Margin="15,0,0,0" IsHitTestVisible="False"/>
+                                <TextBlock Text="👤" FontSize="18" Foreground="{DynamicResource TextSecondary}" VerticalAlignment="Center" HorizontalAlignment="Left" Margin="15,0,0,0" IsHitTestVisible="False"/>
 
-                                <!-- ETIQUETA MAYUS ACTIVO USR -->
+                                <!-- ETIQUETA MAYUS -->
                                 <Border x:Name="badgeCapsLockUser" 
                                         Background="#FFF3E0" 
                                         BorderBrush="#FFB74D"
@@ -237,77 +144,38 @@
 
                             <!-- ERROR CONTRASEÑA -->
                             <Grid Margin="0,0,0,5">
-                                <TextBlock Text="CONTRASEÑA" FontSize="12" FontWeight="Bold" Foreground="{StaticResource TextSecondary}" VerticalAlignment="Center"/>
+                                <TextBlock Text="CONTRASEÑA" FontSize="12" FontWeight="Bold" Foreground="{DynamicResource TextSecondary}" VerticalAlignment="Center"/>
                                 <StackPanel Orientation="Horizontal" HorizontalAlignment="Right">
-                                    <TextBlock x:Name="lblPassError" Text="⚠ Campo obligatorio" Foreground="{StaticResource ErrorColor}" FontSize="12" Visibility="Collapsed"/>
+                                    <TextBlock x:Name="lblPassError" Text="⚠ Campo obligatorio" Foreground="{DynamicResource ErrorColor}" FontSize="12" Visibility="Collapsed"/>
                                 </StackPanel>
                             </Grid>
 
                             <Grid Margin="0,0,0,10">
                                 <!-- ENTRADA PASSWORD -->
                                 <PasswordBox x:Name="txtPass" 
-                                             Style="{StaticResource ModernInputBase}"
-                                             Padding="45,0,80,0"
-                                             VerticalContentAlignment="Center"
+                                             Style="{StaticResource PasswordUnderlineStyle}"
                                              PasswordChanged="txtPass_PasswordChanged"
                                              GotFocus="Input_StateChanged"
                                              LostFocus="Input_StateChanged"
-                                             KeyDown="Input_KeyDown">
-                                    <PasswordBox.Template>
-                                        <ControlTemplate TargetType="PasswordBox">
-                                            <Border x:Name="border" 
-                                                    Background="{TemplateBinding Background}" 
-                                                    CornerRadius="0" 
-                                                    BorderThickness="{TemplateBinding BorderThickness}" 
-                                                    BorderBrush="{TemplateBinding BorderBrush}">
-                                                <ScrollViewer x:Name="PART_ContentHost"/>
-                                            </Border>
-                                            <ControlTemplate.Triggers>
-                                                <Trigger Property="IsKeyboardFocused" Value="True">
-                                                    <Setter TargetName="border" Property="BorderBrush" Value="{StaticResource FocusColor}"/>
-                                                    <Setter TargetName="border" Property="BorderThickness" Value="0,0,0,2"/>
-                                                </Trigger>
-                                            </ControlTemplate.Triggers>
-                                        </ControlTemplate>
-                                    </PasswordBox.Template>
-                                </PasswordBox>
+                                             KeyDown="Input_KeyDown"/>
 
-                                <!-- CONTRASEÑA VISIBLE-INVISIBLE -->
+                                <!-- CONTRASEÑA VISIBLE (Para el toggle) -->
                                 <TextBox x:Name="txtPassVisible"
-                                         Style="{StaticResource ModernInputBase}"
+                                         Style="{StaticResource InputUnderlineStyle}"
                                          Padding="45,0,80,0"
-                                         VerticalContentAlignment="Center"
                                          Visibility="Collapsed"
                                          TextChanged="txtPassVisible_TextChanged"
                                          GotFocus="Input_StateChanged"
                                          LostFocus="Input_StateChanged"
-                                         KeyDown="Input_KeyDown">
-                                    <TextBox.Template>
-                                        <ControlTemplate TargetType="TextBox">
-                                            <Border x:Name="border" 
-                                                    Background="{TemplateBinding Background}" 
-                                                    CornerRadius="0" 
-                                                    BorderThickness="{TemplateBinding BorderThickness}" 
-                                                    BorderBrush="{TemplateBinding BorderBrush}">
-                                                <ScrollViewer x:Name="PART_ContentHost"/>
-                                            </Border>
-                                            <ControlTemplate.Triggers>
-                                                <Trigger Property="IsKeyboardFocused" Value="True">
-                                                    <Setter TargetName="border" Property="BorderBrush" Value="{StaticResource FocusColor}"/>
-                                                    <Setter TargetName="border" Property="BorderThickness" Value="0,0,0,2"/>
-                                                </Trigger>
-                                            </ControlTemplate.Triggers>
-                                        </ControlTemplate>
-                                    </TextBox.Template>
-                                </TextBox>
+                                         KeyDown="Input_KeyDown"/>
 
                                 <!-- PLACEHOLDER PASSWORD -->
                                 <TextBlock x:Name="lblPassPlaceholder" Text="Introduce tu clave" 
-                                           Foreground="{StaticResource PlaceholderColor}" FontSize="16" VerticalAlignment="Center" Margin="45,0,0,0" IsHitTestVisible="False"/>
+                                           Foreground="{DynamicResource PlaceholderColor}" FontSize="16" VerticalAlignment="Center" Margin="45,0,0,0" IsHitTestVisible="False"/>
 
-                                <TextBlock Text="🔒" FontSize="18" Foreground="{StaticResource TextSecondary}" VerticalAlignment="Center" HorizontalAlignment="Left" Margin="15,0,0,0" IsHitTestVisible="False"/>
+                                <TextBlock Text="🔒" FontSize="18" Foreground="{DynamicResource TextSecondary}" VerticalAlignment="Center" HorizontalAlignment="Left" Margin="15,0,0,0" IsHitTestVisible="False"/>
 
-                                <!-- ETIQUETA MAYUS ACTIVA PASS -->
+                                <!-- ETIQUETA MAYUS PASS -->
                                 <Border x:Name="badgeCapsLockPass" 
                                         Background="#FFF3E0" 
                                         BorderBrush="#FFB74D"
@@ -325,7 +193,7 @@
                                     </StackPanel>
                                 </Border>
 
-                                <!-- BOTÓN OCULTAR/MOSTRAR PASS -->
+                                <!-- BOTÓN MOSTRAR/OCULTAR -->
                                 <Button x:Name="btnTogglePass" 
                                         Content="👁️" 
                                         Background="Transparent" 
@@ -339,7 +207,7 @@
                             </Grid>
 
                             <!-- BOTÓN LOGIN -->
-                            <Button x:Name="btnLogin" Style="{StaticResource BtnPrimary}" Height="55" Margin="0,35,0,0" Click="BtnLogin_Click">
+                            <Button x:Name="btnLogin" Style="{StaticResource BtnGradientPrimaryStyle}" Height="55" Margin="0,35,0,0" Click="BtnLogin_Click">
                                 <Grid>
                                     <TextBlock x:Name="btnText" Text="ACCEDER AL SISTEMA"/>
                                     <StackPanel x:Name="btnLoader" Orientation="Horizontal" Visibility="Collapsed">

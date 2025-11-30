@@ -12,61 +12,8 @@
         WindowStartupLocation="CenterOwner"
         MouseDown="Window_MouseDown">
 
-    <Window.Resources>
-        <!-- ICONOS -->
-
-        <StreamGeometry x:Key="IconClose">M13.41,12l5.29-5.29c0.39-0.39,0.39-1.02,0-1.41c-0.39-0.39-1.02-0.39-1.41,0L12,10.59L6.71,5.29c-0.39-0.39-1.02-0.39-1.41,0c-0.39,0.39-0.39,1.02,0,1.41L10.59,12l-5.29,5.29c-0.39,0.39-0.39,1.02,0,1.41c0.39,0.39,1.02,0.39,1.41,0L12,13.41l5.29,5.29c0.39,0.39,1.02,0.39,1.41,0c0.39-0.39,0.39-1.02,0-1.41L13.41,12z</StreamGeometry>
-
-        <StreamGeometry x:Key="IconPencil">M20.71,7.04C21.1,6.65 21.1,6 20.71,5.63L18.37,3.29C18,2.9 17.35,2.9 16.96,3.29L15.12,5.12L18.87,8.87M3,17.25V21H6.75L17.81,9.93L14.06,6.18L3,17.25Z</StreamGeometry>
-
-        <StreamGeometry x:Key="IconSave">M15,9H5V5H15M12,19A3,3 0 0,1 9,16A3,3 0 0,1 12,13A3,3 0 0,1 15,16A3,3 0 0,1 12,19M17,3H5C3.89,3 3,3.9 3,5V19A2,2 0 0,0 5,21H19A2,2 0 0,0 21,19V7L17,3Z</StreamGeometry>
-
-        <StreamGeometry x:Key="IconTrash">M19,4H15.5L14.5,3H9.5L8.5,4H5V6H19M6,19A2,2 0 0,0 8,21H16A2,2 0 0,0 18,19V7H6V19Z</StreamGeometry>
-
-        <StreamGeometry x:Key="IconCancel">M12,2C17.53,2 22,6.47 22,12C22,17.53 17.53,22 12,22C6.47,22 2,17.53 2,12C2,6.47 6.47,2 12,2M15.59,7L12,10.59L8.41,7L7,8.41L10.59,12L7,15.59L8.41,17L12,13.41L15.59,17L17,15.59L13.41,12L17,8.41L15.59,7Z</StreamGeometry>
-
-        <!-- Estilo Botón Cerrar (X) -->
-        <Style x:Key="BtnCloseStyle" TargetType="Button">
-            <Setter Property="Background" Value="White"/>
-            <Setter Property="Foreground" Value="#546E7A"/>
-            <Setter Property="Cursor" Value="Hand"/>
-            <Setter Property="Template">
-                <Setter.Value>
-                    <ControlTemplate TargetType="Button">
-                        <Border x:Name="bdr" Background="{TemplateBinding Background}" CornerRadius="18" Width="36" Height="36">
-                            <Border.Effect>
-                                <DropShadowEffect BlurRadius="8" ShadowDepth="2" Opacity="0.15" Color="Black"/>
-                            </Border.Effect>
-                            <Path Data="{StaticResource IconClose}" 
-                                  Fill="{TemplateBinding Foreground}" 
-                                  Width="14" Height="14" 
-                                  Stretch="Uniform" 
-                                  SnapsToDevicePixels="True" 
-                                  HorizontalAlignment="Center" 
-                                  VerticalAlignment="Center"/>
-                        </Border>
-                        <ControlTemplate.Triggers>
-                            <Trigger Property="IsMouseOver" Value="True">
-                                <Setter TargetName="bdr" Property="Background" Value="#ECEFF1"/>
-                                <Setter Property="Foreground" Value="#D32F2F"/>
-                            </Trigger>
-                        </ControlTemplate.Triggers>
-                    </ControlTemplate>
-                </Setter.Value>
-            </Setter>
-        </Style>
-        
-        <Style x:Key="InputStyle" TargetType="TextBox">
-            <Setter Property="Padding" Value="5"/>
-            <Setter Property="BorderThickness" Value="0,0,0,1"/>
-            <Setter Property="BorderBrush" Value="#E0E0E0"/>
-            <Setter Property="Background" Value="#FAFAFA"/>
-            <Setter Property="VerticalContentAlignment" Value="Center"/>
-        </Style>
-    </Window.Resources>
-
     <!-- Contenedor Principal -->
-    <Border Background="White" CornerRadius="20" Margin="20">
+    <Border Background="{DynamicResource CardBackground}" CornerRadius="20" Margin="20">
         <Border.Effect>
             <DropShadowEffect BlurRadius="30" ShadowDepth="10" Opacity="0.2" Color="Black"/>
         </Border.Effect>
@@ -94,7 +41,7 @@
                     </Grid>
                 </Border>
 
-                <!-- Botón Cerrar -->
+                <!-- Botón Cerrar (Usa estilo global) -->
                 <Button Style="{StaticResource BtnCloseStyle}" Click="BtnCerrar_Click" HorizontalAlignment="Right" VerticalAlignment="Top" Margin="0,15,15,0"/>
             </Grid>
 
@@ -120,8 +67,8 @@
                 <!-- Categoría Pill / Edit Inputs -->
                 <StackPanel Grid.Row="0" Orientation="Horizontal" Margin="0,0,0,10">
                     <!-- MODO VER -->
-                    <Border x:Name="PillCategoria" Background="#FFF3E0" CornerRadius="12" Padding="12,4">
-                        <TextBlock x:Name="TxtCategoria" Text="Categoría" Foreground="#FF6F00" FontWeight="Bold" FontSize="12"/>
+                    <Border x:Name="PillCategoria" Background="{DynamicResource InputBackground}" CornerRadius="12" Padding="12,4">
+                        <TextBlock x:Name="TxtCategoria" Text="Categoría" Foreground="{DynamicResource BrandColor}" FontWeight="Bold" FontSize="12"/>
                     </Border>
 
                     <!-- MODO EDITAR -->
@@ -132,7 +79,7 @@
                             <ComboBoxItem Content="Postres"/>
                             <ComboBoxItem Content="Bebidas"/>
                         </ComboBox>
-                        <TextBox x:Name="InputSubCategory" Width="120" Style="{StaticResource InputStyle}" Text="Subcategoría"/>
+                        <TextBox x:Name="InputSubCategory" Width="120" Style="{StaticResource InputUnderlineStyle}" Height="30" Padding="0" Text="Subcategoría"/>
                     </StackPanel>
                 </StackPanel>
 
@@ -144,27 +91,27 @@
                     </Grid.ColumnDefinitions>
 
                     <!-- MODO VER -->
-                    <TextBlock Grid.Column="0" x:Name="TxtNombre" Text="Nombre del Producto" FontSize="24" FontWeight="Bold" Foreground="#263238" TextWrapping="Wrap" VerticalAlignment="Center"/>
-                    <TextBlock Grid.Column="1" x:Name="TxtPrecio" Text="0.00€" FontSize="24" FontWeight="ExtraBold" Foreground="#FF6F00" VerticalAlignment="Center"/>
+                    <TextBlock Grid.Column="0" x:Name="TxtNombre" Text="Nombre del Producto" FontSize="24" FontWeight="Bold" Foreground="{DynamicResource TextPrimary}" TextWrapping="Wrap" VerticalAlignment="Center"/>
+                    <TextBlock Grid.Column="1" x:Name="TxtPrecio" Text="0.00€" FontSize="24" FontWeight="ExtraBold" Foreground="{DynamicResource BrandColor}" VerticalAlignment="Center"/>
 
                     <!-- MODO EDITAR -->
-                    <TextBox Grid.Column="0" x:Name="InputName" Style="{StaticResource InputStyle}" FontSize="18" FontWeight="Bold" Visibility="Collapsed" Margin="0,0,10,0"/>
+                    <TextBox Grid.Column="0" x:Name="InputName" Style="{StaticResource InputUnderlineStyle}" Height="35" FontSize="18" FontWeight="Bold" Visibility="Collapsed" Margin="0,0,10,0"/>
                     <StackPanel Grid.Column="1" x:Name="PanelEditPrice" Orientation="Horizontal" Visibility="Collapsed">
-                        <TextBox x:Name="InputPrice" Style="{StaticResource InputStyle}" FontSize="18" FontWeight="Bold" Width="70" TextAlignment="Right"/>
-                        <TextBlock Text="€" FontSize="18" FontWeight="Bold" Foreground="#78909C" VerticalAlignment="Center" Margin="5,0,0,0"/>
+                        <TextBox x:Name="InputPrice" Style="{StaticResource InputUnderlineStyle}" Height="35" FontSize="18" FontWeight="Bold" Width="70" TextAlignment="Right"/>
+                        <TextBlock Text="€" FontSize="18" FontWeight="Bold" Foreground="{DynamicResource TextSecondary}" VerticalAlignment="Center" Margin="5,0,0,0"/>
                     </StackPanel>
                 </Grid>
 
                 <!-- Ingredientes -->
-                <TextBlock Grid.Row="2" Text="INGREDIENTES" FontSize="11" FontWeight="Bold" Foreground="#78909C"  Margin="0,0,0,8"/>
+                <TextBlock Grid.Row="2" Text="INGREDIENTES" FontSize="11" FontWeight="Bold" Foreground="{DynamicResource TextSecondary}" Margin="0,0,0,8"/>
 
                 <!-- MODO VER -->
-                <TextBlock Grid.Row="3" x:Name="TxtIngredientes" Text="Lista de ingredientes..." FontSize="14" Foreground="#37474F" TextWrapping="Wrap" LineHeight="20" Margin="0,0,0,20"/>
+                <TextBlock Grid.Row="3" x:Name="TxtIngredientes" Text="Lista de ingredientes..." FontSize="14" Foreground="{DynamicResource TextPrimary}" TextWrapping="Wrap" LineHeight="20" Margin="0,0,0,20"/>
                 <!-- MODO EDITAR -->
-                <TextBox Grid.Row="3" x:Name="InputIngredientes" Style="{StaticResource InputStyle}" Height="60" TextWrapping="Wrap" AcceptsReturn="True" Visibility="Collapsed" Margin="0,0,0,20"/>
+                <TextBox Grid.Row="3" x:Name="InputIngredientes" Style="{StaticResource InputUnderlineStyle}" Height="60" Padding="0" VerticalContentAlignment="Top" TextWrapping="Wrap" AcceptsReturn="True" Visibility="Collapsed" Margin="0,0,0,20"/>
 
                 <!-- Alérgenos -->
-                <TextBlock Grid.Row="4" Text="ALÉRGENOS" FontSize="11" FontWeight="Bold" Foreground="#78909C" Margin="0,0,0,8"/>
+                <TextBlock Grid.Row="4" Text="ALÉRGENOS" FontSize="11" FontWeight="Bold" Foreground="{DynamicResource TextSecondary}" Margin="0,0,0,8"/>
 
                 <!-- MODO VER: Lista dinámica -->
                 <ItemsControl Grid.Row="5" x:Name="ListAlergenos">
@@ -175,15 +122,15 @@
                     </ItemsControl.ItemsPanel>
                     <ItemsControl.ItemTemplate>
                         <DataTemplate>
-                            <Border Background="#ECEFF1" CornerRadius="15" Padding="10,5" Margin="0,0,8,8">
-                                <TextBlock Text="{Binding}" Foreground="#546E7A" FontSize="12" FontWeight="SemiBold"/>
+                            <Border Background="{DynamicResource InputBackground}" CornerRadius="15" Padding="10,5" Margin="0,0,8,8">
+                                <TextBlock Text="{Binding}" Foreground="{DynamicResource TextSecondary}" FontSize="12" FontWeight="SemiBold"/>
                             </Border>
                         </DataTemplate>
                     </ItemsControl.ItemTemplate>
                 </ItemsControl>
 
                 <!-- MODO EDITAR: Texto simple -->
-                <TextBox Grid.Row="5" x:Name="InputAlergenos" Style="{StaticResource InputStyle}" Visibility="Collapsed" ToolTip="Separar por comas (ej: Gluten, Huevo)"/>
+                <TextBox Grid.Row="5" x:Name="InputAlergenos" Style="{StaticResource InputUnderlineStyle}" Height="35" Padding="0" Visibility="Collapsed" ToolTip="Separar por comas (ej: Gluten, Huevo)"/>
 
                 <!-- Botones de Acción (Footer) -->
                 <Grid Grid.Row="6" Margin="0,20,0,0" VerticalAlignment="Bottom">
@@ -194,44 +141,16 @@
                     </Grid.ColumnDefinitions>
 
                     <!-- Botón Editar / Guardar -->
-                    <Button Grid.Column="0" x:Name="BtnMainAction" Click="BtnMainAction_Click" Cursor="Hand">
-                        <Button.Template>
-                            <ControlTemplate TargetType="Button">
-                                <Border x:Name="bdr" Background="#FF6F00" CornerRadius="8" Padding="0,12">
-                                    <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
-                                        <Path x:Name="icon" Data="{StaticResource IconPencil}" Fill="White" Width="14" Height="14" Margin="0,0,8,0" Stretch="Uniform"/>
-                                        <TextBlock x:Name="txt" Text="Editar Producto" Foreground="White" FontWeight="Bold"/>
-                                    </StackPanel>
-                                </Border>
-                                <ControlTemplate.Triggers>
-                                    <Trigger Property="IsMouseOver" Value="True">
-                                        <Setter TargetName="bdr" Property="Opacity" Value="0.9"/>
-                                    </Trigger>
-                                </ControlTemplate.Triggers>
-                            </ControlTemplate>
-                        </Button.Template>
+                    <Button Grid.Column="0" x:Name="BtnMainAction" Click="BtnMainAction_Click" Style="{StaticResource BtnPrimaryStyle}">
+                        <StackPanel Orientation="Horizontal">
+                            <Path x:Name="iconMain" Data="{StaticResource IconPencil}" Fill="White" Width="14" Height="14" Margin="0,0,8,0" Stretch="Uniform"/>
+                            <TextBlock x:Name="txtMain" Text="Editar Producto"/>
+                        </StackPanel>
                     </Button>
 
                     <!-- Botón Eliminar / Cancelar -->
-                    <Button Grid.Column="2" x:Name="BtnSecondaryAction" Click="BtnSecondaryAction_Click" Cursor="Hand">
-                        <Button.Template>
-                            <ControlTemplate TargetType="Button">
-                                <Border x:Name="bdr" Background="#FFEBEE" CornerRadius="8" Padding="15,12">
-                                    <Path x:Name="icon" 
-                                          Data="{StaticResource IconTrash}" 
-                                          Fill="#D32F2F" 
-                                          Width="16" Height="16" 
-                                          Stretch="Uniform" 
-                                          HorizontalAlignment="Center" 
-                                          VerticalAlignment="Center"/>
-                                </Border>
-                                <ControlTemplate.Triggers>
-                                    <Trigger Property="IsMouseOver" Value="True">
-                                        <Setter TargetName="bdr" Property="Background" Value="#FFCDD2"/>
-                                    </Trigger>
-                                </ControlTemplate.Triggers>
-                            </ControlTemplate>
-                        </Button.Template>
+                    <Button Grid.Column="2" x:Name="BtnSecondaryAction" Click="BtnSecondaryAction_Click" Style="{StaticResource BtnSecondaryStyle}">
+                        <Path x:Name="iconSecondary" Data="{StaticResource IconTrash}" Fill="{DynamicResource ErrorColor}" Width="16" Height="16" Stretch="Uniform"/>
                     </Button>
                 </Grid>
             </Grid>
