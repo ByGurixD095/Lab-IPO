@@ -4,12 +4,12 @@ using System.Linq;
 
 namespace AppComida.Domain
 {
-    public class ProductController
+    public class ClientController
     {
         private DataAgent _agent;
-        private List<Product> _productsDb;
+        private List<Client> _clientsDb; 
 
-        public ProductController()
+        public ClientController()
         {
             _agent = new DataAgent();
             LoadData();
@@ -17,12 +17,14 @@ namespace AppComida.Domain
 
         private void LoadData()
         {
-            _productsDb = _agent.LoadProducts();
+            _clientsDb = _agent.LoadClients();
+
+            if (_clientsDb == null) _clientsDb = new List<Client>();
         }
 
-        public List<Product> GetAllProducts()
+        public List<Client> GetAllClients()
         {
-            return _productsDb;
+            return _clientsDb;
         }
     }
 }

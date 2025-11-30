@@ -69,7 +69,41 @@ namespace AppComida.Persistence
             }
         }
 
+        public List<Client> LoadClients()
+        {
+            string finalPath = GetPath("clients.xml");
 
+            // 1. DETECCIÓN DE ERROR DE RUTA
+            if (finalPath == null)
+            {
+                MessageBox.Show("No se encontró el archivo 'data/clients.xml'.\nVerifica que la carpeta 'data' existe y el archivo está dentro.",
+                                "Archivo No Encontrado", MessageBoxButton.OK, MessageBoxImage.Warning);
+                return new List<Client>();
+            }
+
+            try
+            {
+                // El wrapper debe coincidir con la estructura del XML
+                XmlSerializer serializer = new XmlSerializer(typeof(ClientListWrapper));
+                using (StreamReader reader = new StreamReader(finalPath))
+                {
+                    var wrapper = (ClientListWrapper)serializer.Deserialize(reader);
+                    return wrapper.Clients;
+                }
+            }
+            catch (Exception ex)
+            {
+                // 2. DETECCIÓN DE ERROR DE FORMATO XML
+                // Mostramos el InnerException que es el que suele decir la línea exacta del fallo
+                string errorDetalle = ex.InnerException != null ? ex.InnerException.Message : ex.Message;
+
+                MessageBox.Show($"Error leyendo 'clients.xml':\n{errorDetalle}\n\nRevisa que el XML tenga la raíz <Clientes> y dentro <Cliente>.",
+                                "Error de Formato XML", MessageBoxButton.OK, MessageBoxImage.Error);
+
+                Debug.WriteLine("Error cargando clientes: " + ex.ToString());
+                return new List<Client>();
+            }
+        }
         public void UpdateLastAccess(string username, DateTime newTime)
         {
             List<User> users = LoadUsers();

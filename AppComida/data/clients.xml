@@ -1,0 +1,187 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<Clientes>
+	<Cliente Id="1">
+		<Nombre>María</Nombre>
+		<Apellidos>González Pérez</Apellidos>
+		<Foto>Maria</Foto>
+		<Nivel>Oro</Nivel>
+
+		<Contactos>
+			<Telefono>600 123 456</Telefono>
+			<Email>maria.gonzalez@email.com</Email>
+		</Contactos>
+
+		<Direcciones>
+			<Direccion Principal="true">C/ Mayor 45, 2A, Ciudad Real</Direccion>
+			<Direccion Principal="false">Av. Tablas de Daimiel 12, Oficina 3</Direccion>
+		</Direcciones>
+
+		<Salud>
+			<Alergia>Gluten</Alergia>
+			<Alergia>Lactosa</Alergia>
+		</Salud>
+
+		<Preferencias>
+			<FormaPago>Tarjeta de Crédito (Visa)</FormaPago>
+		</Preferencias>
+
+		<Fidelizacion>
+			<PuntosAcumulados>2150</PuntosAcumulados>
+			<PuntosCanjeados>500</PuntosCanjeados>
+		</Fidelizacion>
+
+		<HistorialPedidos></HistorialPedidos>
+	</Cliente>
+
+	<Cliente Id="2">
+		<Nombre>Antonio</Nombre>
+		<Apellidos>Ruiz García</Apellidos>
+		<Foto>Brian</Foto>
+		<Nivel>Bronce</Nivel>
+
+		<Contactos>
+			<Telefono>655 987 654</Telefono>
+			<Email>aruiz@work.com</Email>
+		</Contactos>
+
+		<Direcciones>
+			<Direccion Principal="true">Av. Lagunas de Ruidera 8, Ciudad Real</Direccion>
+		</Direcciones>
+
+		<Salud></Salud>
+
+		<Preferencias>
+			<FormaPago>Efectivo</FormaPago>
+		</Preferencias>
+
+		<Fidelizacion>
+			<PuntosAcumulados>340</PuntosAcumulados>
+			<PuntosCanjeados>0</PuntosCanjeados>
+		</Fidelizacion>
+
+		<HistorialPedidos />
+	</Cliente>
+
+	<Cliente Id="3">
+		<Nombre>Lucía</Nombre>
+		<Apellidos>Fernández</Apellidos>
+		<Foto>Sorelle</Foto>
+		<Nivel>Plata</Nivel>
+
+		<Contactos>
+			<Telefono>611 223 344</Telefono>
+			<Email>lucia.f@gmail.com</Email>
+		</Contactos>
+
+		<Direcciones>
+			<Direccion Principal="true">Plaza del Pilar 3, 1B</Direccion>
+		</Direcciones>
+
+		<Salud>
+			<Alergia>Nueces</Alergia>
+			<Alergia>Marisco</Alergia>
+		</Salud>
+
+		<Preferencias>
+			<FormaPago>Bizum</FormaPago>
+		</Preferencias>
+
+		<Fidelizacion>
+			<PuntosAcumulados>890</PuntosAcumulados>
+			<PuntosCanjeados>200</PuntosCanjeados>
+		</Fidelizacion>
+
+		<HistorialPedidos />
+	</Cliente>
+
+	<Cliente Id="4">
+		<Nombre>Carlos</Nombre>
+		<Apellidos>Mesa</Apellidos>
+		<Foto>Felix</Foto>
+		<Nivel>Bronce</Nivel>
+
+		<Contactos>
+			<Telefono>622 888 999</Telefono>
+			<Email>carlos.mesa@uclm.es</Email>
+		</Contactos>
+
+		<Direcciones>
+			<Direccion Principal="true">Residencia Universitaria, Hab 102</Direccion>
+		</Direcciones>
+
+		<Salud>
+			<Alergia>Marisco</Alergia>
+		</Salud>
+
+		<Preferencias>
+			<FormaPago>Tarjeta</FormaPago>
+		</Preferencias>
+
+		<Fidelizacion>
+			<PuntosAcumulados>50</PuntosAcumulados>
+			<PuntosCanjeados>0</PuntosCanjeados>
+		</Fidelizacion>
+
+		<HistorialPedidos />
+	</Cliente>
+
+	<Cliente Id="5">
+		<Nombre>Elena</Nombre>
+		<Apellidos>Yebes</Apellidos>
+		<Foto>Annie</Foto>
+		<Nivel>Plata</Nivel>
+
+		<Contactos>
+			<Telefono>633 444 555</Telefono>
+			<Email>elena.y@email.com</Email>
+		</Contactos>
+
+		<Direcciones>
+			<Direccion Principal="true">C/ Toledo 89, Casa 2</Direccion>
+		</Direcciones>
+
+		<Salud></Salud>
+
+		<Preferencias>
+			<FormaPago>Efectivo</FormaPago>
+		</Preferencias>
+
+		<Fidelizacion>
+			<PuntosAcumulados>890</PuntosAcumulados>
+			<PuntosCanjeados>200</PuntosCanjeados>
+		</Fidelizacion>
+
+		<HistorialPedidos />
+	</Cliente>
+
+	<Cliente Id="6">
+		<Nombre>Pedro</Nombre>
+		<Apellidos>Almodóvar</Apellidos>
+		<Foto>Jack</Foto>
+		<Nivel>Oro</Nivel>
+
+		<Contactos>
+			<Telefono>600 000 000</Telefono>
+			<Email>cine@pedro.com</Email>
+		</Contactos>
+
+		<Direcciones>
+			<Direccion Principal="true">C/ Calatrava 1</Direccion>
+		</Direcciones>
+
+		<Salud>
+			<Alergia>Gluten</Alergia>
+		</Salud>
+
+		<Preferencias>
+			<FormaPago>Tarjeta</FormaPago>
+		</Preferencias>
+
+		<Fidelizacion>
+			<PuntosAcumulados>5000</PuntosAcumulados>
+			<PuntosCanjeados>1000</PuntosCanjeados>
+		</Fidelizacion>
+
+		<HistorialPedidos />
+	</Cliente>
+</Clientes>
