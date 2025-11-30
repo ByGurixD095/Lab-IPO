@@ -15,7 +15,6 @@
         <Geometry x:Key="IconTrash">M19,4H15.5L14.5,3H9.5L8.5,4H5V6H19M6,19A2,2 0 0,0 8,21H16A2,2 0 0,0 18,19V7H6V19Z</Geometry>
         <Geometry x:Key="IconPlus">M19,13H13V19H11V13H5V11H11V5H13V11H19V13Z</Geometry>
 
-        <!-- ESTILOS (Sin cambios) -->
         <Style x:Key="CatPillStyle" TargetType="RadioButton">
             <Setter Property="Background" Value="Transparent"/>
             <Setter Property="Foreground" Value="{DynamicResource TextSecondary}"/>
@@ -102,7 +101,6 @@
             </Setter>
         </Style>
 
-        <!-- Estilo Menú Contextual (Copiado de antes) -->
         <Style x:Key="MobileContextMenuStyle" TargetType="{x:Type ContextMenu}">
             <Setter Property="Background" Value="#F7F9FC"/>
             <Setter Property="BorderBrush" Value="#E0E0E0"/>

@@ -9,7 +9,6 @@
         WindowStartupLocation="CenterOwner"
         MouseDown="Window_MouseDown">
 
-    <!-- ESTILO: CLEAN SLATE (Modular) -->
     <Border Background="#F9FAFB" 
             CornerRadius="12" 
             BorderBrush="White" 
@@ -27,7 +26,7 @@
                 <RowDefinition Height="Auto"/>
             </Grid.RowDefinitions>
 
-            <!-- 1. ICONO (CON x:Name PARA MODULARIZACIÓN) -->
+            <!-- SIMBOLO VENTANA -->
             <Path Grid.Row="0" 
                   x:Name="IconPath"
                   Data="M13,14H11V10H13M13,18H11V16H13M1,21H23L12,2L1,21Z" 
@@ -37,7 +36,7 @@
                   HorizontalAlignment="Center"
                   Margin="0,10,0,10"/>
 
-            <!-- 2. TÍTULO -->
+            <!-- TITULO -->
             <TextBlock Grid.Row="1" 
                        x:Name="TxtTitle" 
                        Text="Confirmación" 
@@ -47,7 +46,7 @@
                        HorizontalAlignment="Center"
                        TextAlignment="Center"/>
 
-            <!-- 3. MENSAJE -->
+            <!-- MENSAJE -->
             <TextBlock Grid.Row="2" 
                        x:Name="TxtMessage" 
                        Text="Mensaje de confirmación..." 
@@ -59,7 +58,7 @@
                        TextAlignment="Center"
                        Margin="20,10"/>
 
-            <!-- 4. BOTONES -->
+            <!-- BOTONES CANCELAR Y CONFIRMAR -->
             <StackPanel Grid.Row="3" Orientation="Horizontal" HorizontalAlignment="Center" Margin="0,10,0,10">
                 <Button Content="CANCELAR" Click="BtnCancel_Click" Cursor="Hand"
                         Foreground="#78909C" Background="Transparent" FontWeight="Bold" Margin="0,0,15,0">

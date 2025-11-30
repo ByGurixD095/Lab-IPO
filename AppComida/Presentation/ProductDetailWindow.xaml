@@ -13,7 +13,7 @@
         MouseDown="Window_MouseDown">
 
     <Window.Resources>
-        <!-- CORRECCIÓN: Usamos StreamGeometry en lugar de Geometry para evitar errores del diseñador -->
+        <!-- ICONOS -->
 
         <StreamGeometry x:Key="IconClose">M13.41,12l5.29-5.29c0.39-0.39,0.39-1.02,0-1.41c-0.39-0.39-1.02-0.39-1.41,0L12,10.59L6.71,5.29c-0.39-0.39-1.02-0.39-1.41,0c-0.39,0.39-0.39,1.02,0,1.41L10.59,12l-5.29,5.29c-0.39,0.39-0.39,1.02,0,1.41c0.39,0.39,1.02,0.39,1.41,0L12,13.41l5.29,5.29c0.39,0.39,1.02,0.39,1.41,0c0.39-0.39,0.39-1.02,0-1.41L13.41,12z</StreamGeometry>
 
@@ -37,7 +37,6 @@
                             <Border.Effect>
                                 <DropShadowEffect BlurRadius="8" ShadowDepth="2" Opacity="0.15" Color="Black"/>
                             </Border.Effect>
-                            <!-- SnapsToDevicePixels ayuda a que el icono se vea nítido -->
                             <Path Data="{StaticResource IconClose}" 
                                   Fill="{TemplateBinding Foreground}" 
                                   Width="14" Height="14" 
@@ -56,8 +55,7 @@
                 </Setter.Value>
             </Setter>
         </Style>
-
-        <!-- Estilo Input Moderno -->
+        
         <Style x:Key="InputStyle" TargetType="TextBox">
             <Setter Property="Padding" Value="5"/>
             <Setter Property="BorderThickness" Value="0,0,0,1"/>
@@ -67,7 +65,7 @@
         </Style>
     </Window.Resources>
 
-    <!-- Contenedor Principal con Sombra -->
+    <!-- Contenedor Principal -->
     <Border Background="White" CornerRadius="20" Margin="20">
         <Border.Effect>
             <DropShadowEffect BlurRadius="30" ShadowDepth="10" Opacity="0.2" Color="Black"/>
@@ -86,7 +84,7 @@
                 <Border CornerRadius="20,20,0,0" ClipToBounds="True" Background="#EEEEEE">
                     <Grid>
                         <Image x:Name="ImgProducto" Stretch="UniformToFill"/>
-                        <!-- Input URL Imagen (Solo Edit Mode) -->
+                        <!-- IMAGEN INPUT URL-->
                         <Grid x:Name="PanelEditImage" Visibility="Collapsed" VerticalAlignment="Bottom" Background="#CC000000">
                             <StackPanel Margin="15,10">
                                 <TextBlock Text="URL de la Imagen:" Foreground="White" FontSize="10"/>
@@ -96,7 +94,7 @@
                     </Grid>
                 </Border>
 
-                <!-- Botón Cerrar Flotante -->
+                <!-- Botón Cerrar -->
                 <Button Style="{StaticResource BtnCloseStyle}" Click="BtnCerrar_Click" HorizontalAlignment="Right" VerticalAlignment="Top" Margin="0,15,15,0"/>
             </Grid>
 
@@ -104,7 +102,7 @@
             <Grid Grid.Row="1" Margin="30,20,30,30">
                 <Grid.RowDefinitions>
                     <RowDefinition Height="Auto"/>
-                    <!-- Pills -->
+                    <!-- Pills/BOX -->
                     <RowDefinition Height="Auto"/>
                     <!-- Título y Precio -->
                     <RowDefinition Height="Auto"/>
@@ -219,7 +217,6 @@
                         <Button.Template>
                             <ControlTemplate TargetType="Button">
                                 <Border x:Name="bdr" Background="#FFEBEE" CornerRadius="8" Padding="15,12">
-                                    <!-- AQUI ESTÁ EL CAMBIO CLAVE: Stretch="Uniform" para que la X no se corte -->
                                     <Path x:Name="icon" 
                                           Data="{StaticResource IconTrash}" 
                                           Fill="#D32F2F" 

@@ -7,7 +7,7 @@ namespace AppComida.Domain
     public class ProductController
     {
         private DataAgent _agent;
-        private List<Product> _productsCache;
+        private List<Product> _productsDb;
 
         public ProductController()
         {
@@ -17,20 +17,19 @@ namespace AppComida.Domain
 
         private void LoadData()
         {
-            _productsCache = _agent.LoadProducts();
+            _productsDb = _agent.LoadProducts();
         }
 
         public List<Product> GetAllProducts()
         {
-            // Devolvemos todos los productos disponibles
-            return _productsCache;
+            return _productsDb;
         }
 
         public List<Product> GetProductsByCategory(string category)
         {
-            if (_productsCache == null) return new List<Product>();
+            if (_productsDb == null) return new List<Product>();
 
-            return _productsCache
+            return _productsDb
                 .Where(p => p.Category.Equals(category, System.StringComparison.OrdinalIgnoreCase))
                 .ToList();
         }

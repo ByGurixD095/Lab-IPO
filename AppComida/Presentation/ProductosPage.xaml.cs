@@ -5,16 +5,17 @@ using System.Collections.ObjectModel;
 using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Controls.Primitives; // Necesario para ToggleButton y ContextMenu
+using System.Windows.Controls.Primitives;
 
 namespace AppComida.Presentation
 {
     public partial class ProductosPage : Page
     {
         private ProductController _controller;
-        private List<Product> _todosLosProductos;
+        private List<Product> _productsDb;
         public ObservableCollection<Product> Productos { get; set; }
 
+        // Filtros por defecto
         private string _filtroCategoria = "Platos";
         private string _filtroSubCategoria = "Todo";
 
@@ -29,13 +30,12 @@ namespace AppComida.Presentation
 
         private void CargarDatos()
         {
-            _todosLosProductos = _controller.GetAllProducts();
-            if (_todosLosProductos == null) _todosLosProductos = new List<Product>();
+            _productsDb = _controller.GetAllProducts();
+            if (_productsDb == null) _productsDb = new List<Product>();
             AplicarFiltros();
         }
 
-        // --- SECCIÓN 1: LÓGICA DE FILTRADOS ---
-
+        // Detecta cuando cambia un radio button de los filtros
         private void Filtro_Checked(object sender, RoutedEventArgs e)
         {
             if (sender is RadioButton rb && rb.Tag != null)
@@ -47,11 +47,12 @@ namespace AppComida.Presentation
             }
         }
 
+        // Lógica de filtrado con LINQ
         private void AplicarFiltros()
         {
-            if (_todosLosProductos == null) return;
+            if (_productsDb == null) return;
 
-            var consulta = _todosLosProductos.AsEnumerable();
+            var consulta = _productsDb.AsEnumerable();
 
             if (!string.IsNullOrEmpty(_filtroCategoria))
                 consulta = consulta.Where(p => p.Category != null && p.Category.Equals(_filtroCategoria, StringComparison.OrdinalIgnoreCase));
@@ -59,12 +60,12 @@ namespace AppComida.Presentation
             if (_filtroSubCategoria != "Todo")
                 consulta = consulta.Where(p => p.SubCategory != null && p.SubCategory.Equals(_filtroSubCategoria, StringComparison.OrdinalIgnoreCase));
 
+            // Limpio la lista visible y añado los filtrados
             Productos.Clear();
             foreach (var p in consulta) Productos.Add(p);
         }
 
-        // --- SECCIÓN 2: LÓGICA DEL MENÚ DE OPCIONES ---
-
+        // Truco para abrir el menú contextual con click izquierdo en el botón
         private void BtnOpciones_Click(object sender, RoutedEventArgs e)
         {
             if (sender is ToggleButton btn && btn.ContextMenu != null)
@@ -76,23 +77,21 @@ namespace AppComida.Presentation
             }
         }
 
-        // Opción A: VER DETALLE
         private void OpVer_Click(object sender, RoutedEventArgs e)
         {
             AbrirFichaProducto(sender);
         }
 
-        // Opción B: EDITAR
         private void OpEditar_Click(object sender, RoutedEventArgs e)
         {
             AbrirFichaProducto(sender);
         }
 
-        // Lógica común para abrir la ventana
+        // Abro la ventana de detalle, busco el ID por el tag
         private void AbrirFichaProducto(object sender)
         {
             int id = ObtenerId(sender);
-            var prod = _todosLosProductos.FirstOrDefault(p => p.Id == id);
+            var prod = _productsDb.FirstOrDefault(p => p.Id == id);
 
             if (prod != null)
             {
@@ -101,6 +100,7 @@ namespace AppComida.Presentation
 
                 detalle.ShowDialog();
 
+                // Compruebo qué ha pasado al cerrar la ventana
                 if (detalle.ActionDelete)
                 {
                     EliminarProducto(prod);
@@ -112,11 +112,10 @@ namespace AppComida.Presentation
             }
         }
 
-        // Opción C: ELIMINAR RÁPIDO
         private void OpEliminar_Click(object sender, RoutedEventArgs e)
         {
             int id = ObtenerId(sender);
-            var prod = _todosLosProductos.FirstOrDefault(p => p.Id == id);
+            var prod = _productsDb.FirstOrDefault(p => p.Id == id);
 
             if (prod != null)
             {
@@ -134,15 +133,14 @@ namespace AppComida.Presentation
             }
         }
 
-        // --- SECCIÓN 3: BOTÓN AÑADIR PRODUCTO (Nuevo) ---
-
+        // Botón grande de añadir
         private void BtnAnadir_Click(object sender, RoutedEventArgs e)
         {
-            // 1. Crear un producto vacío / placeholder
+            // Creo un producto dummy para poder abrir la ventana
             var nuevoProd = new Product
             {
-                // Calcular ID nuevo (Max actual + 1)
-                Id = _todosLosProductos.Any() ? _todosLosProductos.Max(p => p.Id) + 1 : 1,
+                // Calculo el ID sumando 1 al máximo (un poco chapuza pero funciona)
+                Id = _productsDb.Any() ? _productsDb.Max(p => p.Id) + 1 : 1,
                 Name = "NUEVO (Click Editar)",
                 Category = "Platos",
                 SubCategory = "Todo",
@@ -153,34 +151,29 @@ namespace AppComida.Presentation
                 ImagePath = ""
             };
 
-            // 2. Abrir la ventana de detalle reutilizada
+            // Reutilizo la ventana de detalle
             ProductDetailWindow detalle = new ProductDetailWindow(nuevoProd);
             detalle.Owner = Window.GetWindow(this);
 
-            // 3. Esperar a que el usuario edite y guarde
             detalle.ShowDialog();
 
-            // 4. Si el usuario pulsó "Guardar Cambios" dentro de la ventana:
+            // Si le dio a guardar, lo añado a la lista de verdad
             if (detalle.ActionEdit)
             {
-                // Añadimos a la lista maestra
-                _todosLosProductos.Add(nuevoProd);
-
-                // Refrescamos la vista
+                _productsDb.Add(nuevoProd);
                 AplicarFiltros();
-
-                // Opcional: Scrollear al nuevo elemento (requiere buscarlo en la UI, se puede omitir por simplicidad)
             }
         }
 
         private void EliminarProducto(Product prod)
         {
-            // _controller.DeleteProduct(prod.Id);
-            _todosLosProductos.Remove(prod);
+            // Borro de la lista total y de la observable
+            _productsDb.Remove(prod);
             Productos.Remove(prod);
             AplicarFiltros();
         }
 
+        // Helper para sacar el ID del Tag del elemento que lanza el evento
         private int ObtenerId(object sender)
         {
             if (sender is MenuItem item && item.Tag != null && int.TryParse(item.Tag.ToString(), out int id))
@@ -190,4 +183,4 @@ namespace AppComida.Presentation
             return 0;
         }
     }
-}
+} 

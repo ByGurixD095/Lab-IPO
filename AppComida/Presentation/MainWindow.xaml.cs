@@ -7,7 +7,6 @@ using System.Windows.Controls.Primitives;
 using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
-using System.Windows.Threading;
 
 namespace AppComida.Presentation
 {
@@ -25,7 +24,16 @@ namespace AppComida.Presentation
             CargarDatosUsuario(user);
             setDate(null, null);
 
-            // --- GESTIÓN DE ESTADOS DE TOGGLE BUTTONS ---
+            // Iniciar eventos de los toggle buttons
+            InitializeToggleButtons();
+
+            // Iniciar las pages de las funcionalidades
+            InicializarVistas();
+        }
+
+        // Inicalizar vetana principal app
+        private void InitializeToggleButtons()
+        {
             if (MenuSalir != null)
             {
                 MenuSalir.Opened += (s, e) => ToggleSalir.IsChecked = true;
@@ -37,37 +45,24 @@ namespace AppComida.Presentation
                 MenuAyuda.Opened += (s, e) => ToggleAyuda.IsChecked = true;
                 MenuAyuda.Closed += (s, e) => ToggleAyuda.IsChecked = false;
             }
-
-            // --- CARGA INICIAL DE TODAS LAS VISTAS ---
-            // Cargamos las 4 páginas en memoria una sola vez
-            InicializarVistas();
         }
-
         private void InicializarVistas()
         {
-            // 1. Perfil (Visible por defecto)
             if (FrameProfile != null) FrameProfile.Navigate(new UserProfilePage(_userLogged));
 
-            // 2. Pedidos (Oculto)
             if (FramePedidos != null) FramePedidos.Navigate(new PedidosPage());
 
-            // 3. Productos (Oculto)
             if (FrameProductos != null) FrameProductos.Navigate(new ProductosPage());
 
-            // 4. Clientes (Oculto)
             if (FrameClientes != null) FrameClientes.Navigate(new ClientesPage());
         }
 
-        // --- GESTIÓN DE VENTANA ---
         private void Window_MouseDown(object sender, MouseButtonEventArgs e)
         {
             if (e.ChangedButton == MouseButton.Left) this.DragMove();
         }
 
-        // ==========================================
-        //        SECCIÓN MENÚ AYUDA / AJUSTES
-        // ==========================================
-
+        // Help Button actions
         private void ToggleAyuda_Click(object sender, RoutedEventArgs e)
         {
             if (ToggleAyuda.ContextMenu != null)
@@ -162,9 +157,7 @@ namespace AppComida.Presentation
             }
         }
 
-        // ==========================================
-        //           SECCIÓN MENÚ SALIR
-        // ==========================================
+        // Salir Button 
 
         private void ToggleSalir_Click(object sender, RoutedEventArgs e)
         {
@@ -210,10 +203,7 @@ namespace AppComida.Presentation
             }
         }
 
-        // ==========================================
-        //           LÓGICA GENERAL
-        // ==========================================
-
+        // General Purpose 
         public void CargarDatosUsuario(User usuarioLogeado)
         {
             if (usuarioLogeado == null) return;
@@ -260,6 +250,7 @@ namespace AppComida.Presentation
             if (LblMonth != null) LblMonth.Text = now.ToString("MMM", culture).ToUpper();
         }
 
+        // Change page view
         private void NavButton_Checked(object sender, RoutedEventArgs e)
         {
             if (sender is RadioButton radio && radio.IsChecked == true)

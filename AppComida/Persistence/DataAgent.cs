@@ -1,6 +1,7 @@
 using AppComida.Domain;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Windows;
@@ -42,7 +43,8 @@ namespace AppComida.Persistence
             }
             catch (Exception ex)
             {
-                return new List<User>();
+                Debug.WriteLine(ex.ToString());
+                return new List<User>(); 
             }
         }
 
@@ -60,9 +62,9 @@ namespace AppComida.Persistence
                     return (List<Product>)serializer.Deserialize(reader);
                 }
             }
-            catch (Exception)
+            catch (Exception ex)
             {
-                // En caso de error (archivo corrupto, etc), devolvemos lista vacía
+                Debug.WriteLine(ex.ToString());
                 return new List<Product>();
             }
         }
@@ -88,10 +90,11 @@ namespace AppComida.Persistence
                         serializer.Serialize(writer, users);
                     }
                 }
-                catch (Exception)
+                catch (Exception ex)
                 {
                     //  Podría capturar errores y hacerlo mejor, pero esto no es parte del requisito funcional y hay muchos trabajos que hacer como el de
                     //  distribuidos, que un dia de estos va a acabar conmigo
+                    Debug.WriteLine(ex.ToString());
                 }
             }
         }

@@ -118,7 +118,7 @@ namespace AppComida.Presentation
             }
         }
 
-        // --- LÓGICA DEL OJO (TOGGLE) ---
+        // --- AYUDA DEL OJO EN PASSWORD ---
 
         private void BtnTogglePass_Click(object sender, RoutedEventArgs e)
         {
@@ -151,21 +151,18 @@ namespace AppComida.Presentation
 
             ClearErrors();
 
-            // 1. Validación de campos vacíos (Rápida)
+            // 1.Campos vacios
             bool userValid = !string.IsNullOrWhiteSpace(username);
             bool passValid = finalPass.Length >= 1;
 
             if (!userValid) { ShowInputError(true); return; }
             if (!passValid) { ShowInputError(false); return; }
 
-            // 2. Activar Estado de "Verificando..."
+            // 2. Efectos visuales
             SetLoadingState(true);
-
-            // Pequeña pausa (50ms) para asegurar que la UI se renderiza antes de seguir
             await Task.Delay(50);
 
-            // 3. Validación de Credenciales
-            // Usamos Task.Run para no bloquear la UI durante la verificación
+            // 3. User validation, con otro hilo para no bloquear el principal (efectos visuales)
             User userLogged = null;
             await Task.Run(() => {
                 userLogged = _logController.ValidateLogin(username, finalPass);
@@ -173,24 +170,15 @@ namespace AppComida.Presentation
 
             if (userLogged != null)
             {
-                // --- ÉXITO: INICIAMOS LA FALSA ILUSIÓN ---
-
-                // A. Cambiamos el texto para dar feedback de progreso
+                // --- ÉXITO: Efecto inicio sesión mientras se carga la app ---
                 if (btnLoader.Children.Count > 1 && btnLoader.Children[1] is TextBlock txtLoader)
                 {
                     txtLoader.Text = "Cargando sistema...";
                 }
 
-                // Permitimos que la UI se actualice con el nuevo texto
                 await Task.Delay(50);
-
-                // B. Instanciamos MainWindow (CARGA PESADA REAL)
-                // Al hacer el 'new', se ejecuta 'InicializarVistas' en MainWindow, 
-                // lo que carga Productos, Clientes y Pedidos desde los XMLs.
-                // El spinner seguirá girando mientras el procesador trabaja aquí.
                 MainWindow main = new MainWindow(userLogged);
 
-                // C. Cuando el constructor termina, todo está listo. Mostramos.
                 main.Show();
                 this.Close();
             }
@@ -202,6 +190,8 @@ namespace AppComida.Presentation
             }
         }
 
+
+        // --- EFECTOS DE INTERACCIÓN CON EL USUARIO ---
         private void ShowInputError(bool isUserError)
         {
             if (isUserError)

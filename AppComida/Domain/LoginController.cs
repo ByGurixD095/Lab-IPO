@@ -21,15 +21,12 @@ namespace AppComida.Domain
         {
             User userLogged = null;
 
-            // 1. Busca usuario en memoria (case insensitive)
             User storedUser = _usersDataBase.Find(u => u.username.Equals(username, StringComparison.OrdinalIgnoreCase));
 
             if (storedUser == null) return null;
 
-            // 2. Calcula Hash
             string calculatedDigest = CalculateMD5(password + storedUser.salt);
 
-            // 3. Compara
             if (!calculatedDigest.Trim().Equals(storedUser.digest.Trim(), StringComparison.OrdinalIgnoreCase))
             {
                 return null;
