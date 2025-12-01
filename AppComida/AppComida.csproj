@@ -63,6 +63,10 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
+    <Page Include="Presentation\InputWindow.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="Presentation\LoginWindow.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -84,6 +88,9 @@
     </Compile>
     <Compile Include="Presentation\ConfrimWindow.xaml.cs">
       <DependentUpon>ConfrimWindow.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Presentation\InputWindow.xaml.cs">
+      <DependentUpon>InputWindow.xaml</DependentUpon>
     </Compile>
     <Compile Include="Presentation\LoginWindow.xaml.cs">
       <DependentUpon>LoginWindow.xaml</DependentUpon>

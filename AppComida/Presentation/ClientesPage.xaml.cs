@@ -1,5 +1,5 @@
 ﻿using AppComida.Domain;
-using System;
+using Microsoft.VisualBasic;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
@@ -274,93 +274,161 @@ namespace AppComida.Presentation
 
                 return;
             }
+            var confirm = new ConfirmWindow(
+                "¿Deseas guardar los cambios realizados?",
+                "Guardar Cambios",
+                ConfirmType.Question);
+            confirm.Owner = Window.GetWindow(this);
 
-            // 2. Actualizar datos del objeto
-            _selectedClient.Nombre = InputNombre.Text;
-            _selectedClient.Apellidos = InputApellidos.Text;
+            if (confirm.ShowDialog() == true)
+            {
 
-            if (_selectedClient.Contacto == null) _selectedClient.Contacto = new ContactInfo();
-            _selectedClient.Contacto.Telefono = InputTelefono.Text;
-            _selectedClient.Contacto.Email = InputEmail.Text;
+                // 2. Actualizar datos del objeto
+                _selectedClient.Nombre = InputNombre.Text;
+                _selectedClient.Apellidos = InputApellidos.Text;
 
-            if (_selectedClient.Direcciones == null) _selectedClient.Direcciones = new List<Address>();
-            _selectedClient.Direcciones.Clear();
-            if (!string.IsNullOrWhiteSpace(InputDireccion.Text))
-            {
-                _selectedClient.Direcciones.Add(new Address { Calle = InputDireccion.Text, EsPrincipal = true });
-            }
+                if (_selectedClient.Contacto == null) _selectedClient.Contacto = new ContactInfo();
+                _selectedClient.Contacto.Telefono = InputTelefono.Text;
+                _selectedClient.Contacto.Email = InputEmail.Text;
 
-            if (_selectedClient.Alergias == null) _selectedClient.Alergias = new List<string>();
-            _selectedClient.Alergias.Clear();
-            if (!string.IsNullOrWhiteSpace(InputAlergias.Text))
-            {
-                var listaAlergias = InputAlergias.Text.Split(',')
-                                          .Select(x => x.Trim())
-                                          .Where(x => !string.IsNullOrEmpty(x));
-                _selectedClient.Alergias.AddRange(listaAlergias);
-            }
-
-            // GUARDAR PUNTOS MODIFICADOS
-            if (_selectedClient.Fidelizacion == null) _selectedClient.Fidelizacion = new Loyalty();
-            int puntosFinales = 0;
-            if (int.TryParse(InputPuntos.Text, out int newPoints))
-            {
-                puntosFinales = newPoints;
-            }
-            _selectedClient.Fidelizacion.PuntosAcumulados = puntosFinales;
-
-            // AGREGADO: Calcular Nivel automáticamente
-            if (puntosFinales >= 2000)
-            {
-                _selectedClient.Nivel = "Oro";
-            }
-            else if (puntosFinales >= 800)
-            {
-                _selectedClient.Nivel = "Plata";
-            }
-            else
-            {
-                _selectedClient.Nivel = "Bronce";
-            }
-
-            // 3. Persistencia Simulada
-            if (_isCreationMode)
-            {
-                int newId = 1;
-                if (_allClients.Any())
+                if (_selectedClient.Direcciones == null) _selectedClient.Direcciones = new List<Address>();
+                _selectedClient.Direcciones.Clear();
+                if (!string.IsNullOrWhiteSpace(InputDireccion.Text))
                 {
-                    newId = _allClients.Max(c => c.Id) + 1;
+                    _selectedClient.Direcciones.Add(new Address { Calle = InputDireccion.Text, EsPrincipal = true });
                 }
-                _selectedClient.Id = newId;
 
-                // NOTA: Ya no asignamos "Bronce" por defecto aquí, 
-                // porque se ha calculado arriba según los puntos.
+                if (_selectedClient.Alergias == null) _selectedClient.Alergias = new List<string>();
+                _selectedClient.Alergias.Clear();
+                if (!string.IsNullOrWhiteSpace(InputAlergias.Text))
+                {
+                    var listaAlergias = InputAlergias.Text.Split(',')
+                                              .Select(x => x.Trim())
+                                              .Where(x => !string.IsNullOrEmpty(x));
+                    _selectedClient.Alergias.AddRange(listaAlergias);
+                }
 
-                _allClients.Add(_selectedClient);
+                // GUARDAR PUNTOS MODIFICADOS
+                if (_selectedClient.Fidelizacion == null) _selectedClient.Fidelizacion = new Loyalty();
+                int puntosFinales = 0;
+                if (int.TryParse(InputPuntos.Text, out int newPoints))
+                {
+                    puntosFinales = newPoints;
+                }
+                _selectedClient.Fidelizacion.PuntosAcumulados = puntosFinales;
 
-                var confirm = new ConfirmWindow(
-                    "Cliente registrado correctamente.",
-                    "Éxito",
-                    ConfirmType.Success);
-                confirm.Owner = Window.GetWindow(this);
+                // AGREGADO: Calcular Nivel automáticamente
+                if (puntosFinales >= 2000)
+                {
+                    _selectedClient.Nivel = "Oro";
+                }
+                else if (puntosFinales >= 800)
+                {
+                    _selectedClient.Nivel = "Plata";
+                }
+                else
+                {
+                    _selectedClient.Nivel = "Bronce";
+                }
 
-                confirm.ShowDialog();
-            }
+                // 3. Persistencia Simulada
+                if (_isCreationMode)
+                {
+                    int newId = 1;
+                    if (_allClients.Any())
+                    {
+                        newId = _allClients.Max(c => c.Id) + 1;
+                    }
+                    _selectedClient.Id = newId;
 
-            _isCreationMode = false;
-            ToggleEditMode(false);
+                    // NOTA: Ya no asignamos "Bronce" por defecto aquí, 
+                    // porque se ha calculado arriba según los puntos.
 
-            // 4. Refrescar la lista
-            RefreshList(TxtSearch.Text);
+                    _allClients.Add(_selectedClient);
 
-            // 5. Volver a pintar el detalle
-            PopulateDetailView(_selectedClient);
-            if (!ClientsList.Contains(_selectedClient))
-            {
-                LstClients.SelectedItem = _selectedClient;
+                    var cWindow = new ConfirmWindow(
+                        "Cliente registrado correctamente.",
+                        "Éxito",
+                        ConfirmType.Success);
+                    cWindow.Owner = Window.GetWindow(this);
+
+                    cWindow.ShowDialog();
+                }
+
+                _isCreationMode = false;
+                ToggleEditMode(false);
+
+
+                // 4. Refrescar la lista
+                RefreshList(TxtSearch.Text);
+
+                // 5. Volver a pintar el detalle
+                PopulateDetailView(_selectedClient);
+                if (!ClientsList.Contains(_selectedClient))
+                {
+                    LstClients.SelectedItem = _selectedClient;
+                }
+
             }
         }
 
+        private void BtnCanjearPuntos_Click(object sender, RoutedEventArgs e)
+        {
+            if (_selectedClient == null || _selectedClient.Fidelizacion == null) return;
+
+            // --- CAMBIO: Usamos la nueva InputWindow ---
+            var inputWindow = new InputWindow(
+                $"El cliente tiene {_selectedClient.Fidelizacion.PuntosAcumulados} puntos.\n¿Cuántos deseas canjear?",
+                "Canjear Puntos",
+                "0");
+
+            inputWindow.Owner = Window.GetWindow(this); // Para que aparezca centrada sobre la app
+
+            if (inputWindow.ShowDialog() == true)
+            {
+                string input = inputWindow.ResponseText;
+
+                // Validar que sea número y positivo
+                if (int.TryParse(input, out int puntosACanjear) && puntosACanjear > 0)
+                {
+                    if (_selectedClient.Fidelizacion.PuntosAcumulados >= puntosACanjear)
+                    {
+                        // Operación
+                        _selectedClient.Fidelizacion.PuntosAcumulados -= puntosACanjear;
+                        _selectedClient.Fidelizacion.PuntosCanjeados += puntosACanjear;
+
+                        // Refrescar UI
+                        PopulateDetailView(_selectedClient);
+                        RefreshList(TxtSearch.Text);
+
+                        ConfirmWindow w = new ConfirmWindow(
+                            $"Se han canjeado {puntosACanjear} puntos correctamente.",
+                            "Canje Realizado",
+                            ConfirmType.Success);
+                        w.Owner = Window.GetWindow(this);
+                        w.ShowDialog();
+                    }
+                    else
+                    {
+                        ConfirmWindow w = new ConfirmWindow(
+                            $"Saldo insuficiente. El cliente solo tiene {_selectedClient.Fidelizacion.PuntosAcumulados} puntos.",
+                            "Error de Saldo",
+                            ConfirmType.Danger);
+                        w.Owner = Window.GetWindow(this);
+                        w.ShowDialog();
+                    }
+                }
+                else
+                {
+                    ConfirmWindow w = new ConfirmWindow(
+                       "Por favor, introduce una cantidad numérica válida mayor a 0.",
+                       "Formato Incorrecto",
+                       ConfirmType.Danger);
+                    w.Owner = Window.GetWindow(this);
+                    w.ShowDialog();
+                }
+            }
+        }
 
         private void BtnCancel_Click(object sender, RoutedEventArgs e)
         {

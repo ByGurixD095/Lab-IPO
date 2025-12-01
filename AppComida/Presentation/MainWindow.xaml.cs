@@ -89,13 +89,24 @@ namespace AppComida.Presentation
         {
             try
             {
+                // 1. Cargar el nuevo diccionario de colores 
                 var uri = new Uri(rutaTema, UriKind.Relative);
                 ResourceDictionary nuevoTema = Application.LoadComponent(uri) as ResourceDictionary;
 
                 if (nuevoTema != null)
                 {
-                    Application.Current.Resources.MergedDictionaries.Clear();
-                    Application.Current.Resources.MergedDictionaries.Add(nuevoTema);
+                    // 2. Limpiar todo
+                    var diccionarios = Application.Current.Resources.MergedDictionaries;
+                    diccionarios.Clear();
+
+                    // 3. Añadir el  tema de colores
+                    diccionarios.Add(nuevoTema);
+
+                    // 4. RESTAURAR LOS ESTILOS ESENCIALES
+                    diccionarios.Add(new ResourceDictionary { Source = new Uri("/Themes/Icons.xaml", UriKind.Relative) });
+                    diccionarios.Add(new ResourceDictionary { Source = new Uri("/Themes/ControlStyles.xaml", UriKind.Relative) });
+                    diccionarios.Add(new ResourceDictionary { Source = new Uri("/Themes/ProductStyles.xaml", UriKind.Relative) });
+                    diccionarios.Add(new ResourceDictionary { Source = new Uri("/Themes/ClientStyles.xaml", UriKind.Relative) });
                 }
             }
             catch (Exception ex)

@@ -27,10 +27,10 @@
                 <RowDefinition Height="Auto"/>
             </Grid.RowDefinitions>
 
-            <!-- ICONO (Añadido x:Name="IconPath" para que funcione tu C#) -->
+            <!-- ICONO -->
             <Path Grid.Row="0" 
                   x:Name="IconPath"
-                  Data="{StaticResource IconAlert}" 
+                  Data="{DynamicResource IconAlert}" 
                   Fill="{DynamicResource BrandColor}" 
                   Height="32" Width="32" 
                   Stretch="Uniform" 
@@ -64,14 +64,13 @@
 
                 <!-- Botón Cancelar (Estilo Secundario) -->
                 <Button Content="CANCELAR" 
-                        Click="BtnCancel_Click" 
-                        Style="{StaticResource BtnSecondaryStyle}"
-                        Margin="0,0,15,0"/>
+                Click="BtnCancel_Click" 
+                Style="{DynamicResource BtnSecondaryStyle}"  Margin="0,0,15,0"/>
 
                 <!-- Botón Confirmar (Estilo Primario) -->
                 <Button Content="CONFIRMAR" 
-                        Click="BtnConfirm_Click" 
-                        Style="{StaticResource BtnPrimaryStyle}"/>
+                Click="BtnConfirm_Click" 
+                Style="{DynamicResource BtnPrimaryStyle}"/>
             </StackPanel>
         </Grid>
     </Border>

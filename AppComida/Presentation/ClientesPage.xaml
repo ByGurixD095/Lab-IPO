@@ -296,8 +296,16 @@
 
                                     <TextBlock Text="Equivale a descuentos futuros" FontSize="12" Foreground="{DynamicResource TextSecondary}" Margin="0,5,0,0"/>
                                 </StackPanel>
-                                <Button Grid.Column="1" VerticalAlignment="Center" Background="{DynamicResource CardBackground}" Foreground="{DynamicResource BrandColor}" 
-                                        Content="Canjear Puntos" FontWeight="Bold" Padding="15,8" BorderThickness="0" Cursor="Hand">
+                                <Button Grid.Column="1" 
+                                        VerticalAlignment="Center" 
+                                        Background="{DynamicResource CardBackground}" 
+                                        Foreground="{DynamicResource BrandColor}" 
+                                        Content="Canjear Puntos" 
+                                        FontWeight="Bold" 
+                                        Padding="15,8" 
+                                        BorderThickness="0" 
+                                        Cursor="Hand"
+                                        Click="BtnCanjearPuntos_Click">
                                     <Button.Resources>
                                         <Style TargetType="Border">
                                             <Setter Property="CornerRadius" Value="8"/>
