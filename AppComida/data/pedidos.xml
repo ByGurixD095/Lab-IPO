@@ -1,0 +1,113 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<Pedidos>
+	<!-- Pedido vinculado a María (ID 1) -->
+	<Pedido Id="1001">
+		<ClienteId>1</ClienteId>
+		<NombreCliente>María González Pérez</NombreCliente>
+		<TipoEntrega>Mesa 5</TipoEntrega>
+		<Fecha>2023-11-20</Fecha>
+		<Hora>14:30</Hora>
+		<Estado>Pendiente</Estado>
+		<Total>43.00</Total>
+		<Detalle>
+			<Item>Entrecot a la Pimienta</Item>
+			<Item>Ramón Bilbao Crianza</Item>
+			<Item>Cheesecake Casera</Item>
+		</Detalle>
+	</Pedido>
+
+	<!-- Pedido de cliente NO registrado -->
+	<Pedido Id="1002">
+		<ClienteId>0</ClienteId>
+		<NombreCliente>Juan Pérez</NombreCliente>
+		<TipoEntrega>Domicilio</TipoEntrega>
+		<Fecha>2023-11-20</Fecha>
+		<Hora>14:32</Hora>
+		<Estado>En Cocina</Estado>
+		<Total>97.60</Total>
+		<Detalle>
+			<Item>2x Costillar BBQ</Item>
+			<Item>2x Burger Trufada</Item>
+			<Item>2x Nachos con Guacamole</Item>
+			<Item>2x Brownie con Helado</Item>
+		</Detalle>
+	</Pedido>
+
+	<!-- Pedido vinculado a Lucía (ID 3) -->
+	<Pedido Id="1003">
+		<ClienteId>3</ClienteId>
+		<NombreCliente>Lucía Fernández</NombreCliente>
+		<TipoEntrega>Recoger</TipoEntrega>
+		<Fecha>2023-11-20</Fecha>
+		<Hora>13:15</Hora>
+		<Estado>Entregado</Estado>
+		<Total>12.30</Total>
+		<Detalle>
+			<Item>Ensalada César</Item>
+			<Item>Agua Mineral 50cl</Item>
+		</Detalle>
+	</Pedido>
+
+	<!-- Pedido vinculado a Carlos (ID 4) -->
+	<Pedido Id="1004">
+		<ClienteId>4</ClienteId>
+		<NombreCliente>Carlos Mesa</NombreCliente>
+		<TipoEntrega>Mesa 2</TipoEntrega>
+		<Fecha>2023-11-20</Fecha>
+		<Hora>14:40</Hora>
+		<Estado>Pendiente</Estado>
+		<Total>24.50</Total>
+		<Detalle>
+			<Item>Burger Trufada</Item>
+			<Item>Nachos con Guacamole</Item>
+			<Item>Coca Cola Zero</Item>
+		</Detalle>
+	</Pedido>
+
+	<!-- Pedido vinculado a Elena (ID 5) -->
+	<Pedido Id="1005">
+		<ClienteId>5</ClienteId>
+		<NombreCliente>Elena Yebes</NombreCliente>
+		<TipoEntrega>Domicilio</TipoEntrega>
+		<Fecha>2023-11-20</Fecha>
+		<Hora>14:10</Hora>
+		<Estado>En Cocina</Estado>
+		<Total>45.40</Total>
+		<Detalle>
+			<Item>Salmón Noruego</Item>
+			<Item>Sepia a la Plancha</Item>
+			<Item>Arroz Negro</Item>
+		</Detalle>
+	</Pedido>
+
+	<!-- Pedido antiguo vinculado a María (ID 1) -->
+	<Pedido Id="950">
+		<ClienteId>1</ClienteId>
+		<NombreCliente>María González Pérez</NombreCliente>
+		<TipoEntrega>Mesa 1</TipoEntrega>
+		<Fecha>2023-11-15</Fecha>
+		<Hora>21:00</Hora>
+		<Estado>Entregado</Estado>
+		<Total>55.00</Total>
+		<Detalle>
+			<Item>2x Entrecot a la Pimienta</Item>
+			<Item>Ramón Bilbao Crianza</Item>
+		</Detalle>
+	</Pedido>
+
+	<!-- Pedido vinculado a Pedro (ID 6) -->
+	<Pedido Id="1006">
+		<ClienteId>6</ClienteId>
+		<NombreCliente>Pedro Almodóvar</NombreCliente>
+		<TipoEntrega>Mesa VIP</TipoEntrega>
+		<Fecha>2023-11-20</Fecha>
+		<Hora>15:00</Hora>
+		<Estado>Pendiente</Estado>
+		<Total>142.00</Total>
+		<Detalle>
+			<Item>2x Ramón Bilbao Crianza</Item>
+			<Item>4x Entrecot a la Pimienta</Item>
+			<Item>4x Croquetas de Jamón</Item>
+		</Detalle>
+	</Pedido>
+</Pedidos>

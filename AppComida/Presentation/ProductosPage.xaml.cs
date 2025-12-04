@@ -11,7 +11,6 @@ namespace AppComida.Presentation
 {
     public partial class ProductosPage : Page
     {
-        private ProductController _controller;
         private List<Product> _productsDb;
         public ObservableCollection<Product> Productos { get; set; }
 
@@ -21,17 +20,21 @@ namespace AppComida.Presentation
         public ProductosPage()
         {
             InitializeComponent();
-            _controller = new ProductController();
             Productos = new ObservableCollection<Product>();
             ProductList.ItemsSource = Productos;
-            CargarDatos();
+            // Inicializar vacío
+            _productsDb = new List<Product>();
         }
 
-        private void CargarDatos()
+        public void SetProductos(List<Product> productosExternos)
         {
-            _productsDb = _controller.GetAllProducts();
-            if (_productsDb == null) _productsDb = new List<Product>();
+            _productsDb = productosExternos;
             AplicarFiltros();
+        }
+
+        public List<Product> GetProductos()
+        {
+            return _productsDb;
         }
 
         private void Filtro_Checked(object sender, RoutedEventArgs e)
@@ -48,7 +51,6 @@ namespace AppComida.Presentation
         private void AplicarFiltros()
         {
             if (_productsDb == null) return;
-
             var consulta = _productsDb.AsEnumerable();
 
             if (!string.IsNullOrEmpty(_filtroCategoria))
@@ -82,20 +84,12 @@ namespace AppComida.Presentation
 
             if (prod != null)
             {
-                // Constructor para VER/EDITAR
                 ProductDetailWindow detalle = new ProductDetailWindow(prod);
                 detalle.Owner = Window.GetWindow(this);
                 detalle.ShowDialog();
 
-                if (detalle.ActionDelete)
-                {
-                    EliminarProducto(prod);
-                }
-                else if (detalle.ActionEdit)
-                {
-                    // Si se editó, refrescamos la lista
-                    AplicarFiltros();
-                }
+                if (detalle.ActionDelete) EliminarProducto(prod);
+                else if (detalle.ActionEdit) AplicarFiltros();
             }
         }
 
@@ -106,35 +100,22 @@ namespace AppComida.Presentation
 
             if (prod != null)
             {
-                ConfirmWindow confirm = new ConfirmWindow(
-                   $"¿Seguro que quieres eliminar '{prod.Name}' del catálogo?\nEsta acción no se puede deshacer.",
-                   "Eliminar Producto",
-                   ConfirmType.Danger);
-
+                ConfirmWindow confirm = new ConfirmWindow($"¿Eliminar '{prod.Name}'?", "Eliminar", ConfirmType.Danger);
                 confirm.Owner = Window.GetWindow(this);
-
-                if (confirm.ShowDialog() == true)
-                {
-                    EliminarProducto(prod);
-                }
+                if (confirm.ShowDialog() == true) EliminarProducto(prod);
             }
         }
 
-        // --- BOTÓN AÑADIR (MODIFICADO) ---
         private void BtnAnadir_Click(object sender, RoutedEventArgs e)
         {
-            // Constructor para CREAR (pasamos true)
             ProductDetailWindow detalle = new ProductDetailWindow(true);
             detalle.Owner = Window.GetWindow(this);
             detalle.ShowDialog();
 
-            // Verificamos si se guardó correctamente
             if (detalle.ActionEdit && detalle.ProductResult != null)
             {
-                // Asignamos un ID temporal si es necesario
                 var nuevoProd = detalle.ProductResult;
                 nuevoProd.Id = _productsDb.Any() ? _productsDb.Max(p => p.Id) + 1 : 1;
-
                 _productsDb.Add(nuevoProd);
                 AplicarFiltros();
             }
@@ -149,10 +130,8 @@ namespace AppComida.Presentation
 
         private int ObtenerId(object sender)
         {
-            if (sender is MenuItem item && item.Tag != null && int.TryParse(item.Tag.ToString(), out int id))
-                return id;
-            if (sender is FrameworkElement fe && fe.Tag != null && int.TryParse(fe.Tag.ToString(), out int id2))
-                return id2;
+            if (sender is MenuItem item && item.Tag != null && int.TryParse(item.Tag.ToString(), out int id)) return id;
+            if (sender is FrameworkElement fe && fe.Tag != null && int.TryParse(fe.Tag.ToString(), out int id2)) return id2;
             return 0;
         }
     }

@@ -38,8 +38,9 @@ namespace AppComida.Domain
         [XmlElement("Fidelizacion")]
         public Loyalty Fidelizacion { get; set; } = new Loyalty();
 
-        [XmlElement("HistorialPedidos")]
-        public string HistorialPlaceholder { get; set; }
+        [XmlArray("HistorialPedidos")]
+        [XmlArrayItem("RefPedido")]
+        public List<OrderRef> Historial { get; set; } = new List<OrderRef>();
 
         // Helpers para UI
         [XmlIgnore]
@@ -73,5 +74,21 @@ namespace AppComida.Domain
     {
         public int PuntosAcumulados { get; set; }
         public int PuntosCanjeados { get; set; }
+    }
+
+    // Nueva clase para mapear las referencias dentro de clients.xml
+    public class OrderRef
+    {
+        [XmlAttribute("Id")]
+        public string Id { get; set; }
+
+        [XmlAttribute("Fecha")]
+        public string Fecha { get; set; }
+
+        [XmlAttribute("Total")]
+        public decimal Total { get; set; }
+
+        [XmlAttribute("Estado")]
+        public string Estado { get; set; }
     }
 }

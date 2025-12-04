@@ -81,6 +81,8 @@
     </Compile>
     <Compile Include="Domain\Client.cs" />
     <Compile Include="Domain\ClientController.cs" />
+    <Compile Include="Domain\Pedido.cs" />
+    <Compile Include="Domain\PedidoController.cs" />
     <Compile Include="Domain\Product.cs" />
     <Compile Include="Domain\ProductController.cs" />
     <Compile Include="Presentation\ClientesPage.xaml.cs">
@@ -101,6 +103,10 @@
     <Compile Include="Domain\User.cs" />
     <Compile Include="Domain\LoginController.cs" />
     <Compile Include="Persistence\DataAgent.cs" />
+    <Page Include="Presentation\NewOrderWindow.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="Presentation\PedidosPage.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -126,6 +132,9 @@
     <Page Include="Themes\Icons.xaml">
       <Generator>MSBuild:Compile</Generator>
     </Page>
+    <Page Include="Themes\OrderStyles.xaml">
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="Themes\ProductStyles.xaml">
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -137,6 +146,9 @@
     </Page>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Presentation\NewOrderWindow.xaml.cs">
+      <DependentUpon>NewOrderWindow.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Presentation\PedidosPage.xaml.cs">
       <DependentUpon>PedidosPage.xaml</DependentUpon>
     </Compile>
@@ -206,6 +218,9 @@
   </ItemGroup>
   <ItemGroup>
     <Resource Include="data\clients.xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="data\pedidos.xml" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

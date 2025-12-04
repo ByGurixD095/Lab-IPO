@@ -73,7 +73,6 @@ namespace AppComida.Persistence
         {
             string finalPath = GetPath("clients.xml");
 
-            // 1. DETECCIÓN DE ERROR DE RUTA
             if (finalPath == null)
             {
                 MessageBox.Show("No se encontró el archivo 'data/clients.xml'.\nVerifica que la carpeta 'data' existe y el archivo está dentro.",
@@ -83,7 +82,6 @@ namespace AppComida.Persistence
 
             try
             {
-                // El wrapper debe coincidir con la estructura del XML
                 XmlSerializer serializer = new XmlSerializer(typeof(ClientListWrapper));
                 using (StreamReader reader = new StreamReader(finalPath))
                 {
@@ -93,8 +91,6 @@ namespace AppComida.Persistence
             }
             catch (Exception ex)
             {
-                // 2. DETECCIÓN DE ERROR DE FORMATO XML
-                // Mostramos el InnerException que es el que suele decir la línea exacta del fallo
                 string errorDetalle = ex.InnerException != null ? ex.InnerException.Message : ex.Message;
 
                 MessageBox.Show($"Error leyendo 'clients.xml':\n{errorDetalle}\n\nRevisa que el XML tenga la raíz <Clientes> y dentro <Cliente>.",
@@ -102,6 +98,32 @@ namespace AppComida.Persistence
 
                 Debug.WriteLine("Error cargando clientes: " + ex.ToString());
                 return new List<Client>();
+            }
+        }
+
+        public List<Pedido> LoadPedidos()
+        {
+            string finalPath = GetPath("pedidos.xml");
+
+            if (finalPath == null)
+            {
+                return new List<Pedido>();
+            }
+
+            try
+            {
+                XmlSerializer serializer = new XmlSerializer(typeof(PedidoListWrapper));
+                using (StreamReader reader = new StreamReader(finalPath))
+                {
+                    var wrapper = (PedidoListWrapper)serializer.Deserialize(reader);
+                    return wrapper.Pedidos;
+                }
+            }
+            catch (Exception ex)
+            {
+                string errorDetalle = ex.InnerException != null ? ex.InnerException.Message : ex.Message;
+                MessageBox.Show($"Error leyendo 'pedidos.xml':\n{errorDetalle}", "Error XML", MessageBoxButton.OK, MessageBoxImage.Error);
+                return new List<Pedido>();
             }
         }
         public void UpdateLastAccess(string username, DateTime newTime)

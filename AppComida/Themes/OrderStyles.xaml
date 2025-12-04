@@ -1,0 +1,157 @@
+﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+
+    <!-- 1. COLORES DE ESTADO -->
+    <SolidColorBrush x:Key="StatusPendingColor" Color="#FF9800"/>
+    <SolidColorBrush x:Key="StatusPendingBg" Color="#26FF9800"/>
+    <!-- Opacidad baja -->
+
+    <SolidColorBrush x:Key="StatusCookingColor" Color="#29B6F6"/>
+    <SolidColorBrush x:Key="StatusCookingBg" Color="#2629B6F6"/>
+
+    <SolidColorBrush x:Key="StatusDoneColor" Color="#66BB6A"/>
+    <SolidColorBrush x:Key="StatusDoneBg" Color="#2666BB6A"/>
+
+    <!-- 2. ESTILO BASE DEL BADGE (Sin triggers) -->
+    <Style x:Key="StatusBadgeStyle" TargetType="Border">
+        <Setter Property="CornerRadius" Value="12"/>
+        <Setter Property="Padding" Value="10,4"/>
+        <Setter Property="HorizontalAlignment" Value="Left"/>
+        <Setter Property="VerticalAlignment" Value="Center"/>
+        <Setter Property="BorderThickness" Value="1"/>
+    </Style>
+
+    <!-- 3. ESTILO DE TEXTO CABECERA -->
+    <Style x:Key="TableHeaderTextStyle" TargetType="TextBlock">
+        <Setter Property="Foreground" Value="{DynamicResource TextSecondary}"/>
+        <Setter Property="FontSize" Value="12"/>
+        <Setter Property="FontWeight" Value="Bold"/>
+        <Setter Property="VerticalAlignment" Value="Center"/>
+        <Setter Property="Margin" Value="10,0"/>
+    </Style>
+
+    <!-- 4. TEMPLATE DE LA FILA -->
+    <DataTemplate x:Key="OrderRowTemplate">
+        <Grid Margin="0,5">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="80"/>
+                <!-- ID -->
+                <ColumnDefinition Width="2*"/>
+                <!-- Cliente -->
+                <ColumnDefinition Width="1.5*"/>
+                <!-- Entrega -->
+                <ColumnDefinition Width="80"/>
+                <!-- Hora -->
+                <ColumnDefinition Width="120"/>
+                <!-- Estado -->
+                <ColumnDefinition Width="100"/>
+                <!-- Total -->
+                <ColumnDefinition Width="50"/>
+                <!-- Flecha -->
+            </Grid.ColumnDefinitions>
+
+            <!-- ID -->
+            <TextBlock Grid.Column="0" Text="{Binding IdDisplay}" FontWeight="Bold" Foreground="{DynamicResource BrandColor}" VerticalAlignment="Center" Margin="15,0,0,0"/>
+
+            <!-- Cliente -->
+            <StackPanel Grid.Column="1" VerticalAlignment="Center">
+                <TextBlock Text="{Binding CustomerName}" FontWeight="SemiBold" Foreground="{DynamicResource TextPrimary}" FontSize="14"/>
+                <TextBlock Text="{Binding CustomerIdDisplay}" FontSize="11" Foreground="{DynamicResource TextSecondary}" Margin="0,2,0,0"/>
+            </StackPanel>
+
+            <!-- Entrega -->
+            <StackPanel Grid.Column="2" Orientation="Horizontal" VerticalAlignment="Center">
+                <TextBlock Text="{Binding DeliveryIcon}" FontSize="16" Margin="0,0,8,0" VerticalAlignment="Center"/>
+                <TextBlock Text="{Binding DeliveryType}" Foreground="{DynamicResource TextPrimary}" VerticalAlignment="Center"/>
+            </StackPanel>
+
+            <!-- Hora -->
+            <TextBlock Grid.Column="3" Text="{Binding Time}" Foreground="{DynamicResource TextPrimary}" VerticalAlignment="Center"/>
+
+            <!-- Estado (Badge Visual) -->
+            <Border Grid.Column="4">
+                <Border.Style>
+                    <Style TargetType="Border" BasedOn="{StaticResource StatusBadgeStyle}">
+                        <Style.Triggers>
+                            <DataTrigger Binding="{Binding Status}" Value="Pendiente">
+                                <Setter Property="Background" Value="{StaticResource StatusPendingBg}"/>
+                                <Setter Property="BorderBrush" Value="{StaticResource StatusPendingColor}"/>
+                            </DataTrigger>
+                            <DataTrigger Binding="{Binding Status}" Value="En Cocina">
+                                <Setter Property="Background" Value="{StaticResource StatusCookingBg}"/>
+                                <Setter Property="BorderBrush" Value="{StaticResource StatusCookingColor}"/>
+                            </DataTrigger>
+                            <DataTrigger Binding="{Binding Status}" Value="Entregado">
+                                <Setter Property="Background" Value="{StaticResource StatusDoneBg}"/>
+                                <Setter Property="BorderBrush" Value="{StaticResource StatusDoneColor}"/>
+                            </DataTrigger>
+                        </Style.Triggers>
+                    </Style>
+                </Border.Style>
+
+                <!-- Texto del Badge -->
+                <TextBlock Text="{Binding Status}" FontSize="11" FontWeight="Bold">
+                    <TextBlock.Style>
+                        <Style TargetType="TextBlock">
+                            <Style.Triggers>
+                                <DataTrigger Binding="{Binding Status}" Value="Pendiente">
+                                    <Setter Property="Foreground" Value="{StaticResource StatusPendingColor}"/>
+                                </DataTrigger>
+                                <DataTrigger Binding="{Binding Status}" Value="En Cocina">
+                                    <Setter Property="Foreground" Value="{StaticResource StatusCookingColor}"/>
+                                </DataTrigger>
+                                <DataTrigger Binding="{Binding Status}" Value="Entregado">
+                                    <Setter Property="Foreground" Value="{StaticResource StatusDoneColor}"/>
+                                </DataTrigger>
+                            </Style.Triggers>
+                        </Style>
+                    </TextBlock.Style>
+                </TextBlock>
+            </Border>
+
+            <!-- Total -->
+             <TextBlock Grid.Column="5" 
+                       Text="{Binding Total, StringFormat={}{0:N2} €}" 
+                       FontWeight="ExtraBold" 
+                       Foreground="{DynamicResource TextPrimary}" 
+                       HorizontalAlignment="Right" 
+                       VerticalAlignment="Center"/>
+
+            <!-- Flecha Acción -->
+            <TextBlock Grid.Column="6" Text="➜" Foreground="{DynamicResource TextSecondary}" HorizontalAlignment="Center" VerticalAlignment="Center" Opacity="0.5"/>
+        </Grid>
+    </DataTemplate>
+
+    <!-- 5. ESTILO DEL CONTENEDOR (ListBoxItem) -->
+    <Style x:Key="OrderListItemStyle" TargetType="ListBoxItem">
+        <Setter Property="Background" Value="Transparent"/>
+        <Setter Property="Cursor" Value="Hand"/>
+        <Setter Property="Margin" Value="0,0,0,8"/>
+        <Setter Property="HorizontalContentAlignment" Value="Stretch"/>
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="ListBoxItem">
+                    <Border x:Name="bd" Background="{TemplateBinding Background}" CornerRadius="12" Padding="0,15" BorderThickness="1" BorderBrush="Transparent">
+                        <ContentPresenter />
+                    </Border>
+                    <ControlTemplate.Triggers>
+                        <Trigger Property="IsMouseOver" Value="True">
+                            <Setter TargetName="bd" Property="Background" Value="{DynamicResource InputBackground}"/>
+                            <Setter TargetName="bd" Property="BorderBrush" Value="#1AFFFFFF"/>
+                            <Setter TargetName="bd" Property="Effect">
+                                <Setter.Value>
+                                    <DropShadowEffect BlurRadius="15" ShadowDepth="5" Opacity="0.1" Color="Black"/>
+                                </Setter.Value>
+                            </Setter>
+                        </Trigger>
+                        <Trigger Property="IsSelected" Value="True">
+                            <Setter TargetName="bd" Property="Background" Value="{DynamicResource InputBackground}"/>
+                            <Setter TargetName="bd" Property="BorderBrush" Value="{DynamicResource BrandColor}"/>
+                        </Trigger>
+                    </ControlTemplate.Triggers>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+
+</ResourceDictionary>
