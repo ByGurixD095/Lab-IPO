@@ -16,14 +16,15 @@ namespace AppComida.Domain
             LoadData();
         }
 
+        /// <summary>
+        /// Carga pedidos y clientes, y realiza la vinculación (JOIN manual) en memoria.
+        /// </summary>
         private void LoadData()
         {
-            _pedidosDb = _agent.LoadPedidos();
-            if (_pedidosDb == null) _pedidosDb = new List<Pedido>();
+            _pedidosDb = _agent.LoadPedidos() ?? new List<Pedido>();
+            _clientesDb = _agent.LoadClients() ?? new List<Client>();
 
-            _clientesDb = _agent.LoadClients();
-            if (_clientesDb == null) _clientesDb = new List<Client>();
-
+            // Vinculamos cada pedido con su objeto Cliente 
             foreach (var pedido in _pedidosDb)
             {
                 if (pedido.ClienteId > 0)

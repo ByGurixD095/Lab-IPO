@@ -110,11 +110,10 @@
 
                             <Grid Margin="0,0,0,25">
                                 <!-- ENTRADA USUARIO -->
+                                <!-- CORREGIDO: Eliminados GotFocus y LostFocus -->
                                 <TextBox x:Name="txtUser" 
                                          Style="{StaticResource InputUnderlineStyle}"
                                          TextChanged="txtUser_TextChanged"
-                                         GotFocus="Input_StateChanged"
-                                         LostFocus="Input_StateChanged"
                                          KeyDown="Input_KeyDown"/>
 
                                 <!-- PLACEHOLDER USERNAME -->
@@ -152,21 +151,19 @@
 
                             <Grid Margin="0,0,0,10">
                                 <!-- ENTRADA PASSWORD -->
+                                <!-- CORREGIDO: Eliminados GotFocus y LostFocus -->
                                 <PasswordBox x:Name="txtPass" 
                                              Style="{StaticResource PasswordUnderlineStyle}"
                                              PasswordChanged="txtPass_PasswordChanged"
-                                             GotFocus="Input_StateChanged"
-                                             LostFocus="Input_StateChanged"
                                              KeyDown="Input_KeyDown"/>
 
                                 <!-- CONTRASEÑA VISIBLE (Para el toggle) -->
+                                <!-- CORREGIDO: Eliminados GotFocus y LostFocus -->
                                 <TextBox x:Name="txtPassVisible"
                                          Style="{StaticResource InputUnderlineStyle}"
                                          Padding="45,0,80,0"
                                          Visibility="Collapsed"
                                          TextChanged="txtPassVisible_TextChanged"
-                                         GotFocus="Input_StateChanged"
-                                         LostFocus="Input_StateChanged"
                                          KeyDown="Input_KeyDown"/>
 
                                 <!-- PLACEHOLDER PASSWORD -->

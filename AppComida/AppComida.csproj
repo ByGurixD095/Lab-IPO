@@ -222,5 +222,10 @@
   <ItemGroup>
     <Resource Include="data\pedidos.xml" />
   </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Assets\Images\default_food.jpg">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Resource>
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

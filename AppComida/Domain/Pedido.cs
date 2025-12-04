@@ -12,33 +12,31 @@ namespace AppComida.Domain
 
     public class Pedido
     {
-        // ==========================================
-        // PROPIEDADES DE DATOS (Mapeo XML)
-        // ==========================================
-        // Estas propiedades coinciden EXACTAMENTE con tu archivo pedidos.xml
-
+        // Propiedades mapeadas al XML de Pedidos
         [XmlAttribute("Id")]
         public string Id { get; set; }
 
-        public int ClienteId { get; set; }
+        public int ClienteId { get; set; } // FK lógica hacia Client
 
-        // El XML tiene <NombreCliente>, así que usamos ese nombre aquí
-        public string NombreCliente { get; set; }
-
-        public string TipoEntrega { get; set; } // "Mesa 5", "Domicilio", etc.
+        public string NombreCliente { get; set; } // Redundancia para optimizar lectura
+        public string TipoEntrega { get; set; } 
         public string Fecha { get; set; }
         public string Hora { get; set; }
-        public string Estado { get; set; } // "Pendiente", "En Cocina", etc.
+        public string Estado { get; set; } 
         public decimal Total { get; set; }
 
         [XmlArray("Detalle")]
         [XmlArrayItem("Item")]
         public List<string> Items { get; set; } = new List<string>();
 
+        // Referencia al objeto Cliente real (no se guarda en XML, se rellena en tiempo de ejecución)
         [XmlIgnore]
         public Client ClienteVinculado { get; set; }
 
-
+        #region Helpers para la Vista (MVVM)
+        
+        // Exponemos propiedades de solo lectura para facilitar el Binding en la interfaz
+        
         [XmlIgnore]
         public string Status => Estado;
 
@@ -68,17 +66,19 @@ namespace AppComida.Domain
         [XmlIgnore]
         public string TotalDisplay => $"{Total:C}";
 
+        // Lógica visual para mostrar iconos según el tipo de entrega
         [XmlIgnore]
         public string DeliveryIcon
         {
             get
             {
                 if (string.IsNullOrEmpty(TipoEntrega)) return "❓";
-                if (TipoEntrega.Contains("Domicilio")) return "🛵"; // Moto
-                if (TipoEntrega.Contains("Mesa")) return "🍽️";      // Plato
-                if (TipoEntrega.Contains("Recoger")) return "🥡";   // Take away
+                if (TipoEntrega.Contains("Domicilio")) return "🛵"; 
+                if (TipoEntrega.Contains("Mesa")) return "🍽️";      
+                if (TipoEntrega.Contains("Recoger")) return "🥡";   
                 return "📦";
             }
         }
+        #endregion
     }
 }

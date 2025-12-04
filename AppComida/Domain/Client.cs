@@ -3,7 +3,7 @@ using System.Xml.Serialization;
 
 namespace AppComida.Domain
 {
-    // Raíz para la lista
+    // Wrapper necesario para deserializar la lista raíz del XML
     [XmlRoot("Clientes")]
     public class ClientListWrapper
     {
@@ -11,6 +11,9 @@ namespace AppComida.Domain
         public List<Client> Clients { get; set; } = new List<Client>();
     }
 
+    /// <summary>
+    /// Entidad principal del cliente. Contiene sub-clases para organizar la información compleja.
+    /// </summary>
     public class Client
     {
         [XmlAttribute("Id")]
@@ -19,8 +22,9 @@ namespace AppComida.Domain
         public string Nombre { get; set; }
         public string Apellidos { get; set; }
         public string Foto { get; set; }
-        public string Nivel { get; set; } // Oro, Plata, Bronce
+        public string Nivel { get; set; }
 
+        // Objetos de valor (Value Objects) para agrupar datos relacionados
         [XmlElement("Contactos")]
         public ContactInfo Contacto { get; set; } = new ContactInfo();
 
@@ -42,13 +46,20 @@ namespace AppComida.Domain
         [XmlArrayItem("RefPedido")]
         public List<OrderRef> Historial { get; set; } = new List<OrderRef>();
 
-        // Helpers para UI
+        #region Propiedades Auxiliares para UI (Binding)
+
         [XmlIgnore]
         public string NombreCompleto => $"{Nombre} {Apellidos}";
 
         [XmlIgnore]
-        public string DireccionPrincipal => Direcciones != null && Direcciones.Count > 0 ? Direcciones[0].Calle : "Sin dirección";
+        public string DireccionPrincipal => (Direcciones != null && Direcciones.Count > 0)
+            ? Direcciones[0].Calle
+            : "Sin dirección registrada";
+
+        #endregion
     }
+
+    // --- Clases auxiliares para estructura del XML ---
 
     public class ContactInfo
     {
@@ -76,7 +87,6 @@ namespace AppComida.Domain
         public int PuntosCanjeados { get; set; }
     }
 
-    // Nueva clase para mapear las referencias dentro de clients.xml
     public class OrderRef
     {
         [XmlAttribute("Id")]

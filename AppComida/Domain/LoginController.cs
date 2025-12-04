@@ -13,38 +13,50 @@ namespace AppComida.Domain
 
         public LoginController()
         {
+            // Inicializamos el agente de persistencia y cargamos usuarios en memoria al inicio
             _agent = new DataAgent();
             _usersDataBase = _agent.LoadUsers();
         }
 
+        /// <summary>
+        /// Valida las credenciales comparando el hash de la contraseña introducida
+        /// con el hash almacenado en base de datos (con Salt).
+        /// </summary>
         public User ValidateLogin(string username, string password)
         {
-            User userLogged = null;
-
             User storedUser = _usersDataBase.Find(u => u.username.Equals(username, StringComparison.OrdinalIgnoreCase));
 
+            // Si el usuario no existe, rechazamos inmediatamente (Fail fast)
             if (storedUser == null) return null;
 
+            // Recalculamos el hash con el Salt del usuario encontrado
             string calculatedDigest = CalculateMD5(password + storedUser.salt);
 
+            // Comparación segura ignorando mayúsculas/minúsculas en el hash
             if (!calculatedDigest.Trim().Equals(storedUser.digest.Trim(), StringComparison.OrdinalIgnoreCase))
             {
                 return null;
             }
 
-            userLogged = storedUser;
-            return userLogged;
+            return storedUser;
         }
 
+        /// <summary>
+        /// Genera un hash MD5 a partir del input.
+        /// Método sacado de distribuidos
+        /// </summary>
         private string CalculateMD5(string input)
         {
+            // Usamos 'using' para asegurar que el objeto criptográfico libera recursos nativos
             using (MD5 md5 = MD5.Create())
             {
                 byte[] inputBytes = Encoding.UTF8.GetBytes(input);
                 byte[] hashBytes = md5.ComputeHash(inputBytes);
+
                 StringBuilder sb = new StringBuilder();
                 for (int i = 0; i < hashBytes.Length; i++)
                     sb.Append(hashBytes[i].ToString("x2"));
+
                 return sb.ToString();
             }
         }

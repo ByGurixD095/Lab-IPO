@@ -1,12 +1,15 @@
 ﻿using AppComida.Domain;
 using System;
-using System.IO; // Necesario para File.Exists
+using System.IO;
 using System.Windows.Controls;
-using System.Windows.Media;
 using System.Windows.Media.Imaging;
 
 namespace AppComida.Presentation
 {
+    /// <summary>
+    /// Lógica de presentación para la ficha del usuario.
+    /// Se encarga de formatear los datos brutos del modelo para su visualización y gestionar la carga de recursos gráficos.
+    /// </summary>
     public partial class UserProfilePage : Page
     {
         public UserProfilePage(User user)
@@ -19,61 +22,54 @@ namespace AppComida.Presentation
         {
             if (user == null) return;
 
-            // Datos de texto
+            // Mapeo directo de propiedades de texto
             TxtFirstName.Text = user.firstname;
-                
-
-            // Generación de datos simulados si faltan
-            string safeName = (user.firstname ?? "Usuario").ToLower().Replace(" ", "");
-            string safeLast = (user.lastname ?? "Prueba").Trim().Split(new[] { ' ' }, StringSplitOptions.RemoveEmptyEntries)[0];
-
-            TxtUsername.Text = "@" + user.username;
             TxtEmail.Text = user.email;
+
+            // Formateo de fecha para lectura
             TxtLastAccess.Text = user.last_access.ToString("dd MMM, HH:mm tt");
+
+            // Tratamiento de datos para UI
+            string safeLast = (user.lastname ?? "Usuario").Trim().Split(new[] { ' ' }, StringSplitOptions.RemoveEmptyEntries)[0];
             TxtLastName.Text = safeLast;
 
-            // --- LÓGICA SEGURA DE IMAGEN ---
-            // Solo intentamos cargar si hay una ruta escrita
-            if (!string.IsNullOrEmpty(user.image))
-            {
-                try
-                {
-                    // 1. Verificar si es una ruta absoluta en disco y si existe
-                    if (File.Exists(user.image))
-                    {
-                        var bitmap = new BitmapImage();
-                        bitmap.BeginInit();
-                        bitmap.UriSource = new Uri(user.image, UriKind.Absolute);
-                        bitmap.CacheOption = BitmapCacheOption.OnLoad;
-                        bitmap.EndInit();
-                        ProfileImageBrush.ImageSource = bitmap;
-                    }
-                    else
-                    {
-                        // 2. Si no es absoluta, intentar como recurso relativo (pack URI)
-                        // Esto evita el FileNotFoundException de rutas relativas simples
-                        try
-                        {
-                            // Asumimos que la ruta relativa empieza en Assets, ej: "Assets/Images/..."
-                            string relativePath = user.image.Replace('\\', '/').TrimStart('/');
-                            var uri = new Uri($"pack://application:,,,/{relativePath}", UriKind.Absolute);
+            // Decorador visual para el username
+            TxtUsername.Text = "@" + user.username;
 
-                            // Prueba de carga segura
-                            var bitmap = new BitmapImage(uri);
-                            ProfileImageBrush.ImageSource = bitmap;
-                        }
-                        catch
-                        {
-                            // Si falla también como recurso, no hacemos nada.
-                            // Se mostrará el círculo gris por defecto.
-                        }
-                    }
-                }
-                catch
+            SetProfileImage(user.image);
+        }
+
+        /// <summary>
+        /// Gestiona la carga de la imagen de perfil soportando tanto rutas absolutas (ficheros locales)
+        /// como recursos embebidos en la aplicación (Assets).
+        /// </summary>
+        private void SetProfileImage(string imagePath)
+        {
+            if (string.IsNullOrEmpty(imagePath)) return;
+
+            try
+            {
+                BitmapImage bitmap = new BitmapImage();
+                bitmap.BeginInit();
+
+                bitmap.CacheOption = BitmapCacheOption.OnLoad;
+
+                if (File.Exists(imagePath))
                 {
-                    // Ante cualquier otro error imprevisto, no rompemos la app.
-                    // Se queda la imagen vacía (placeholder gris).
+                    bitmap.UriSource = new Uri(imagePath, UriKind.Absolute);
                 }
+                else
+                {
+
+                    string relativePath = imagePath.Replace('\\', '/').TrimStart('/');
+                    bitmap.UriSource = new Uri($"pack://application:,,,/{relativePath}", UriKind.Absolute);
+                }
+
+                bitmap.EndInit();
+                ProfileImageBrush.ImageSource = bitmap;
+            }
+            catch (Exception)
+            {
             }
         }
     }

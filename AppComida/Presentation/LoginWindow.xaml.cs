@@ -1,7 +1,6 @@
 ﻿using AppComida.Domain;
-using AppComida.Presentation;
 using System;
-using System.Threading.Tasks; // Necesario para Task.Delay
+using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
@@ -9,12 +8,23 @@ using System.Windows.Media;
 
 namespace AppComida.Presentation
 {
+    /// <summary>
+    /// Lógica de interacción para la pantalla de inicio de sesión.
+    /// Gestiona la validación visual de campos y la llamada asíncrona al controlador de autenticación.
+    /// </summary>
     public partial class LoginWindow : Window
     {
-        // Colores
+        #region Campos Privados
+
+        // Estilos cacheados para evitar crearlos en cada validación
         private readonly Brush _defaultBorder = Brushes.Transparent;
         private readonly Brush _errorBorder = (Brush)new BrushConverter().ConvertFrom("#D32F2F");
+
         private LoginController _logController;
+
+        #endregion
+
+        #region Constructor e Inicialización
 
         public LoginWindow()
         {
@@ -22,10 +32,20 @@ namespace AppComida.Presentation
             _logController = new LoginController();
         }
 
-        // --- GESTIÓN DE VENTANA ---
+        private void Window_Loaded(object sender, RoutedEventArgs e)
+        {
+            CheckCapsLock();
+            txtUser.Focus();
+        }
+
+        #endregion
+
+        #region Gestión de Ventana
+
         private void Border_MouseDown(object sender, MouseButtonEventArgs e)
         {
-            if (e.ChangedButton == MouseButton.Left) this.DragMove();
+            if (e.ChangedButton == MouseButton.Left)
+                this.DragMove();
         }
 
         private void BtnCerrar_Click(object sender, RoutedEventArgs e)
@@ -33,13 +53,9 @@ namespace AppComida.Presentation
             Application.Current.Shutdown();
         }
 
-        // --- INPUT & EVENTOS ---
+        #endregion
 
-        private void Window_Loaded(object sender, RoutedEventArgs e)
-        {
-            CheckCapsLock();
-            txtUser.Focus();
-        }
+        #region Lógica de Entrada
 
         private void Window_KeyDown(object sender, KeyEventArgs e)
         {
@@ -54,15 +70,11 @@ namespace AppComida.Presentation
             }
         }
 
-        private void Input_StateChanged(object sender, RoutedEventArgs e)
-        {
-            CheckCapsLock();
-        }
-
         private void CheckCapsLock()
         {
             bool isCapsLock = Keyboard.IsKeyToggled(Key.CapsLock);
 
+            // Solo mostramos el aviso si el usuario está escribiendo en ese campo específico
             if (badgeCapsLockUser != null)
             {
                 bool userHasFocus = txtUser.IsKeyboardFocused;
@@ -76,7 +88,9 @@ namespace AppComida.Presentation
             }
         }
 
-        // --- LÓGICA DE PLACEHOLDERS Y ERRORES ---
+        #endregion
+
+        #region Gestión Visual de Placeholders y Errores
 
         private void txtUser_TextChanged(object sender, TextChangedEventArgs e)
         {
@@ -96,6 +110,9 @@ namespace AppComida.Presentation
             ClearErrors();
         }
 
+        /// <summary>
+        /// Limpia los estados de error visuales en cuanto el usuario empieza a corregir.
+        /// </summary>
         private void ClearErrors()
         {
             if (lblUserError.Visibility == Visibility.Visible || txtUser.BorderBrush == _errorBorder)
@@ -111,6 +128,7 @@ namespace AppComida.Presentation
                 txtPassVisible.BorderBrush = _defaultBorder;
             }
 
+            // Reseteamos el mensaje de error genérico al placeholder original
             if (lblPassPlaceholder.Text != "Introduce tu clave")
             {
                 lblPassPlaceholder.Text = "Introduce tu clave";
@@ -118,80 +136,97 @@ namespace AppComida.Presentation
             }
         }
 
-        // --- AYUDA DEL OJO EN PASSWORD ---
-
         private void BtnTogglePass_Click(object sender, RoutedEventArgs e)
         {
+            // Alternancia entre PasswordBox (seguro) y TextBox (visible)
             if (txtPass.Visibility == Visibility.Visible)
             {
+                // Mostrar contraseña
                 txtPassVisible.Text = txtPass.Password;
                 txtPass.Visibility = Visibility.Collapsed;
                 txtPassVisible.Visibility = Visibility.Visible;
-                btnTogglePass.Content = "🚫";
+
+                btnTogglePass.Content = "🚫"; // Icono de ocultar
+
+                // Actualizar estado del placeholder
                 lblPassPlaceholder.Visibility = (txtPassVisible.Text.Length == 0) ? Visibility.Visible : Visibility.Collapsed;
                 txtPassVisible.Focus();
             }
             else
             {
+                // Ocultar contraseña
                 txtPass.Password = txtPassVisible.Text;
                 txtPassVisible.Visibility = Visibility.Collapsed;
                 txtPass.Visibility = Visibility.Visible;
-                btnTogglePass.Content = "👁️";
+
+                btnTogglePass.Content = "👁️"; // Icono de ver
+
                 lblPassPlaceholder.Visibility = (txtPass.Password.Length == 0) ? Visibility.Visible : Visibility.Collapsed;
                 txtPass.Focus();
             }
         }
 
-        // --- LOGIN CLICK (LÓGICA NUEVA DE PRE-CARGA) ---
+        #endregion
+
+        #region Lógica de Autenticación
 
         private async void BtnLogin_Click(object sender, RoutedEventArgs e)
         {
+            // Unificamos el valor de la contraseña dependiendo del modo visible/oculto
             string finalPass = (txtPass.Visibility == Visibility.Visible) ? txtPass.Password : txtPassVisible.Text;
             string username = txtUser.Text.Trim();
 
             ClearErrors();
 
-            // 1.Campos vacios
-            bool userValid = !string.IsNullOrWhiteSpace(username);
-            bool passValid = finalPass.Length >= 1;
+            // 1. Validación local
+            if (string.IsNullOrWhiteSpace(username)) { ShowInputError(true); return; }
+            if (finalPass.Length < 1) { ShowInputError(false); return; }
 
-            if (!userValid) { ShowInputError(true); return; }
-            if (!passValid) { ShowInputError(false); return; }
-
-            // 2. Efectos visuales
+            // 2. Feedback visual
             SetLoadingState(true);
-            await Task.Delay(50);
 
-            // 3. User validation, con otro hilo para no bloquear el principal (efectos visuales)
+            // Pequeño delay artificial para que la animación de carga se vea fluida y no sea un parpadeo
+            await Task.Delay(200);
+
+            // 3. Proceso de Login en segundo plano para no congelar la UI
             User userLogged = null;
-            await Task.Run(() => {
-                userLogged = _logController.ValidateLogin(username, finalPass);
-            });
+
+            try
+            {
+                await Task.Run(() => {
+                    userLogged = _logController.ValidateLogin(username, finalPass);
+                });
+            }
+            catch (Exception)
+            {
+            }
 
             if (userLogged != null)
             {
-                // --- ÉXITO: Efecto inicio sesión mientras se carga la app ---
+                // --- LOGIN CORRECTO ---
                 if (btnLoader.Children.Count > 1 && btnLoader.Children[1] is TextBlock txtLoader)
                 {
-                    txtLoader.Text = "Cargando sistema...";
+                    txtLoader.Text = "Accediendo...";
                 }
 
-                await Task.Delay(50);
-                MainWindow main = new MainWindow(userLogged);
+                await Task.Delay(300); 
 
+                MainWindow main = new MainWindow(userLogged);
                 main.Show();
                 this.Close();
             }
             else
             {
-                // ERROR DE CREDENCIALES
+                // --- ERROR DE CREDENCIALES ---
                 SetLoadingState(false);
                 ShowGenericLoginError();
             }
         }
 
+        #endregion
 
-        // --- EFECTOS DE INTERACCIÓN CON EL USUARIO ---
+        #region Métodos Auxiliares de UI
+
         private void ShowInputError(bool isUserError)
         {
             if (isUserError)
@@ -205,15 +240,19 @@ namespace AppComida.Presentation
                 lblPassError.Visibility = Visibility.Visible;
                 txtPass.BorderBrush = _errorBorder;
                 txtPassVisible.BorderBrush = _errorBorder;
-                if (txtPass.Visibility == Visibility.Visible) txtPass.Focus(); else txtPassVisible.Focus();
+
+                if (txtPass.Visibility == Visibility.Visible) txtPass.Focus();
+                else txtPassVisible.Focus();
             }
         }
 
         private void ShowGenericLoginError()
         {
+            // Limpiamos campos de contraseña por seguridad
             txtPass.Password = "";
             txtPassVisible.Text = "";
 
+            // Usamos el placeholder para mostrar el error
             lblPassPlaceholder.Text = "Usuario o contraseña incorrectos";
             lblPassPlaceholder.Foreground = (Brush)FindResource("ErrorColor");
             lblPassPlaceholder.Visibility = Visibility.Visible;
@@ -241,7 +280,7 @@ namespace AppComida.Presentation
                 btnText.Visibility = Visibility.Visible;
                 btnLoader.Visibility = Visibility.Collapsed;
 
-                // Restaurar texto original por si hubo error tras "Cargando sistema..."
+                // Restaurar texto original
                 if (btnLoader.Children.Count > 1 && btnLoader.Children[1] is TextBlock txtLoader)
                 {
                     txtLoader.Text = "Verificando...";
@@ -250,5 +289,7 @@ namespace AppComida.Presentation
                 Cursor = Cursors.Arrow;
             }
         }
+
+        #endregion
     }
 }

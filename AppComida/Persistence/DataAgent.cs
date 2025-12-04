@@ -9,12 +9,20 @@ using System.Xml.Serialization;
 
 namespace AppComida.Persistence
 {
+    /// <summary>
+    /// Clase encargada de la gestión de ficheros XML.
+    /// Centraliza todas las operaciones de lectura y escritura para desacoplar el dominio del almacenamiento.
+    /// </summary>
     public class DataAgent
     {
+        /// <summary>
+        /// Busca el archivo de datos subiendo niveles de directorio.
+        /// Necesario porque al compilar, el ejecutable corre en /bin/Debug y los datos suelen estar en la raíz del proyecto.
+        /// </summary>
         private string GetPath(string fileName)
         {
             string currentDir = AppDomain.CurrentDomain.BaseDirectory;
-            // Busca hasta 6 niveles hacia arriba
+
             for (int i = 0; i < 6; i++)
             {
                 string potentialPath = Path.Combine(currentDir, "data", fileName);
@@ -43,8 +51,8 @@ namespace AppComida.Persistence
             }
             catch (Exception ex)
             {
-                Debug.WriteLine(ex.ToString());
-                return new List<User>(); 
+                Debug.WriteLine($"Error cargando usuarios: {ex.Message}");
+                return new List<User>();
             }
         }
 
@@ -64,7 +72,7 @@ namespace AppComida.Persistence
             }
             catch (Exception ex)
             {
-                Debug.WriteLine(ex.ToString());
+                Debug.WriteLine($"Error cargando productos: {ex.Message}");
                 return new List<Product>();
             }
         }
@@ -75,8 +83,8 @@ namespace AppComida.Persistence
 
             if (finalPath == null)
             {
-                MessageBox.Show("No se encontró el archivo 'data/clients.xml'.\nVerifica que la carpeta 'data' existe y el archivo está dentro.",
-                                "Archivo No Encontrado", MessageBoxButton.OK, MessageBoxImage.Warning);
+                MessageBox.Show("No se encontró el archivo 'data/clients.xml'.\nVerifica que la carpeta 'data' existe en la raíz del proyecto.",
+                                "Archivo de Datos Ausente", MessageBoxButton.OK, MessageBoxImage.Warning);
                 return new List<Client>();
             }
 
@@ -93,10 +101,10 @@ namespace AppComida.Persistence
             {
                 string errorDetalle = ex.InnerException != null ? ex.InnerException.Message : ex.Message;
 
-                MessageBox.Show($"Error leyendo 'clients.xml':\n{errorDetalle}\n\nRevisa que el XML tenga la raíz <Clientes> y dentro <Cliente>.",
-                                "Error de Formato XML", MessageBoxButton.OK, MessageBoxImage.Error);
+                MessageBox.Show($"Error de formato en 'clients.xml'.\nDetalle: {errorDetalle}",
+                                "Error de Parseo XML", MessageBoxButton.OK, MessageBoxImage.Error);
 
-                Debug.WriteLine("Error cargando clientes: " + ex.ToString());
+                Debug.WriteLine("Stack trace clientes: " + ex.ToString());
                 return new List<Client>();
             }
         }
@@ -107,6 +115,7 @@ namespace AppComida.Persistence
 
             if (finalPath == null)
             {
+                // Si no hay pedidos, simplemente empezamos de cero sin alertar
                 return new List<Pedido>();
             }
 
@@ -126,6 +135,10 @@ namespace AppComida.Persistence
                 return new List<Pedido>();
             }
         }
+
+        /// <summary>
+        /// Actualiza la fecha de último acceso.
+        /// </summary>
         public void UpdateLastAccess(string username, DateTime newTime)
         {
             List<User> users = LoadUsers();
@@ -141,6 +154,7 @@ namespace AppComida.Persistence
                 try
                 {
                     XmlSerializer serializer = new XmlSerializer(typeof(List<User>));
+
                     using (StreamWriter writer = new StreamWriter(finalPath))
                     {
                         serializer.Serialize(writer, users);
@@ -148,9 +162,7 @@ namespace AppComida.Persistence
                 }
                 catch (Exception ex)
                 {
-                    //  Podría capturar errores y hacerlo mejor, pero esto no es parte del requisito funcional y hay muchos trabajos que hacer como el de
-                    //  distribuidos, que un dia de estos va a acabar conmigo
-                    Debug.WriteLine(ex.ToString());
+                    Debug.WriteLine($"Fallo al guardar timestamp: {ex.Message}");
                 }
             }
         }

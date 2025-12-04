@@ -1,6 +1,5 @@
 ﻿using AppComida.Persistence;
 using System.Collections.Generic;
-using System.Linq;
 
 namespace AppComida.Domain
 {
@@ -18,6 +17,7 @@ namespace AppComida.Domain
         private void LoadData()
         {
             _productsDb = _agent.LoadProducts();
+            if (_productsDb == null) _productsDb = new List<Product>();
         }
 
         public List<Product> GetAllProducts()
