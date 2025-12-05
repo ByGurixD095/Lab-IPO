@@ -16,7 +16,6 @@
 
     <Border Background="Transparent" MouseDown="Border_MouseDown">
         <Grid>
-            <!-- TARJETA PRINCIPAL -->
             <Border Background="{DynamicResource CardBackground}" CornerRadius="16" Margin="40">
                 <Border.Effect>
                     <DropShadowEffect BlurRadius="40" ShadowDepth="15" Opacity="0.25" Color="#263238"/>
@@ -28,7 +27,6 @@
                         <ColumnDefinition Width="*"/>
                     </Grid.ColumnDefinitions>
 
-                    <!-- PARTE IZQUIERDA, INFO: APP NAME, MIEMBROS ...-->
                     <Border Grid.Column="0" Background="{DynamicResource LeftPanelBackground}" CornerRadius="16,0,0,16" ClipToBounds="True">
                         <Grid>
                             <StackPanel VerticalAlignment="Center" HorizontalAlignment="Center" Margin="30">
@@ -51,7 +49,6 @@
                         </Grid>
                     </Border>
 
-                    <!-- PARTE DERECHA: FORMULARIO -->
                     <Grid Grid.Column="1" Margin="40,30,40,40">
                         <Grid.RowDefinitions>
                             <RowDefinition Height="Auto"/>
@@ -66,13 +63,11 @@
                                 <ColumnDefinition Width="Auto"/>
                             </Grid.ColumnDefinitions>
 
-                            <!-- LETRERO BIENVENIDA -->
                             <StackPanel Grid.Column="0" VerticalAlignment="Top">
                                 <TextBlock Text="Bienvenido" FontSize="32" FontWeight="Bold" Foreground="{DynamicResource TextPrimary}"/>
                                 <TextBlock Text="Inicia sesión para comenzar." FontSize="15" Foreground="{DynamicResource TextSecondary}" Margin="0,5,0,0"/>
                             </StackPanel>
 
-                            <!-- BOTONES DE AYUDA Y SALIDA -->
                             <StackPanel Grid.Column="1" Orientation="Horizontal" VerticalAlignment="Top" HorizontalAlignment="Right">
                                 <Button Style="{StaticResource BtnCircleIconStyle}" Content="?" ToolTipService.InitialShowDelay="0" ToolTipService.BetweenShowDelay="0">
                                     <Button.ToolTip>
@@ -100,7 +95,6 @@
 
                         <StackPanel Grid.Row="2" VerticalAlignment="Center">
 
-                            <!-- ERROR DE USUARIO VACIO -->
                             <Grid Margin="0,0,0,5">
                                 <TextBlock Text="USUARIO" FontSize="12" FontWeight="Bold" Foreground="{DynamicResource TextSecondary}" VerticalAlignment="Center"/>
                                 <StackPanel Orientation="Horizontal" HorizontalAlignment="Right">
@@ -109,20 +103,16 @@
                             </Grid>
 
                             <Grid Margin="0,0,0,25">
-                                <!-- ENTRADA USUARIO -->
-                                <!-- CORREGIDO: Eliminados GotFocus y LostFocus -->
                                 <TextBox x:Name="txtUser" 
                                          Style="{StaticResource InputUnderlineStyle}"
                                          TextChanged="txtUser_TextChanged"
                                          KeyDown="Input_KeyDown"/>
 
-                                <!-- PLACEHOLDER USERNAME -->
                                 <TextBlock x:Name="lblUserPlaceholder" Text="Introduce tu usuario" 
                                            Foreground="{DynamicResource PlaceholderColor}" FontSize="16" VerticalAlignment="Center" Margin="45,0,0,0" IsHitTestVisible="False"/>
 
                                 <TextBlock Text="👤" FontSize="18" Foreground="{DynamicResource TextSecondary}" VerticalAlignment="Center" HorizontalAlignment="Left" Margin="15,0,0,0" IsHitTestVisible="False"/>
 
-                                <!-- ETIQUETA MAYUS -->
                                 <Border x:Name="badgeCapsLockUser" 
                                         Background="#FFF3E0" 
                                         BorderBrush="#FFB74D"
@@ -141,7 +131,6 @@
                                 </Border>
                             </Grid>
 
-                            <!-- ERROR CONTRASEÑA -->
                             <Grid Margin="0,0,0,5">
                                 <TextBlock Text="CONTRASEÑA" FontSize="12" FontWeight="Bold" Foreground="{DynamicResource TextSecondary}" VerticalAlignment="Center"/>
                                 <StackPanel Orientation="Horizontal" HorizontalAlignment="Right">
@@ -150,15 +139,11 @@
                             </Grid>
 
                             <Grid Margin="0,0,0,10">
-                                <!-- ENTRADA PASSWORD -->
-                                <!-- CORREGIDO: Eliminados GotFocus y LostFocus -->
                                 <PasswordBox x:Name="txtPass" 
                                              Style="{StaticResource PasswordUnderlineStyle}"
                                              PasswordChanged="txtPass_PasswordChanged"
                                              KeyDown="Input_KeyDown"/>
 
-                                <!-- CONTRASEÑA VISIBLE (Para el toggle) -->
-                                <!-- CORREGIDO: Eliminados GotFocus y LostFocus -->
                                 <TextBox x:Name="txtPassVisible"
                                          Style="{StaticResource InputUnderlineStyle}"
                                          Padding="45,0,80,0"
@@ -166,13 +151,11 @@
                                          TextChanged="txtPassVisible_TextChanged"
                                          KeyDown="Input_KeyDown"/>
 
-                                <!-- PLACEHOLDER PASSWORD -->
                                 <TextBlock x:Name="lblPassPlaceholder" Text="Introduce tu clave" 
                                            Foreground="{DynamicResource PlaceholderColor}" FontSize="16" VerticalAlignment="Center" Margin="45,0,0,0" IsHitTestVisible="False"/>
 
                                 <TextBlock Text="🔒" FontSize="18" Foreground="{DynamicResource TextSecondary}" VerticalAlignment="Center" HorizontalAlignment="Left" Margin="15,0,0,0" IsHitTestVisible="False"/>
 
-                                <!-- ETIQUETA MAYUS PASS -->
                                 <Border x:Name="badgeCapsLockPass" 
                                         Background="#FFF3E0" 
                                         BorderBrush="#FFB74D"
@@ -190,7 +173,6 @@
                                     </StackPanel>
                                 </Border>
 
-                                <!-- BOTÓN MOSTRAR/OCULTAR -->
                                 <Button x:Name="btnTogglePass" 
                                         Content="👁️" 
                                         Background="Transparent" 
@@ -203,7 +185,6 @@
                                         ToolTip="Mostrar/Ocultar contraseña"/>
                             </Grid>
 
-                            <!-- BOTÓN LOGIN -->
                             <Button x:Name="btnLogin" Style="{StaticResource BtnGradientPrimaryStyle}" Height="55" Margin="0,35,0,0" Click="BtnLogin_Click">
                                 <Grid>
                                     <TextBlock x:Name="btnText" Text="ACCEDER AL SISTEMA"/>

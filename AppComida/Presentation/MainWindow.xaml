@@ -4,7 +4,7 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         mc:Ignorable="d"
-        Title="TPV Comida Casera" Height="900" Width="1280"
+        Title="TPV Comida Casera" Height="800" Width="1280"
         WindowStyle="None"
         ResizeMode="NoResize"
         WindowStartupLocation="CenterScreen"
@@ -12,7 +12,6 @@
         Background="Transparent"
         MouseDown="Window_MouseDown">
 
-    <!-- BORDE PRINCIPAL CON SOMBRA -->
     <Border Background="{DynamicResource SidebarBg}" CornerRadius="20" Padding="0">
         <Border.Effect>
             <DropShadowEffect BlurRadius="20" ShadowDepth="5" Opacity="0.4" Color="Black"/>
@@ -21,25 +20,16 @@
         <Grid>
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="260"/>
-                <!-- Sidebar -->
                 <ColumnDefinition Width="*"/>
-                <!-- Contenido -->
             </Grid.ColumnDefinitions>
 
-            <!-- ============================================== -->
-            <!-- COLUMNA 0: BARRA LATERAL (SIDEBAR)             -->
-            <!-- ============================================== -->
             <Grid Grid.Column="0" Margin="0,0,0,0">
                 <Grid.RowDefinitions>
                     <RowDefinition Height="Auto"/>
-                    <!-- Perfil -->
                     <RowDefinition Height="*"/>
-                    <!-- Navegación -->
                     <RowDefinition Height="Auto"/>
-                    <!-- Footer -->
                 </Grid.RowDefinitions>
 
-                <!-- 1. TARJETA USUARIO -->
                 <Border Grid.Row="0" Margin="20,20,20,30" CornerRadius="12" BorderThickness="1" BorderBrush="#1AFFFFFF">
                     <Border.Background>
                         <SolidColorBrush Color="White" Opacity="0.05"/>
@@ -50,19 +40,16 @@
                             <ColumnDefinition Width="*"/>
                         </Grid.ColumnDefinitions>
 
-                        <!-- Avatar -->
                         <Grid Grid.Column="0">
                             <Ellipse x:Name="AvatarEllipse" Width="42" Height="42">
                                 <Ellipse.Fill>
                                     <ImageBrush ImageSource="/Assets/Images/Profiles/placeholder.png" Stretch="UniformToFill"/>
                                 </Ellipse.Fill>
                             </Ellipse>
-                            <!-- Indicador Online -->
                             <Ellipse Width="10" Height="10" Fill="#4CAF50" Stroke="{DynamicResource SidebarBg}" StrokeThickness="2"
                                      HorizontalAlignment="Right" VerticalAlignment="Bottom" Margin="0,0,-2,0"/>
                         </Grid>
 
-                        <!-- Textos -->
                         <StackPanel Grid.Column="1" VerticalAlignment="Center" Margin="12,0,0,0">
                             <TextBlock x:Name="LblNombreUsuario" Text="Admin" Foreground="White" FontWeight="SemiBold" FontSize="14"/>
                             <TextBlock x:Name="LblRolUsuario" Text="Administrador" Foreground="#B0BEC5" FontSize="11" Margin="0,2,0,0"/>
@@ -70,10 +57,7 @@
                     </Grid>
                 </Border>
 
-                <!-- 2. MENÚ DE NAVEGACIÓN -->
                 <StackPanel Grid.Row="1" Margin="10,0">
-
-                    <!-- PEDIDOS -->
                     <RadioButton x:Name="BtnPedidos" 
                                  Style="{StaticResource NavButtonStyle}" 
                                  Content="Pedidos" 
@@ -81,7 +65,6 @@
                                  CommandParameter="PedidosView"
                                  GroupName="Nav" Checked="NavButton_Checked"/>
 
-                    <!-- PRODUCTOS -->
                     <RadioButton x:Name="BtnProductos" 
                                  Style="{StaticResource NavButtonStyle}" 
                                  Content="Productos" 
@@ -89,7 +72,6 @@
                                  CommandParameter="ProductosView"
                                  GroupName="Nav" Checked="NavButton_Checked"/>
 
-                    <!-- CLIENTES -->
                     <RadioButton x:Name="BtnClientes" 
                                  Style="{StaticResource NavButtonStyle}" 
                                  Content="Clientes" 
@@ -98,7 +80,6 @@
                                  GroupName="Nav" Checked="NavButton_Checked"/>
                 </StackPanel>
 
-                <!-- 3. FOOTER (AYUDA Y SALIDA) -->
                 <StackPanel Grid.Row="2" Margin="0,0,0,25">
                     <Grid Margin="30,0">
                         <Grid.ColumnDefinitions>
@@ -107,26 +88,22 @@
                             <ColumnDefinition Width="*"/>
                         </Grid.ColumnDefinitions>
 
-                        <!-- BOTÓN AYUDA (Con Menú Desplegable) -->
                         <ToggleButton Grid.Column="0" Content="AYUDA" Tag="{StaticResource IconHelp}" 
                                       Style="{StaticResource HelpToggleButtonStyle}" x:Name="ToggleAyuda" Click="ToggleAyuda_Click">
                             <ToggleButton.ContextMenu>
                                 <ContextMenu x:Name="MenuAyuda" Style="{StaticResource MobileContextMenuStyle}">
 
-                                    <!-- Perfil -->
                                     <MenuItem Header="Mi Perfil" Click="MenuItemPerfil_Click" Style="{StaticResource MobileMenuItemStyle}">
                                         <MenuItem.Icon>
                                             <Path Data="{StaticResource IconProfile}" Fill="#546E7A" Width="16" Height="16" Stretch="Uniform"/>
                                         </MenuItem.Icon>
                                     </MenuItem>
 
-                                    <!-- Preferencias (Submenú) -->
                                     <MenuItem Header="Preferencias" Style="{StaticResource MobileMenuItemStyle}">
                                         <MenuItem.Icon>
                                             <Path Data="{StaticResource IconSettings}" Fill="#546E7A" Width="16" Height="16" Stretch="Uniform"/>
                                         </MenuItem.Icon>
 
-                                        <!-- Submenú Tema -->
                                         <MenuItem Header="Tema" Style="{StaticResource MobileMenuItemStyle}">
                                             <MenuItem.Icon>
                                                 <Path Data="{StaticResource IconTheme}" Fill="#546E7A" Width="16" Height="16" Stretch="Uniform"/>
@@ -143,7 +120,6 @@
                                             </MenuItem>
                                         </MenuItem>
 
-                                        <!-- Submenú Idioma -->
                                         <MenuItem Header="Idioma" Style="{StaticResource MobileMenuItemStyle}">
                                             <MenuItem.Icon>
                                                 <Path Data="{StaticResource IconLanguage}" Fill="#546E7A" Width="16" Height="16" Stretch="Uniform"/>
@@ -169,7 +145,6 @@
                                         </MenuItem>
                                     </MenuItem>
 
-                                    <!-- Acerca de -->
                                     <MenuItem Header="Acerca de..." Click="MenuItemAcercaDe_Click" Style="{StaticResource MobileMenuItemStyle}">
                                         <MenuItem.Icon>
                                             <Path Data="{StaticResource IconAbout}" Fill="#546E7A" Width="16" Height="16" Stretch="Uniform"/>
@@ -179,10 +154,8 @@
                             </ToggleButton.ContextMenu>
                         </ToggleButton>
 
-                        <!-- Separador Vertical -->
                         <Rectangle Grid.Column="1" Width="1" Height="25" Fill="#4DFFFFFF" Margin="15,0"/>
 
-                        <!-- BOTÓN SALIR -->
                         <ToggleButton Grid.Column="2" Content="SALIR" Tag="{StaticResource IconPower}" 
                                       Style="{StaticResource FooterButtonStyle}" x:Name="ToggleSalir" Click="ToggleSalir_Click">
                             <ToggleButton.ContextMenu>
@@ -202,14 +175,10 @@
                         </ToggleButton>
                     </Grid>
 
-                    <!-- Versión -->
                     <TextBlock Text="TPV v1.0" Foreground="#4DFFFFFF" FontSize="10" HorizontalAlignment="Center" Margin="0,15,0,0"/>
                 </StackPanel>
             </Grid>
 
-            <!-- ============================================== -->
-            <!-- COLUMNA 1: CONTENIDO PRINCIPAL                 -->
-            <!-- ============================================== -->
             <Border Grid.Column="1" Background="{DynamicResource MainBg}" CornerRadius="15" Margin="0,15,15,15">
                 <Border.Effect>
                     <DropShadowEffect BlurRadius="30" ShadowDepth="0" Opacity="0.15"/>
@@ -218,20 +187,15 @@
                 <Grid>
                     <Grid.RowDefinitions>
                         <RowDefinition Height="90"/>
-                        <!-- Header de Página -->
                         <RowDefinition Height="*"/>
-                        <!-- Frame de Contenido -->
                     </Grid.RowDefinitions>
 
-                    <!-- HEADER -->
                     <Grid Grid.Row="0" Margin="30,0,30,0">
-                        <!-- Títulos -->
                         <StackPanel VerticalAlignment="Center">
                             <TextBlock x:Name="LblHeaderTitle" Text="Inicio" FontSize="26" FontWeight="Bold" Foreground="{DynamicResource TextPrimary}"/>
                             <TextBlock x:Name="LblHeaderSubtitle" Text="Bienvenido al sistema" FontSize="13" Foreground="{DynamicResource TextSecondary}" Margin="0,4,0,0"/>
                         </StackPanel>
 
-                        <!-- Calendario / Fecha -->
                         <StackPanel HorizontalAlignment="Right" VerticalAlignment="Center">
                             <TextBlock x:Name="LblDayOfWeek" Text="HOY" FontSize="11" FontWeight="Bold" Foreground="{DynamicResource BrandColor}" HorizontalAlignment="Right" Opacity="0.8"/>
                             <StackPanel Orientation="Horizontal" HorizontalAlignment="Right" Margin="0,-2,0,0">
@@ -240,11 +204,9 @@
                             </StackPanel>
                         </StackPanel>
 
-                        <!-- Línea separadora sutil -->
                         <Rectangle VerticalAlignment="Bottom" Height="1" Fill="{DynamicResource InputBackground}" Opacity="0.5"/>
                     </Grid>
 
-                    <!-- PÁGINA QUE MUESTRA (FRAMES) -->
                     <Grid Grid.Row="1" Margin="20,10,20,20">
                         <Border Background="{DynamicResource CardBackground}" CornerRadius="12" BorderThickness="0" ClipToBounds="False">
                             <Border.Effect>
@@ -252,16 +214,9 @@
                             </Border.Effect>
 
                             <Grid>
-                                <!-- Frame 1: PERFIL (Por defecto) -->
                                 <Frame x:Name="FrameProfile" NavigationUIVisibility="Hidden" Background="Transparent" ClipToBounds="False"/>
-
-                                <!-- Frame 2: PEDIDOS -->
                                 <Frame x:Name="FramePedidos" NavigationUIVisibility="Hidden" Background="Transparent" ClipToBounds="False" Visibility="Collapsed"/>
-
-                                <!-- Frame 3: PRODUCTOS -->
                                 <Frame x:Name="FrameProductos" NavigationUIVisibility="Hidden" Background="Transparent" ClipToBounds="False" Visibility="Collapsed"/>
-
-                                <!-- Frame 4: CLIENTES -->
                                 <Frame x:Name="FrameClientes" NavigationUIVisibility="Hidden" Background="Transparent" ClipToBounds="False" Visibility="Collapsed"/>
                             </Grid>
 

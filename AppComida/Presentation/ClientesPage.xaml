@@ -14,7 +14,6 @@
             <ColumnDefinition Width="*"/>
         </Grid.ColumnDefinitions>
 
-        <!-- COLUMNA IZQUIERDA: LISTADO -->
         <Border Grid.Column="0" Background="{DynamicResource CardBackground}" BorderBrush="{DynamicResource InputBackground}" BorderThickness="0,0,1,0">
             <Grid>
                 <Grid.RowDefinitions>
@@ -124,14 +123,12 @@
             </Grid>
         </Border>
 
-        <!-- COLUMNA DERECHA: DETALLE -->
         <Grid Grid.Column="1" x:Name="PanelDetail" Background="{DynamicResource MainBg}" Visibility="Hidden">
             <Grid.RowDefinitions>
                 <RowDefinition Height="Auto"/>
                 <RowDefinition Height="*"/>
             </Grid.RowDefinitions>
 
-            <!-- CABECERA DETALLE -->
             <Grid Grid.Row="0" Margin="40,30,40,10">
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="Auto"/>
@@ -213,11 +210,9 @@
                 </StackPanel>
             </Grid>
 
-            <!-- CONTENIDO SCROLL -->
             <ScrollViewer Grid.Row="1" VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Disabled">
                 <StackPanel Margin="40,20,40,50" HorizontalAlignment="Stretch">
 
-                    <!-- INFORMACIÓN PERSONAL -->
                     <Expander Style="{StaticResource ModernExpander}" IsExpanded="True" HorizontalAlignment="Stretch">
                         <Expander.Header>
                             <StackPanel Orientation="Horizontal">
@@ -263,7 +258,6 @@
                         </Grid>
                     </Expander>
 
-                    <!-- PROGRAMA DE PUNTOS -->
                     <Expander Style="{StaticResource ModernExpander}" IsExpanded="True" HorizontalAlignment="Stretch">
                         <Expander.Header>
                             <StackPanel Orientation="Horizontal">
@@ -295,7 +289,6 @@
                         </Border>
                     </Expander>
 
-                    <!-- HISTORIAL DE PEDIDOS (MODIFICADO) -->
                     <Expander Style="{StaticResource ModernExpander}" IsExpanded="False" HorizontalAlignment="Stretch">
                         <Expander.Header>
                             <StackPanel Orientation="Horizontal">
@@ -305,7 +298,6 @@
                         </Expander.Header>
 
                         <StackPanel Margin="20,0,20,20">
-                            <!-- LISTA DE PEDIDOS -->
                             <ListBox x:Name="LstHistorial" Background="Transparent" BorderThickness="0" ScrollViewer.HorizontalScrollBarVisibility="Disabled">
                                 <ListBox.ItemContainerStyle>
                                     <Style TargetType="ListBoxItem">
@@ -336,25 +328,19 @@
                                                 <ColumnDefinition Width="80"/>
                                             </Grid.ColumnDefinitions>
 
-                                            <!-- ID -->
                                             <TextBlock Grid.Column="0" Text="{Binding Id, StringFormat='#{0}'}" FontWeight="Bold" Foreground="{DynamicResource BrandColor}" VerticalAlignment="Center"/>
-
-                                            <!-- FECHA -->
                                             <TextBlock Grid.Column="1" Text="{Binding Fecha}" Foreground="{DynamicResource TextSecondary}" VerticalAlignment="Center"/>
 
-                                            <!-- ESTADO -->
                                             <Border Grid.Column="2" CornerRadius="4" Padding="8,2" Margin="0,0,15,0" Background="#F0F0F0">
                                                 <TextBlock Text="{Binding Estado}" FontSize="11" FontWeight="SemiBold" Foreground="#666"/>
                                             </Border>
 
-                                            <!-- TOTAL -->
                                             <TextBlock Grid.Column="3" Text="{Binding Total, StringFormat='{}{0:C}'}" FontWeight="Bold" Foreground="{DynamicResource TextPrimary}" HorizontalAlignment="Right" VerticalAlignment="Center"/>
                                         </Grid>
                                     </DataTemplate>
                                 </ListBox.ItemTemplate>
                             </ListBox>
 
-                            <!-- MENSAJE VACÍO -->
                             <TextBlock x:Name="TxtNoPedidos" Text="No hay pedidos registrados." Foreground="{DynamicResource TextSecondary}" FontStyle="Italic" HorizontalAlignment="Center" Margin="0,10" Visibility="Collapsed"/>
                         </StackPanel>
                     </Expander>

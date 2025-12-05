@@ -9,7 +9,6 @@
         WindowStartupLocation="CenterOwner"
         MouseDown="Window_MouseDown">
 
-    <!-- Borde Principal -->
     <Border Background="{DynamicResource CardBackground}" 
             CornerRadius="12" 
             BorderBrush="{DynamicResource InputBackground}" 
@@ -27,7 +26,6 @@
                 <RowDefinition Height="Auto"/>
             </Grid.RowDefinitions>
 
-            <!-- ICONO -->
             <Path Grid.Row="0" 
                   x:Name="IconPath"
                   Data="{DynamicResource IconAlert}" 
@@ -37,7 +35,6 @@
                   HorizontalAlignment="Center"
                   Margin="0,10,0,10"/>
 
-            <!-- TITULO -->
             <TextBlock Grid.Row="1" 
                        x:Name="TxtTitle" 
                        Text="Confirmación" 
@@ -47,7 +44,6 @@
                        HorizontalAlignment="Center"
                        TextAlignment="Center"/>
 
-            <!-- MENSAJE -->
             <TextBlock Grid.Row="2" 
                        x:Name="TxtMessage" 
                        Text="Mensaje de confirmación..." 
@@ -59,15 +55,11 @@
                        TextAlignment="Center"
                        Margin="20,10"/>
 
-            <!-- BOTONES -->
             <StackPanel Grid.Row="3" Orientation="Horizontal" HorizontalAlignment="Center" Margin="0,10,0,10">
-
-                <!-- Botón Cancelar (Estilo Secundario) -->
                 <Button Content="CANCELAR" 
                 Click="BtnCancel_Click" 
                 Style="{DynamicResource BtnSecondaryStyle}"  Margin="0,0,15,0"/>
 
-                <!-- Botón Confirmar (Estilo Primario) -->
                 <Button Content="CONFIRMAR" 
                 Click="BtnConfirm_Click" 
                 Style="{DynamicResource BtnPrimaryStyle}"/>

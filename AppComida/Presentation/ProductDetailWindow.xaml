@@ -12,7 +12,6 @@
         WindowStartupLocation="CenterOwner"
         MouseDown="Window_MouseDown">
 
-    <!-- Contenedor Principal -->
     <Border Background="{DynamicResource CardBackground}" CornerRadius="20" Margin="20">
         <Border.Effect>
             <DropShadowEffect BlurRadius="30" ShadowDepth="10" Opacity="0.2" Color="Black"/>
@@ -21,17 +20,13 @@
         <Grid>
             <Grid.RowDefinitions>
                 <RowDefinition Height="200"/>
-                <!-- Imagen -->
                 <RowDefinition Height="*"/>
-                <!-- Contenido -->
             </Grid.RowDefinitions>
 
-            <!-- 1. IMAGEN DE CABECERA -->
             <Grid Grid.Row="0">
                 <Border CornerRadius="20,20,0,0" ClipToBounds="True" Background="#EEEEEE">
                     <Grid>
                         <Image x:Name="ImgProducto" Stretch="UniformToFill"/>
-                        <!-- IMAGEN INPUT URL-->
                         <Grid x:Name="PanelEditImage" Visibility="Collapsed" VerticalAlignment="Bottom" Background="#CC000000">
                             <StackPanel Margin="15,10">
                                 <TextBlock Text="URL de la Imagen:" Foreground="White" FontSize="10"/>
@@ -41,37 +36,25 @@
                     </Grid>
                 </Border>
 
-                <!-- Botón Cerrar (Usa estilo global) -->
                 <Button Style="{StaticResource BtnCloseStyle}" Click="BtnCerrar_Click" HorizontalAlignment="Right" VerticalAlignment="Top" Margin="0,15,15,0"/>
             </Grid>
 
-            <!-- 2. CONTENIDO -->
             <Grid Grid.Row="1" Margin="30,20,30,30">
                 <Grid.RowDefinitions>
                     <RowDefinition Height="Auto"/>
-                    <!-- Pills/BOX -->
                     <RowDefinition Height="Auto"/>
-                    <!-- Título y Precio -->
                     <RowDefinition Height="Auto"/>
-                    <!-- Sección Ingredientes -->
                     <RowDefinition Height="Auto"/>
-                    <!-- Texto Ingredientes -->
                     <RowDefinition Height="Auto"/>
-                    <!-- Sección Alérgenos -->
                     <RowDefinition Height="*"/>
-                    <!-- Iconos Alérgenos -->
                     <RowDefinition Height="Auto"/>
-                    <!-- Botones Acción -->
                 </Grid.RowDefinitions>
 
-                <!-- Categoría Pill / Edit Inputs -->
                 <StackPanel Grid.Row="0" Orientation="Horizontal" Margin="0,0,0,10">
-                    <!-- MODO VER -->
                     <Border x:Name="PillCategoria" Background="{DynamicResource InputBackground}" CornerRadius="12" Padding="12,4">
                         <TextBlock x:Name="TxtCategoria" Text="Categoría" Foreground="{DynamicResource BrandColor}" FontWeight="Bold" FontSize="12"/>
                     </Border>
 
-                    <!-- MODO EDITAR -->
                     <StackPanel x:Name="PanelEditCategoria" Orientation="Horizontal" Visibility="Collapsed">
                         <ComboBox x:Name="ComboCategory" Width="120" Margin="0,0,10,0" SelectedIndex="0">
                             <ComboBoxItem Content="Platos"/>
@@ -83,18 +66,15 @@
                     </StackPanel>
                 </StackPanel>
 
-                <!-- Título y Precio -->
                 <Grid Grid.Row="1" Margin="0,0,0,20">
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition Width="*"/>
                         <ColumnDefinition Width="Auto"/>
                     </Grid.ColumnDefinitions>
 
-                    <!-- MODO VER -->
                     <TextBlock Grid.Column="0" x:Name="TxtNombre" Text="Nombre del Producto" FontSize="24" FontWeight="Bold" Foreground="{DynamicResource TextPrimary}" TextWrapping="Wrap" VerticalAlignment="Center"/>
                     <TextBlock Grid.Column="1" x:Name="TxtPrecio" Text="0.00€" FontSize="24" FontWeight="ExtraBold" Foreground="{DynamicResource BrandColor}" VerticalAlignment="Center"/>
 
-                    <!-- MODO EDITAR -->
                     <TextBox Grid.Column="0" x:Name="InputName" Style="{StaticResource InputUnderlineStyle}" Height="35" FontSize="18" FontWeight="Bold" Visibility="Collapsed" Margin="0,0,10,0"/>
                     <StackPanel Grid.Column="1" x:Name="PanelEditPrice" Orientation="Horizontal" Visibility="Collapsed">
                         <TextBox x:Name="InputPrice" Style="{StaticResource InputUnderlineStyle}" Height="35" FontSize="18" FontWeight="Bold" Width="70" TextAlignment="Right"/>
@@ -102,18 +82,13 @@
                     </StackPanel>
                 </Grid>
 
-                <!-- Ingredientes -->
                 <TextBlock Grid.Row="2" Text="INGREDIENTES" FontSize="11" FontWeight="Bold" Foreground="{DynamicResource TextSecondary}" Margin="0,0,0,8"/>
-
-                <!-- MODO VER -->
                 <TextBlock Grid.Row="3" x:Name="TxtIngredientes" Text="Lista de ingredientes..." FontSize="14" Foreground="{DynamicResource TextPrimary}" TextWrapping="Wrap" LineHeight="20" Margin="0,0,0,20"/>
-                <!-- MODO EDITAR -->
+
                 <TextBox Grid.Row="3" x:Name="InputIngredientes" Style="{StaticResource InputUnderlineStyle}" Height="60" Padding="0" VerticalContentAlignment="Top" TextWrapping="Wrap" AcceptsReturn="True" Visibility="Collapsed" Margin="0,0,0,20"/>
 
-                <!-- Alérgenos -->
                 <TextBlock Grid.Row="4" Text="ALÉRGENOS" FontSize="11" FontWeight="Bold" Foreground="{DynamicResource TextSecondary}" Margin="0,0,0,8"/>
 
-                <!-- MODO VER: Lista dinámica -->
                 <ItemsControl Grid.Row="5" x:Name="ListAlergenos">
                     <ItemsControl.ItemsPanel>
                         <ItemsPanelTemplate>
@@ -129,10 +104,8 @@
                     </ItemsControl.ItemTemplate>
                 </ItemsControl>
 
-                <!-- MODO EDITAR: Texto simple -->
                 <TextBox Grid.Row="5" x:Name="InputAlergenos" Style="{StaticResource InputUnderlineStyle}" Height="35" Padding="0" Visibility="Collapsed" ToolTip="Separar por comas (ej: Gluten, Huevo)"/>
 
-                <!-- Botones de Acción (Footer) -->
                 <Grid Grid.Row="6" Margin="0,20,0,0" VerticalAlignment="Bottom">
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition Width="*"/>
@@ -140,7 +113,6 @@
                         <ColumnDefinition Width="Auto"/>
                     </Grid.ColumnDefinitions>
 
-                    <!-- Botón Editar / Guardar -->
                     <Button Grid.Column="0" x:Name="BtnMainAction" Click="BtnMainAction_Click" Style="{StaticResource BtnPrimaryStyle}">
                         <StackPanel Orientation="Horizontal">
                             <Path x:Name="iconMain" Data="{StaticResource IconPencil}" Fill="White" Width="14" Height="14" Margin="0,0,8,0" Stretch="Uniform"/>
@@ -148,7 +120,6 @@
                         </StackPanel>
                     </Button>
 
-                    <!-- Botón Eliminar / Cancelar -->
                     <Button Grid.Column="2" x:Name="BtnSecondaryAction" Click="BtnSecondaryAction_Click" Style="{StaticResource BtnSecondaryStyle}">
                         <Path x:Name="iconSecondary" Data="{StaticResource IconTrash}" Fill="{DynamicResource ErrorColor}" Width="16" Height="16" Stretch="Uniform"/>
                     </Button>

@@ -11,30 +11,20 @@
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="*"/>
             <ColumnDefinition Width="Auto"/>
-            <!-- Panel de Detalle (Auto-ajustable) -->
         </Grid.ColumnDefinitions>
 
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto"/>
-            <!-- Header -->
             <RowDefinition Height="Auto"/>
-            <!-- Table Head -->
             <RowDefinition Height="*"/>
-            <!-- List -->
         </Grid.RowDefinitions>
 
-        <!-- ========================================================= -->
-        <!-- COLUMNA IZQUIERDA: LISTADO -->
-        <!-- ========================================================= -->
-
-        <!-- 1. HEADER (Botón Nuevo y Filtros) -->
         <Grid Grid.Row="0" Grid.Column="0" Margin="30,30,30,20">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="Auto"/>
                 <ColumnDefinition Width="*"/>
             </Grid.ColumnDefinitions>
 
-            <!-- Botón Nuevo Pedido -->
             <StackPanel Grid.Column="0" VerticalAlignment="Center" HorizontalAlignment="Left">
                 <Button Cursor="Hand" Click="BtnAddOrder_Click">
                     <Button.Template>
@@ -58,7 +48,6 @@
                 </Button>
             </StackPanel>
 
-            <!-- Buscador y Filtros -->
             <StackPanel Grid.Column="1" Orientation="Horizontal" VerticalAlignment="Center" HorizontalAlignment="Right">
                 <TextBox x:Name="TxtSearch" 
                          Style="{StaticResource ModernInput}" 
@@ -75,7 +64,6 @@
             </StackPanel>
         </Grid>
 
-        <!-- 2. TABLE HEADER -->
         <Border Grid.Row="1" Grid.Column="0" Margin="30,0,30,10" Padding="0,0,20,10" BorderBrush="{DynamicResource InputBackground}" BorderThickness="0,0,0,1">
             <Grid>
                 <Grid.ColumnDefinitions>
@@ -97,7 +85,6 @@
             </Grid>
         </Border>
 
-        <!-- 3. LISTADO DE PEDIDOS -->
         <ListBox Grid.Row="2" Grid.Column="0"
                  x:Name="OrderList"
                  Margin="30,0,30,30"
@@ -109,29 +96,21 @@
                  SelectionChanged="OrderList_SelectionChanged">
         </ListBox>
 
-        <!-- ========================================================= -->
-        <!-- COLUMNA DERECHA: PANEL DE DETALLE Y EDICIÓN -->
-        <!-- ========================================================= -->
         <Border x:Name="PanelDetail" 
                 Grid.Column="1" Grid.Row="0" Grid.RowSpan="3"
                 Width="400"
-                Background="White" 
+                Background="{DynamicResource CardBackground}" 
                 BorderBrush="{DynamicResource InputBackground}" 
                 BorderThickness="1,0,0,0"
                 Visibility="Collapsed">
-            <!-- Oculto inicialmente -->
 
             <Grid Margin="25">
                 <Grid.RowDefinitions>
                     <RowDefinition Height="Auto"/>
-                    <!-- Header Detalle -->
                     <RowDefinition Height="*"/>
-                    <!-- Contenido Scroll -->
                     <RowDefinition Height="Auto"/>
-                    <!-- Footer Acciones -->
                 </Grid.RowDefinitions>
 
-                <!-- HEADER PANEL -->
                 <StackPanel Grid.Row="0" Margin="0,0,0,20">
                     <Grid>
                         <StackPanel>
@@ -145,41 +124,35 @@
                     <Separator Margin="0,15,0,0" Background="{DynamicResource InputBackground}"/>
                 </StackPanel>
 
-                <!-- CONTENIDO EDITABLE -->
                 <ScrollViewer Grid.Row="1" VerticalScrollBarVisibility="Auto">
                     <StackPanel>
 
-                        <!-- ESTADO -->
                         <TextBlock Text="ESTADO ACTUAL" FontSize="11" FontWeight="Bold" Foreground="{DynamicResource TextSecondary}" Margin="0,0,0,8"/>
-                        <ComboBox x:Name="CmbDetailStatus" Height="40" Margin="0,0,0,20" FontSize="14">
+                        <ComboBox x:Name="CmbDetailStatus" Height="40" Margin="0,0,0,20" FontSize="14" Style="{StaticResource {x:Type ComboBox}}">
                             <ComboBoxItem Content="Pendiente"/>
                             <ComboBoxItem Content="En Cocina"/>
                             <ComboBoxItem Content="Entregado"/>
                         </ComboBox>
 
-                        <!-- TIPO ENTREGA -->
                         <TextBlock Text="TIPO DE ENTREGA" FontSize="11" FontWeight="Bold" Foreground="{DynamicResource TextSecondary}" Margin="0,0,0,8"/>
-                        <ComboBox x:Name="CmbDetailDelivery" Height="40" Margin="0,0,0,20" FontSize="14">
+                        <ComboBox x:Name="CmbDetailDelivery" Height="40" Margin="0,0,0,20" FontSize="14" Style="{StaticResource {x:Type ComboBox}}">
                             <ComboBoxItem Content="Mesa 1"/>
                             <ComboBoxItem Content="Mesa 2"/>
                             <ComboBoxItem Content="Mesa 3"/>
                             <ComboBoxItem Content="Mesa 4"/>
-                            <ComboBoxItem Content="Mesa 5"/>
                             <ComboBoxItem Content="Mesa VIP"/>
                             <ComboBoxItem Content="Domicilio"/>
                             <ComboBoxItem Content="Recoger"/>
                         </ComboBox>
 
-                        <!-- CLIENTE (Solo lectura) -->
                         <TextBlock Text="CLIENTE" FontSize="11" FontWeight="Bold" Foreground="{DynamicResource TextSecondary}" Margin="0,0,0,8"/>
                         <Border Background="{DynamicResource InputBackground}" CornerRadius="8" Padding="12" Margin="0,0,0,20">
                             <StackPanel>
-                                <TextBlock x:Name="TxtDetailClientName" Text="Nombre Cliente" FontWeight="Bold" FontSize="14"/>
+                                <TextBlock x:Name="TxtDetailClientName" Text="Nombre Cliente" FontWeight="Bold" FontSize="14" Foreground="{DynamicResource TextPrimary}"/>
                                 <TextBlock x:Name="TxtDetailClientId" Text="ID: C-0000" FontSize="12" Foreground="{DynamicResource TextSecondary}"/>
                             </StackPanel>
                         </Border>
 
-                        <!-- ITEMS DEL PEDIDO -->
                         <TextBlock Text="PRODUCTOS" FontSize="11" FontWeight="Bold" Foreground="{DynamicResource TextSecondary}" Margin="0,0,0,8"/>
                         <Border BorderBrush="{DynamicResource InputBackground}" BorderThickness="1" CornerRadius="8">
                             <ListBox x:Name="LstDetailItems" BorderThickness="0" Background="Transparent" MaxHeight="250">
@@ -190,11 +163,10 @@
                                                 <ColumnDefinition Width="*"/>
                                                 <ColumnDefinition Width="Auto"/>
                                             </Grid.ColumnDefinitions>
-                                            <TextBlock Text="{Binding}" TextWrapping="Wrap" VerticalAlignment="Center" Margin="10,0"/>
+                                            <TextBlock Text="{Binding}" TextWrapping="Wrap" VerticalAlignment="Center" Margin="10,0" Foreground="{DynamicResource TextPrimary}"/>
 
-                                            <!-- Botón Eliminar Item -->
                                             <Button Grid.Column="1" Click="BtnDeleteItem_Click" Tag="{Binding}" Style="{StaticResource BtnIconSystem}" Margin="5,0,10,0">
-                                                <Path Data="{StaticResource IconTrash}" Fill="#EF5350" Width="12" Height="12" Stretch="Uniform"/>
+                                                <Path Data="{StaticResource IconTrash}" Fill="{DynamicResource ErrorColor}" Width="12" Height="12" Stretch="Uniform"/>
                                             </Button>
                                         </Grid>
                                     </DataTemplate>
@@ -202,13 +174,12 @@
                             </ListBox>
                         </Border>
 
-                        <!-- NUEVO BOTÓN AÑADIR PRODUCTO -->
                         <Button Content="+ Añadir Producto" 
                                 Click="BtnAddItem_Click" 
                                 Margin="0,10,0,0" 
                                 Height="30" 
-                                Background="#E8F5E9" 
-                                Foreground="#2E7D32" 
+                                Background="{StaticResource StatusDoneBg}" 
+                                Foreground="{StaticResource StatusDoneColor}" 
                                 BorderThickness="0" 
                                 FontWeight="SemiBold" 
                                 Cursor="Hand">
@@ -222,7 +193,6 @@
                     </StackPanel>
                 </ScrollViewer>
 
-                <!-- FOOTER: TOTAL Y BOTONES -->
                 <StackPanel Grid.Row="2" Margin="0,20,0,0">
                     <DockPanel LastChildFill="False" Margin="0,0,0,15">
                         <TextBlock Text="TOTAL ESTIMADO" FontSize="14" FontWeight="Bold" VerticalAlignment="Center" Foreground="{DynamicResource TextSecondary}"/>
@@ -236,7 +206,12 @@
                             <ColumnDefinition Width="*"/>
                         </Grid.ColumnDefinitions>
 
-                        <Button Grid.Column="0" Content="Eliminar" Background="#FFEBEE" Foreground="#D32F2F" BorderThickness="0" FontWeight="Bold" Height="45" Click="BtnDeleteOrder_Click">
+                        <Button Grid.Column="0" Content="Eliminar" 
+                                Background="Transparent" 
+                                BorderBrush="{DynamicResource ErrorColor}" 
+                                BorderThickness="1"
+                                Foreground="{DynamicResource ErrorColor}" 
+                                FontWeight="Bold" Height="45" Click="BtnDeleteOrder_Click">
                             <Button.Resources>
                                 <Style TargetType="Border">
                                     <Setter Property="CornerRadius" Value="8"/>

@@ -28,13 +28,11 @@
             </Grid.RowDefinitions>
 
             <TextBlock x:Name="TxtTitle" Text="Título" FontSize="18" FontWeight="Bold" Foreground="{DynamicResource BrandColor}" Margin="0,0,0,15"/>
-
             <TextBlock x:Name="TxtMessage" Text="Mensaje de la pregunta..." TextWrapping="Wrap" Foreground="{DynamicResource TextPrimary}" FontSize="14" LineHeight="20" Margin="0,0,0,20" Grid.Row="1"/>
 
             <TextBox x:Name="TxtInput" Grid.Row="2" Style="{DynamicResource ModernInput}" Height="40" FontSize="16" FontWeight="SemiBold" VerticalContentAlignment="Center" Margin="0,0,0,25"/>
 
             <StackPanel Grid.Row="3" Orientation="Horizontal" HorizontalAlignment="Right">
-
                 <Button Click="BtnCancel_Click" Style="{DynamicResource BtnSecondaryStyle}" Width="110" Height="40" Margin="0,0,10,0" Padding="5" Cursor="Hand">
                     <Viewbox Stretch="Uniform">
                         <TextBlock Text="Cancelar" Margin="5,0"/>
@@ -49,7 +47,6 @@
                         <TextBlock Text="Aceptar" Margin="5,0"/>
                     </Viewbox>
                 </Button>
-
             </StackPanel>
         </Grid>
     </Border>
